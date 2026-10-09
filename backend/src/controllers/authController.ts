@@ -6,15 +6,9 @@ import jwt from "jsonwebtoken";
 export const register = async (req: Request, res: Response) => {
     const { email, password, name, role } = req.body;
 
-    if (!email || !password || !name || !role) {
+    if (!email || !password || !name ) {
         return res.status(400).json({
             message: "Email, password, name and role are required"
-        });
-    }
-
-    if (role !== "Submitter" && role !== "Reviewer") {
-        return res.status(400).json({
-            message: "Role must be Submitter or Reviewer"
         });
     }
 
@@ -30,8 +24,7 @@ export const register = async (req: Request, res: Response) => {
         const newUser = await userService.createUser(
             email,
             password,
-            name,
-            role
+            name
         );
 
         res.status(201).json({

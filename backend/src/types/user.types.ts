@@ -1,8 +1,10 @@
 export interface User {
     id: number;
+    name: string;
     email: string;
     password_hash: string;
-    name: string;
-    display_picture?: string;
-    role: "guest" | "admin";
+    profile_image: string | null;
+    role: "customer" | "admin";
+    created_at: Date;
+    updated_at: Date;
 }
