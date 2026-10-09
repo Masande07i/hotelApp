@@ -2,8 +2,18 @@ import style from './navbar.module.css';
 import { Text } from '../Text/text';
 import { Button } from '../button/button';
 import { CiHome } from "react-icons/ci";
+import { useNavigate } from 'react-router-dom'
 
 export const navbar = () => {
+    const navigate = useNavigate()
+
+    const handleStart = () => {
+        navigate('/login')
+    }
+
+    const handleSign = () => {
+        navigate('/signup')
+    }
 return (
    <nav className={style.navbar}> 
    <div className={style.logo}>
@@ -19,8 +29,8 @@ return (
   </div>
 
   <div className={style.actions}>
-    <Button label="Login" />
-    <Button label="Sign Up" />
+      <Button label="LOGIN" type="button"onClick={handleStart}/>
+      <Button label="SIGN UP" type="button"onClick={handleSign}/>
   </div>
 </nav>
 
