@@ -1,12 +1,12 @@
 import './App.css'
-import { hero as Hero} from './components/hero/hero'
+import { landing as Landing } from './pages/landing/landing'
 
 function App() {
 
 
   return (
     <>
-    <Hero/>
+    <Landing/>
       
     </>
   )
