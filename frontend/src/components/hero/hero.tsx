@@ -1,5 +1,5 @@
 import styles from "./hero.module.css"
-import { navbar as Navbar  } from "../../navbar/navbar"
+import { navbar as Navbar } from "../navbar/navbar"
 
 export const hero = () => {
   return (

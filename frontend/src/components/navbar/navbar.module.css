@@ -1,0 +1,44 @@
+.navbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px 36px;
+width: 100%;
+box-sizing: border-box;
+
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 10px;
+color:rgb(71, 10, 85);
+}
+
+.logoIcon {
+font-size: 36px;
+color:#EADDFF;
+}
+
+.links {
+display: flex;
+align-items: center;
+gap: 32px;
+}
+
+.links a {
+text-decoration: none;
+color:rgb(71, 10, 85);
+font-size: 14px;
+transition: color 0.2s ease;
+}
+
+.links a:hover {
+color:white
+}
+
+.actions {
+display: flex;
+align-items: center;
+gap: 12px;
+}
