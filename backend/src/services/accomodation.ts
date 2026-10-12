@@ -67,4 +67,15 @@ export const updateAccommodation = async (
     return rows[0] || null;
 };
 
+export const deleteAccommodationById = async (
+    id: number
+): Promise<Accommodation | null> => {
+    const { rows } = await query(
+        `DELETE FROM accommodations
+         WHERE id = $1
+         RETURNING *`,
+        [id]
+    );
 
+    return rows[0] || null;
+};
