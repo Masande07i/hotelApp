@@ -7,7 +7,15 @@ export interface SignupInputs {
   password: string
   confirmPassword: string
 }
-
+export interface LoginInputs {
+  email: string
+  password: string
+}
+interface RegisterResponse {
+  message: string
+  userId: number
+  role: 'customer' | 'admin'
+}
 interface AuthUser {
   id: number
   name: string
@@ -20,7 +28,9 @@ interface AuthUser {
 
 interface AuthState {
   inputs: SignupInputs
+  loginInputs: LoginInputs
   user: AuthUser | null
+  token: string | null
   loading: boolean
   error: string | null
   success: boolean
@@ -33,15 +43,24 @@ const initialState: AuthState = {
     password: '',
     confirmPassword: ''
   },
+  loginInputs: {
+  email: '',
+  password: ''
+},
+  token: null,
   user: null,
   loading: false,
   error: null,
   success: false
 }
 
-export const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk<
+  RegisterResponse,
+  SignupInputs,
+  { rejectValue: string }
+>(
   'auth/registerUser',
-  async (userData: SignupInputs, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -63,13 +82,42 @@ export const registerUser = createAsyncThunk(
         )
       }
 
-      return data.user as AuthUser
+      return data as RegisterResponse
     } catch {
-      return thunkAPI.rejectWithValue('Unable to connect to the server')
+      return thunkAPI.rejectWithValue(
+        'Unable to connect to the server'
+      )
     }
   }
 )
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async (userData: LoginInputs, thunkAPI) => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
 
+      const data = await response.json()
+
+      if (!response.ok) {
+        return thunkAPI.rejectWithValue(
+          data.message || 'Login failed'
+        )
+      }
+
+      return data.token as string
+    } catch {
+      return thunkAPI.rejectWithValue(
+        'Unable to connect to the server'
+      )
+    }
+  }
+)
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -77,6 +125,10 @@ export const authSlice = createSlice({
     updateRegister: (state, action: PayloadAction<Partial<SignupInputs>>) => {
       state.inputs = { ...state.inputs, ...action.payload }
     },
+   updateLogin: (state, action: PayloadAction<Partial<LoginInputs>>) => {
+      state.loginInputs = { ...state.loginInputs, ...action.payload }
+
+},
     clearForm: (state) => {
       state.inputs = initialState.inputs
       state.error = null
@@ -90,9 +142,8 @@ export const authSlice = createSlice({
         state.error = null
         state.success = false
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false
-        state.user = action.payload
         state.success = true
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -100,9 +151,25 @@ export const authSlice = createSlice({
         state.error = action.payload as string
         state.success = false
       })
+
+     .addCase(loginUser.pending, (state) => {
+      state.loading = true
+      state.error = null
+      state.success = false
+    })
+    .addCase(loginUser.fulfilled, (state, action) => {
+      state.loading = false
+      state.token = action.payload
+      state.success = true
+    })
+    .addCase(loginUser.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.payload as string
+      state.success = false
+})
   }
 })
 
-export const { updateRegister, clearForm } = authSlice.actions
+export const { updateRegister,updateLogin, clearForm } = authSlice.actions
 
 export default authSlice.reducer
