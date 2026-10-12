@@ -4,9 +4,11 @@ import type { RootState, AppDispatch } from "../../store/store"
 import { registerUser, updateRegister } from '../../features/authSlice'
 import style from './signup.module.css'
 import { Text } from '../../components/Text/text'
+import { useNavigate } from 'react-router-dom'
 
 export const signup = () => {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate();
   const { inputs, loading, error, success } = useSelector(
     (state: RootState) => state.auth
   )
@@ -14,6 +16,9 @@ export const signup = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     dispatch(registerUser(inputs))
+
+
+    navigate('/login')
   }
 
   return (
