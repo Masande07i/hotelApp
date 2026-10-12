@@ -34,7 +34,7 @@ export const findUserById = async (
     id: number
 ): Promise<User | null> => {
     const { rows } = await query(
-        `SELECT id, email, name, display_picture, role
+        `SELECT id, email, name, profile_image, role
          FROM users
          WHERE id = $1`,
         [id]
