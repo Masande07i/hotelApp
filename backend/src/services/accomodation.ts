@@ -41,3 +41,30 @@ export const getAccommodationById = async (
     return rows[0] || null;
 };
 
+export const updateAccommodation = async (
+    id: number,
+    name: string,
+    description: string,
+    address: string,
+    city: string,
+    country: string,
+    star_rating: number | null
+): Promise<Accommodation | null> => {
+    const { rows } = await query(
+        `UPDATE accommodations
+         SET name = $1,
+             description = $2,
+             address = $3,
+             city = $4,
+             country = $5,
+             star_rating = $6,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $7
+         RETURNING *`,
+        [name, description, address, city, country, star_rating, id]
+    );
+
+    return rows[0] || null;
+};
+
+
