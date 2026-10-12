@@ -162,3 +162,38 @@ export const updateAccommodation = async (
         });
     }
 };
+
+export const deleteAccommodation = async (
+    req: Request,
+    res: Response
+) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            message: "Invalid accommodation ID"
+        });
+    }
+
+    try {
+        const accommodation =
+            await accommodationService.deleteAccommodationById(id);
+
+        if (!accommodation) {
+            return res.status(404).json({
+                message: "Accommodation not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Accommodation deleted successfully",
+            accommodation
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error deleting accommodation"
+        });
+    }
+};
