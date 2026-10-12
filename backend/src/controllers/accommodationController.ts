@@ -92,3 +92,73 @@ export const getAccommodationById = async (
         });
     }
 };
+
+
+export const updateAccommodation = async (
+    req: Request,
+    res: Response
+) => {
+    const id = Number(req.params.id);
+    const {
+        name,
+        description,
+        address,
+        city,
+        country,
+        star_rating
+    } = req.body;
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            message: "Invalid accommodation ID"
+        });
+    }
+
+    if (!name || !description || !address || !city || !country) {
+        return res.status(400).json({
+            message: "Name, description, address, city and country are required"
+        });
+    }
+
+    if (
+        star_rating !== undefined &&
+        star_rating !== null &&
+        (!Number.isInteger(star_rating) ||
+            star_rating < 1 ||
+            star_rating > 5)
+    ) {
+        return res.status(400).json({
+            message: "Star rating must be between 1 and 5"
+        });
+    }
+
+    try {
+        const accommodation =
+            await accommodationService.updateAccommodation(
+                id,
+                name,
+                description,
+                address,
+                city,
+                country,
+                star_rating ?? null
+            );
+
+        if (!accommodation) {
+            return res.status(404).json({
+                message: "Accommodation not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Accommodation updated successfully",
+            accommodation
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error updating accommodation"
+        });
+    }
+};
