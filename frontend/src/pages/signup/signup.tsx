@@ -4,6 +4,7 @@ import type { RootState, AppDispatch } from "../../store/store"
 import { registerUser, updateRegister } from '../../features/authSlice'
 import style from './signup.module.css'
 import { Text } from '../../components/Text/text'
+import { Button } from '../../components/button/button'
 
 export const signup = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -73,13 +74,11 @@ export const signup = () => {
         {error && <p>{error}</p>}
         {success && <p>Account created successfully!</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Creating Account...' : 'Create Account'}
-        </button>
+        <Button label="Create Account" type="submit"  />
 
-        <p className={style.login}>
+        <Text variant="p" className={style.login}>
           Already have an account? <a href="/login">Log in</a>
-        </p>
+        </Text>
       </form>
     </div>
   )
