@@ -27,3 +27,14 @@ CREATE TABLE IF NOT EXISTS accommodations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
+{
+    "name": "Havenly Ocean View",
+    "description": "A comfortable hotel near the beach.",
+    "address": "10 Marine Drive",
+    "city": "Durban",
+    "country": "South Africa",
+    "star_rating": 4
+}
+  

@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import { testDbConnection } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import accommodationRoutes from "./routes/accommodationRoutes";
+
 
 dotenv.config();
 const app = express();
@@ -15,7 +17,7 @@ const startServer = async () => {
   app.use(express.json());
   app.use('/api/auth', authRoutes )
   app.use("/api", userRoutes);
-
+  app.use("/api/accommodations", accommodationRoutes);
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
