@@ -47,12 +47,16 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 
+
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const id = Number(req.params.id);
+        const id = req.params.id
+            ? Number(req.params.id)
+            : req.user?.id;
+
         const { name, email, profile_image } = req.body;
 
-        if (!Number.isInteger(id) || id <= 0) {
+        if (!id || !Number.isInteger(id) || id <= 0) {
             return res.status(400).json({
                 message: "Invalid user ID"
             });
@@ -75,7 +79,7 @@ export const updateUser = async (req: Request, res: Response) => {
             typeof profile_image !== "string"
         ) {
             return res.status(400).json({
-                message: "Profile image must be a string or null"
+                message: "Invalid profile image"
             });
         }
 
@@ -103,7 +107,7 @@ export const updateUser = async (req: Request, res: Response) => {
         }
 
         return res.status(200).json({
-            message: "User updated successfully",
+            message: "Profile updated successfully",
             user
         });
     } catch (error) {
@@ -113,7 +117,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
         if (dbError.code === "23505") {
             return res.status(409).json({
-                message: "An account with this email already exists"
+                message: "This email is already registered"
             });
         }
 

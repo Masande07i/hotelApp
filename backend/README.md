@@ -49,7 +49,28 @@ Update	PUT /api/users/:id	Update user details
     "password": "123"
 }
 
+GET	/api/users/me	Any logged-in user
+PUT	/api/users/me	Any logged-in user
+GET	/api/users	Admin only
+GET	/api/users/1	Admin only
+PUT	/api/users/1	Admin only
+DELETE	/api/users/1	Admin only
 
+
+Frontend page	API endpoint	Purpose
+Profile page	GET /api/users/me	Display the user's details
+Edit profile	PUT /api/users/me	Save profile changes
+Admin dashboard	GET /api/users	Display all users
+Admin user management	PUT /api/users/:id	Update a selected user
+Admin user management	DELETE /api/users/:id	Delete a selected user
+
+
+### this is the reason whyb i used the middleware to check user roles , and what each file does 
+protect — verifies that the user is logged in.
+adminOnly — allows only admins to manage accommodations and other users.
+Controllers — validate request data and handle the requested action.
+Services — execute database queries.
+Ownership checks — ensure customers can access only their own private information, such as their profile and bookings.
 ## Admin
 
 Sami@gmail.com
