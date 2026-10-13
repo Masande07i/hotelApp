@@ -14,11 +14,14 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
 };
 
+
 export const getUserById = async (req: Request, res: Response) => {
     try {
-        const id = Number(req.params.id);
+        const id = req.params.id
+            ? Number(req.params.id)
+            : req.user?.id;
 
-        if (!Number.isInteger(id) || id <= 0) {
+        if (!id || !Number.isInteger(id) || id <= 0) {
             return res.status(400).json({
                 message: "Invalid user ID"
             });
@@ -42,6 +45,7 @@ export const getUserById = async (req: Request, res: Response) => {
         });
     }
 };
+
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
