@@ -4,8 +4,8 @@ import { findUserByEmail } from "../services/userService";
 import { User } from "../types/user.types";
 
 interface JwtPayload {
-    userId: number,
-    email: string
+    userId: number;
+    email: string;
 }
 
 export const protect = async (
@@ -13,31 +13,62 @@ export const protect = async (
     res: Response,
     next: NextFunction
 ) => {
-    let token;
-    if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
-    ) {
-        try {
-            console.log(req.headers, 'request headers');
-            console.log(req.headers.authorization, "token");
-            token = req.headers.authorization.split(" ")[1]
-            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload
-            console.log(decoded, 'decoded token');
+    const authorization = req.headers.authorization;
 
-            const user: User | null = await findUserByEmail(decoded.email)
-            req.user = user || undefined
-
-            if (!req.user) {
-                return res
-                    .status(401)
-                    .json({ message: "Not authorize, user not found" });
-            }
-            return next();
-        } catch (error) {
-            return res.status(401).json({ message: "Not authorized, token failed" });
-        }
-    } else {
-        return res.status(401).json({ message: "Not authorized ,no token" })
+    if (!authorization || !authorization.startsWith("Bearer ")) {
+        return res.status(401).json({
+            message: "Not authorized, no token"
+        });
     }
+
+    try {
+        const token = authorization.split(" ")[1];
+
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                message: "Server configuration error"
+            });
+        }
+
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        ) as JwtPayload;
+
+        const user: User | null = await findUserByEmail(decoded.email);
+
+        if (!user) {
+            return res.status(401).json({
+                message: "Not authorized, user not found"
+            });
+        }
+
+        req.user = user;
+
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            message: "Not authorized, token failed"
+        });
+    }
+};
+
+export const adminOnly = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user) {
+        return res.status(401).json({
+            message: "Please log in first"
+        });
+    }
+
+    if (req.user.role !== "admin") {
+        return res.status(403).json({
+            message: "Access denied. Admin only."
+        });
+    }
+
+    next();
 };

@@ -38,3 +38,13 @@ CREATE TABLE IF NOT EXISTS accommodations (
     "star_rating": 4
 }
   
+Create	POST /api/auth/register	Already implemented
+Read all	GET /api/users	Retrieve users
+Read one	GET /api/users/:id	Retrieve one user
+Update	PUT /api/users/:id	Update user details
+
+{
+    "name" : "mine",
+    "email": "mine@gmail.com",
+    "password": "123"
+}
