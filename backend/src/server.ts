@@ -4,6 +4,7 @@ import { testDbConnection } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import accommodationRoutes from "./routes/accommodationRoutes";
+import accommodationImageRoutes from "./routes/accommodationImageRoutes";
 
 
 dotenv.config();
@@ -18,6 +19,7 @@ const startServer = async () => {
   app.use('/api/auth', authRoutes )
   app.use("/api/users", userRoutes);
   app.use("/api/accommodations", accommodationRoutes);
+  app.use("/api/accommodations", accommodationImageRoutes);
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
