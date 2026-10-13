@@ -48,3 +48,10 @@ Update	PUT /api/users/:id	Update user details
     "email": "mine@gmail.com",
     "password": "123"
 }
+
+
+## Admin
+
+Sami@gmail.com
+Sami
+password: sami
