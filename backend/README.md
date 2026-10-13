@@ -27,6 +27,16 @@ CREATE TABLE IF NOT EXISTS accommodations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS accommodation_images (
+    id SERIAL PRIMARY KEY,
+    accommodation_id INT NOT NULL
+        REFERENCES accommodations(id)
+        ON DELETE CASCADE,
+    image_url TEXT NOT NULL,
+    public_id VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
 {
@@ -82,3 +92,40 @@ Ownership checks — ensure customers can access only their own private informat
 Sami@gmail.com
 Sami
 password: sami
+
+
+## CORS
+npm install cors
+npm install -D @types/cors
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { testDbConnection } from './config/database';
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
+import accommodationRoutes from './routes/accommodationRoutes';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
+
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/accommodations', accommodationRoutes);
+
+const startServer = async () => {
+  await testDbConnection();
+
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  });
+};
+
+startServer();
