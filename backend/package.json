@@ -12,13 +12,19 @@
   "type": "commonjs",
   "dependencies": {
     "@types/node": "^26.6.4",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
     "typescript": "^7.0.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.3.0",
     "nodemon": "^3.1.14",
     "tsx": "^4.23.15"
   }
 }
-
