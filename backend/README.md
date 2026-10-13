@@ -49,6 +49,12 @@ Update	PUT /api/users/:id	Update user details
     "password": "123"
 }
 
+{
+    "name" : "Sami",
+    "email": "Sami@gmail.com",
+    "password": "sami"
+}
+
 GET	/api/users/me	Any logged-in user
 PUT	/api/users/me	Any logged-in user
 GET	/api/users	Admin only
