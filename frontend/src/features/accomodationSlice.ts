@@ -11,16 +11,25 @@ export interface Accommodation {
     created_at: string;
     updated_at: string;
 }
-
+export interface AccommodationImage {
+    id: number;
+    accommodation_id: number;
+    image_url: string;
+    public_id: string;
+    created_at: string;
+}
 
 interface AccommodationState {
     accommodations: Accommodation[];
+    imagesByAccommodation: Record<number, AccommodationImage[]>;
     loading: boolean;
     error: string | null;
 }
 
+
 const initialState: AccommodationState = {
     accommodations: [],
+    imagesByAccommodation: {},
     loading: false,
     error: null
 };
@@ -47,6 +56,30 @@ export const fetchAccommodations = createAsyncThunk("accommodation/fetchAll",asy
     }
 );
 
+
+export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchImages",async (accommodationId: number, thunkAPI) => {
+        try {
+            const response = await fetch(`/api/accommodations/${accommodationId}/images`
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to fetch accommodation images"
+                );
+            }
+
+            return data.images as AccommodationImage[];
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
 const accommodationSlice = createSlice({
     name: "accommodation",
     initialState,
@@ -63,6 +96,19 @@ extraReducers: (builder) => {
             state.accommodations = action.payload;
         })
         .addCase(fetchAccommodations.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        })
+
+        .addCase(fetchAccommodationImages.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(fetchAccommodationImages.fulfilled, (state, action) => {
+            state.loading = false;
+            state.imagesByAccommodation[action.meta.arg] = action.payload;
+        })
+        .addCase(fetchAccommodationImages.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
         });
