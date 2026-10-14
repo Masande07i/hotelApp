@@ -23,7 +23,7 @@ return (
 
   <div className={style.links}>
     <a href="/">Home</a>
-    <a href="/hotels">Hotels</a>
+    <a href="/accomodations">Hotels</a>
     <a href="/about">About</a>
     <a href="/contact">Contact</a>
   </div>
