@@ -55,3 +55,17 @@ export const uploadAccommodationImage = async (
 
     return result.rows[0];
 };
+
+
+export const getAccommodationImages = async (accommodationId: number) => {
+    const result = await query(
+        `SELECT *
+         FROM accommodation_images
+         WHERE accommodation_id = $1
+         ORDER BY created_at DESC`,
+        [accommodationId]
+    );
+
+    return result.rows;
+};
+
