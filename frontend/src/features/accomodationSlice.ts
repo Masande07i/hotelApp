@@ -100,18 +100,13 @@ extraReducers: (builder) => {
             state.error = action.payload as string;
         })
 
-        .addCase(fetchAccommodationImages.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(fetchAccommodationImages.fulfilled, (state, action) => {
-            state.loading = false;
-            state.imagesByAccommodation[action.meta.arg] = action.payload;
-        })
-        .addCase(fetchAccommodationImages.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        });
+        .addCase(fetchAccommodationImages.pending, () => {
+})
+.addCase(fetchAccommodationImages.fulfilled, (state, action) => {
+    state.imagesByAccommodation[action.meta.arg] = action.payload;
+})
+.addCase(fetchAccommodationImages.rejected, () => {
+});
 }
 
 });
