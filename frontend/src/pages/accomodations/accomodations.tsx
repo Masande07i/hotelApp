@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodations } from "../../features/accomodationSlice"
 import { Text } from "../../components/Text/text";
-import style from "./accomodations.module.css"
+
 
 
 
@@ -16,11 +16,11 @@ export const accomodations = () => {
    }, [dispatch]);
 
    if (loading) {
-    return <p>Loading accommodations...</p>;
+    return <Text>Loading accommodations...</Text>;
 }
 
 if (error) {
-    return <p>{error}</p>;
+    return <Text variant="p">{error}</Text>;
 }
 
     return (
@@ -30,13 +30,13 @@ if (error) {
 
         {accommodations.map((accommodation) => (
             <div key={accommodation.id}>
-                <h2>{accommodation.name}</h2>
-                <p>{accommodation.description}</p>
-                <p>{accommodation.address}</p>
-                <p>
+                <Text variant="h2">{accommodation.name}</Text>
+                <Text variant="p">{accommodation.description}</Text>
+                <Text variant="p">{accommodation.address}</Text>
+                <Text variant="p">
                     {accommodation.city}, {accommodation.country}
-                </p>
-                <p>Rating: {accommodation.star_rating ?? "Not rated"}</p>
+                </Text>
+                <Text variant="p">Rating: {accommodation.star_rating ?? "Not rated"}</Text>
             </div>
         ))}
     </div>
