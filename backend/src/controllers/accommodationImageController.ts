@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { uploadAccommodationImage,getAccommodationImages } from "../services/accommodationImageService";
+import { uploadAccommodationImage,getAccommodationImages, deleteAccommodationImage } from "../services/accommodationImageService";
 
 export const uploadImage = async (req: Request, res: Response) => {
     try {
@@ -54,3 +54,35 @@ export const getImages = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+export const deleteImage = async (req: Request, res: Response) => {
+    try {
+        const imageId = Number(req.params.imageId);
+
+        if (!Number.isInteger(imageId) || imageId <= 0) {
+            res.status(400).json({ message: "Invalid image ID" });
+            return;
+        }
+
+        const image = await deleteAccommodationImage(imageId);
+
+        res.status(200).json({
+            message: "Image deleted successfully",
+            image
+        });
+    } catch (error) {
+        console.error("Delete accommodation image error:", error);
+
+        if (error instanceof Error &&
+            error.message === "Accommodation image not found") {
+            res.status(404).json({ message: error.message });
+            return;
+        }
+
+        res.status(500).json({
+            message: "Failed to delete accommodation image"
+        });
+    }
+};
+
