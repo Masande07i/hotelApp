@@ -6,6 +6,7 @@ export const ProtectedAdminRoute = () => {
     const { user, token } = useSelector(
         (state: RootState) => state.auth
     );
+    
 
     if (!token || !user) {
         return <Navigate to="/login" replace />;

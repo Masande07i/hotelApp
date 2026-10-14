@@ -14,16 +14,22 @@ export const login = () => {
     (state: RootState) => state.auth
   )
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+ 
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault()
 
-    try {
-      await dispatch(loginUser(loginInputs)).unwrap()
+  try {
+    const result = await dispatch(loginUser(loginInputs)).unwrap()
+
+    if (result.user.role === 'admin') {
+      navigate('/admin')
+    } else {
       navigate('/')
-    } catch {
-      // The error is displayed from Redux state.
     }
+  } catch {
+    // The error is displayed from Redux state.
   }
+}
 
   return (
     <div className={style.login}>

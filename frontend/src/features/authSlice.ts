@@ -26,6 +26,11 @@ interface AuthUser {
   updated_at: string
 }
 
+interface LoginResponse {
+  message: string
+  token: string
+  user: AuthUser
+}
 interface AuthState {
   inputs: SignupInputs
   loginInputs: LoginInputs
@@ -90,9 +95,14 @@ export const registerUser = createAsyncThunk<
     }
   }
 )
-export const loginUser = createAsyncThunk(
+
+export const loginUser = createAsyncThunk<
+  LoginResponse,
+  LoginInputs,
+  { rejectValue: string }
+>(
   'auth/loginUser',
-  async (userData: LoginInputs, thunkAPI) => {
+  async (userData, thunkAPI) => {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -110,7 +120,7 @@ export const loginUser = createAsyncThunk(
         )
       }
 
-      return data.token as string
+      return data as LoginResponse
     } catch {
       return thunkAPI.rejectWithValue(
         'Unable to connect to the server'
@@ -118,6 +128,8 @@ export const loginUser = createAsyncThunk(
     }
   }
 )
+
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -157,11 +169,14 @@ export const authSlice = createSlice({
       state.error = null
       state.success = false
     })
+
     .addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false
-      state.token = action.payload
+      state.token = action.payload.token
+      state.user = action.payload.user
       state.success = true
     })
+
     .addCase(loginUser.rejected, (state, action) => {
       state.loading = false
       state.error = action.payload as string

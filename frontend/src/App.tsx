@@ -4,6 +4,7 @@ import { login as Login } from './pages/login/login'
 import { signup as Signup } from './pages/signup/signup'
 import { accomodations as Accomodations} from "./pages/accomodations/accomodations"
 import { adminDashboard as AdminDashboard } from "./pages/adminDashboard/adminDashboard";
+import { ProtectedAdminRoute } from "../src/components/protectedAdminRoutes/protectedAdminRoute"
 import { Routes, Route } from 'react-router-dom'
 function App() {
 
@@ -15,7 +16,9 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
         <Route path="/accomodations" element= {<Accomodations/>}/>
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route element={<ProtectedAdminRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Route>
       </Routes>
     
     </div>
