@@ -69,3 +69,33 @@ export const getAccommodationImages = async (accommodationId: number) => {
     return result.rows;
 };
 
+
+export const deleteAccommodationImage = async (imageId: number) => {
+    const result = await query(
+        "SELECT * FROM accommodation_images WHERE id = $1",
+        [imageId]
+    );
+
+    if (result.rows.length === 0) {
+        throw new Error("Accommodation image not found");
+    }
+
+    const image = result.rows[0];
+
+    const cloudinaryResult = await cloudinary.uploader.destroy(
+        image.public_id
+    );
+
+    if (cloudinaryResult.result !== "ok" &&
+        cloudinaryResult.result !== "not found") {
+        throw new Error("Failed to delete image from Cloudinary");
+    }
+
+    await query(
+        "DELETE FROM accommodation_images WHERE id = $1",
+        [imageId]
+    );
+
+    return image;
+};
+
