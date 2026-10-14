@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodations } from "../../features/accomodationSlice"
 import { Text } from "../../components/Text/text";
+import { AccommodationCard } from "../../components/accomodationCard/accomodationCard"
 
 
 
@@ -28,17 +29,9 @@ if (error) {
     <div>
         <Text variant="h1" >Explore Accommodations</Text>
 
-        {accommodations.map((accommodation) => (
-            <div key={accommodation.id}>
-                <Text variant="h2">{accommodation.name}</Text>
-                <Text variant="p">{accommodation.description}</Text>
-                <Text variant="p">{accommodation.address}</Text>
-                <Text variant="p">
-                    {accommodation.city}, {accommodation.country}
-                </Text>
-                <Text variant="p">Rating: {accommodation.star_rating ?? "Not rated"}</Text>
-            </div>
-        ))}
+       {accommodations.map((accommodation) => (
+    <AccommodationCard key={accommodation.id}{...accommodation}/>
+))}
     </div>
 );
   
