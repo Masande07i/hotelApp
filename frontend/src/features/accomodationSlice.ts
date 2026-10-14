@@ -101,12 +101,12 @@ extraReducers: (builder) => {
         })
 
         .addCase(fetchAccommodationImages.pending, () => {
-})
-.addCase(fetchAccommodationImages.fulfilled, (state, action) => {
-    state.imagesByAccommodation[action.meta.arg] = action.payload;
-})
-.addCase(fetchAccommodationImages.rejected, () => {
-});
+        })
+        .addCase(fetchAccommodationImages.fulfilled, (state, action) => {
+            state.imagesByAccommodation[action.meta.arg] = action.payload;
+        })
+        .addCase(fetchAccommodationImages.rejected, () => {
+        });
 }
 
 });
