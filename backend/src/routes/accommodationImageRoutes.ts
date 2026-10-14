@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { uploadImage,getImages } from "../controllers/accommodationImageController";
+import { uploadImage,getImages, deleteImage } from "../controllers/accommodationImageController";
 import { protect, adminOnly } from "../middleware/authMiddleware";
 
 const router = Router();
@@ -21,5 +21,6 @@ const upload = multer({
 
 router.get("/:id/images", getImages);
 router.post("/:id/images",protect,adminOnly,upload.single("image"),uploadImage);
+router.delete("/images/:imageId",protect,adminOnly,deleteImage);
 
 export default router;
