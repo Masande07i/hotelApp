@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice,type PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "../store/store";
 
 export interface Accommodation {
     id: number;
@@ -34,6 +35,7 @@ interface AccommodationState {
     imagesByAccommodation: Record<number, AccommodationImage[]>;
     loading: boolean;
     error: string | null;
+    selectedImage: File | null;
 }
 interface CreateAccommodationResponse {
     message: string;
@@ -52,9 +54,11 @@ const initialState: AccommodationState = {
         star_rating: ''
     },
         showForm: false,
+         selectedImage: null,
         imagesByAccommodation: {},
         loading: false,
         error: null
+       
 };
 
 
@@ -157,6 +161,54 @@ export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchIma
     }
 );
 
+export const uploadAccommodationImage = createAsyncThunk<
+    AccommodationImage,
+    { accommodationId: number; image: File },
+    { rejectValue: string; state: RootState }
+>(
+    "accommodation/uploadImage",
+    async ({ accommodationId, image }, thunkAPI) => {
+        const token = thunkAPI.getState().auth.token;
+
+        if (!token) {
+            return thunkAPI.rejectWithValue(
+                "Please log in before uploading images"
+            );
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("image", image);
+
+            const response = await fetch(
+                `/api/accommodations/${accommodationId}/images`,
+                {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: formData
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to upload image"
+                );
+            }
+
+            return (data.image ?? data) as AccommodationImage;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
 
 const accommodationSlice = createSlice({
     name: "accommodation",
@@ -178,7 +230,13 @@ const accommodationSlice = createSlice({
 
     closeAccommodationForm: (state) => {
         state.showForm = false;
-    }
+    },
+    setSelectedImage: (
+        state,
+        action: PayloadAction<File | null>
+    ) => {
+        state.selectedImage = action.payload;
+    },
 },
 
 extraReducers: (builder) => {
@@ -204,6 +262,8 @@ extraReducers: (builder) => {
         .addCase(fetchAccommodationImages.rejected, () => {
         })
      
+
+
         .addCase(createAccommodation.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -221,15 +281,34 @@ extraReducers: (builder) => {
             };
             state.showForm = false;
         })
+       
+        
         .addCase(createAccommodation.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload || "Failed to create accommodation";
+        })
+        .addCase(uploadAccommodationImage.pending, (state) => {
+            state.error = null;
+        })
+        .addCase(uploadAccommodationImage.fulfilled, (state, action) => {
+            const accommodationId = action.meta.arg.accommodationId;
+
+            if (!state.imagesByAccommodation[accommodationId]) {
+                state.imagesByAccommodation[accommodationId] = [];
+            }
+
+            state.imagesByAccommodation[accommodationId].push(action.payload);
+        })
+        .addCase(uploadAccommodationImage.rejected, (state, action) => {
+            state.error = action.payload || "Failed to upload image";
         });
+
 
 }
 
 });
-export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm
+export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm,    setSelectedImage
+
 } = accommodationSlice.actions;
 
 export default accommodationSlice.reducer;

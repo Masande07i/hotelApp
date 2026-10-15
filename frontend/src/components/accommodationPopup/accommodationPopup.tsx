@@ -2,7 +2,7 @@ import { Text } from "../Text/text";
 import { Button } from "../button/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
-import { updateAccommodationInputs,createAccommodation } from "../../features/accomodationSlice"
+import { updateAccommodationInputs,createAccommodation,setSelectedImage,uploadAccommodationImage } from "../../features/accomodationSlice"
 import type { FormEvent } from "react";
 
 
@@ -16,16 +16,35 @@ export const AccommodationPopup = ({onClose}: AccommodationPopupProps) => {
 
    const inputs = useSelector((state: RootState) => state.accommodation.inputs);
    const error = useSelector((state: RootState) => state.accommodation.error);
+   const selectedImage = useSelector((state: RootState) => state.accommodation.selectedImage);
    
+ 
 const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const result = await dispatch(createAccommodation());
 
     if (createAccommodation.fulfilled.match(result)) {
+        const accommodationId = result.payload.accommodation.id;
+
+        if (selectedImage) {
+            const uploadResult = await dispatch(
+                uploadAccommodationImage({
+                    accommodationId,
+                    image: selectedImage
+                })
+            );
+
+            if (uploadAccommodationImage.rejected.match(uploadResult)) {
+                return;
+            }
+        }
+
+        dispatch(setSelectedImage(null));
         onClose();
     }
 };
+
 
 return (
     <div>
@@ -108,6 +127,23 @@ return (
                 }
                 required
             />
+             <label htmlFor="accommodationImage">
+                Accommodation Image
+            </label>
+
+            <input
+                id="accommodationImage"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={(event) => {
+                    const file = event.target.files?.[0] ?? null;
+                    dispatch(setSelectedImage(file));
+                }}
+            />
+
+        {selectedImage && (
+            <p>Selected image: {selectedImage.name}</p>
+        )}
 
             <label htmlFor="star_rating">Star Rating</label>
            <select
