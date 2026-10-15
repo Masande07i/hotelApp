@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodations } from "../../features/accomodationSlice"
 import { Text } from "../../components/Text/text";
-import { AccommodationCard } from "../../components/accomodationCard/accomodationCard"
 import { CustomerAccommodationCard } from"../../components/customerAccommodationCard/customerAccommodationCard";
 
 

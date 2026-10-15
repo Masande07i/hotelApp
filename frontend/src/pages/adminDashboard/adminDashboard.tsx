@@ -13,9 +13,9 @@ export const adminDashboard = () => {
 
             <Text variant="h2">Manage Accommodations</Text>
 
-            <Link to="/accomodations">
-                View Accommodations
-            </Link>
+            <Link to="/admin/accommodations">
+    Manage Accommodations
+</Link>
 
             <Button
                 label="Add Accommodation"
