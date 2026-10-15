@@ -137,6 +137,59 @@ export const createAccommodation = createAsyncThunk<
     }
 );
 
+export const updateAccommodation = createAsyncThunk<
+    Accommodation,
+    number,
+    { rejectValue: string; state: RootState }
+>(
+    "accommodation/update",
+    async (accommodationId, thunkAPI) => {
+        const state = thunkAPI.getState();
+        const token = state.auth.token;
+        const { inputs } = state.accommodation;
+
+        if (!token) {
+            return thunkAPI.rejectWithValue(
+                "Please log in before updating an accommodation"
+            );
+        }
+
+        try {
+            const response = await fetch(
+                `/api/accommodations/${accommodationId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        ...inputs,
+                        star_rating: inputs.star_rating
+                            ? Number(inputs.star_rating)
+                            : null
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to update accommodation"
+                );
+            }
+
+            return data.accommodation as Accommodation;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
 
 export const deleteAccommodation = createAsyncThunk<
     number,
@@ -332,6 +385,39 @@ extraReducers: (builder) => {
             state.loading = false;
             state.error = action.payload || "Failed to create accommodation";
         })
+
+        
+        .addCase(updateAccommodation.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateAccommodation.fulfilled, (state, action) => {
+            state.loading = false;
+
+            state.accommodations = state.accommodations.map(
+                (accommodation) =>
+                    accommodation.id === action.payload.id
+                        ? action.payload
+                        : accommodation
+            );
+
+            state.inputs = {
+                name: "",
+                description: "",
+                address: "",
+                city: "",
+                country: "",
+                star_rating: ""
+            };
+
+            state.showForm = false;
+        })
+        .addCase(updateAccommodation.rejected, (state, action) => {
+            state.loading = false;
+            state.error =
+                action.payload || "Failed to update accommodation";
+        })
+
         .addCase(deleteAccommodation.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -350,7 +436,7 @@ extraReducers: (builder) => {
                 state.error = action.payload || "Failed to delete accommodation";
             })
 
-            
+
         .addCase(uploadAccommodationImage.pending, (state) => {
             state.error = null;
         })

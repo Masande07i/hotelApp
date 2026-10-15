@@ -2,9 +2,9 @@ import { Text } from "../Text/text";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
-import { fetchAccommodationImages } from "../../features/accomodationSlice"
+import { fetchAccommodationImages ,deleteAccommodation} from "../../features/accomodationSlice"
 import { Button } from "../button/button";
-import { deleteAccommodation } from "../../features/accomodationSlice";
+
 
 
 interface AccommodationCardProps {
