@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Text } from "../../components/Text/text";
 import { Button } from "../../components/button/button";
-
+import { AccommodationPopup } from "../../components/accommodationPopup/accommodation";
 export const adminDashboard = () => {
     const [showForm, setShowForm] = useState(false);
 
@@ -17,11 +17,11 @@ export const adminDashboard = () => {
                 type="button"
             />
 
-            {showForm && (
-                <div>
-                    <Text variant="h2">New Accommodation</Text>
-                </div>
-            )}
+           {showForm && (
+    <AccommodationPopup
+        onClose={() => setShowForm(false)}
+    />
+)}
 
             <Text variant="h2">Manage Reservations</Text>
         </div>
