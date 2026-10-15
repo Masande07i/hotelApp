@@ -138,6 +138,51 @@ export const createAccommodation = createAsyncThunk<
 );
 
 
+export const deleteAccommodation = createAsyncThunk<
+    number,
+    number,
+    { rejectValue: string; state: RootState }
+>(
+    "accommodation/delete",
+    async (accommodationId, thunkAPI) => {
+        const token = thunkAPI.getState().auth.token;
+
+        if (!token) {
+            return thunkAPI.rejectWithValue(
+                "Please log in before deleting an accommodation"
+            );
+        }
+
+        try {
+            const response = await fetch(
+                `/api/accommodations/${accommodationId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to delete accommodation"
+                );
+            }
+
+            return accommodationId;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
+
 
 export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchImages",async (accommodationId: number, thunkAPI) => {
         try {
@@ -287,6 +332,25 @@ extraReducers: (builder) => {
             state.loading = false;
             state.error = action.payload || "Failed to create accommodation";
         })
+        .addCase(deleteAccommodation.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+                    })
+        .addCase(deleteAccommodation.fulfilled, (state, action) => {
+                state.loading = false;
+
+                state.accommodations = state.accommodations.filter(
+                    (accommodation) => accommodation.id !== action.payload
+                );
+
+                delete state.imagesByAccommodation[action.payload];
+            })
+        .addCase(deleteAccommodation.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to delete accommodation";
+            })
+
+            
         .addCase(uploadAccommodationImage.pending, (state) => {
             state.error = null;
         })

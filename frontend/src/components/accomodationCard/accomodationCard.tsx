@@ -3,7 +3,9 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodationImages } from "../../features/accomodationSlice"
-import style from "./accomodationCard.module.css"
+import { Button } from "../button/button";
+import { deleteAccommodation } from "../../features/accomodationSlice";
+
 
 interface AccommodationCardProps {
     id: number;
@@ -31,6 +33,16 @@ useEffect(() => {
     }
 }, [dispatch, id, images]);
 
+const handleDelete = async () => {
+    const confirmed = window.confirm(
+        `Are you sure you want to delete ${name}?`
+    );
+
+    if (!confirmed) return;
+
+    await dispatch(deleteAccommodation(id));
+};
+
     return (
         <div>
           
@@ -51,6 +63,14 @@ useEffect(() => {
             <Text variant="p" >{address}</Text>
             <Text variant="p">{city}, {country}</Text>
             <Text variant="p">Rating: {star_rating ?? "Not rated"}</Text>
+
+            <Button
+            label="Delete Accommodation"
+            onClick={handleDelete}
+            type="button"
+        />
         </div>
+
+        
     );
 };
