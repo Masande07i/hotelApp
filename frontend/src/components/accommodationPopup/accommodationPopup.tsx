@@ -2,7 +2,7 @@ import { Text } from "../Text/text";
 import { Button } from "../button/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
-import { updateAccommodationInputs,createAccommodation,setSelectedImage,uploadAccommodationImage } from "../../features/accomodationSlice"
+import { updateAccommodationInputs,createAccommodation,setSelectedImages,uploadAccommodationImage } from "../../features/accomodationSlice"
 import type { FormEvent } from "react";
 
 
@@ -16,9 +16,10 @@ export const AccommodationPopup = ({onClose}: AccommodationPopupProps) => {
 
    const inputs = useSelector((state: RootState) => state.accommodation.inputs);
    const error = useSelector((state: RootState) => state.accommodation.error);
-   const selectedImage = useSelector((state: RootState) => state.accommodation.selectedImage);
+   const selectedImages = useSelector((state: RootState) => state.accommodation.selectedImages);
    
  
+
 const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -27,24 +28,23 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     if (createAccommodation.fulfilled.match(result)) {
         const accommodationId = result.payload.accommodation.id;
 
-        if (selectedImage) {
+        for (const image of selectedImages) {
             const uploadResult = await dispatch(
-                uploadAccommodationImage({
-                    accommodationId,
-                    image: selectedImage
-                })
+                uploadAccommodationImage({ accommodationId, image })
             );
 
             if (uploadAccommodationImage.rejected.match(uploadResult)) {
+                console.log("Image upload failed:", uploadResult.payload);
                 return;
             }
         }
+        console.log("Uploading image:", selectedImages[0]?.name);
+       console.log("Accommodation ID:", accommodationId);
 
-        dispatch(setSelectedImage(null));
+        dispatch(setSelectedImages([]));
         onClose();
     }
 };
-
 
 return (
     <div>
@@ -127,23 +127,25 @@ return (
                 }
                 required
             />
-             <label htmlFor="accommodationImage">
-                Accommodation Image
+             
+            <label htmlFor="accommodationImages">
+                Accommodation Images
             </label>
 
             <input
-                id="accommodationImage"
+                id="accommodationImages"
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
+                multiple
                 onChange={(event) => {
-                    const file = event.target.files?.[0] ?? null;
-                    dispatch(setSelectedImage(file));
+                    const files = Array.from(event.target.files ?? []);
+                    dispatch(setSelectedImages(files));
                 }}
             />
 
-        {selectedImage && (
-            <p>Selected image: {selectedImage.name}</p>
-        )}
+            {selectedImages.length > 0 && (
+                <p>{selectedImages.length} image(s) selected</p>
+            )}
 
             <label htmlFor="star_rating">Star Rating</label>
            <select

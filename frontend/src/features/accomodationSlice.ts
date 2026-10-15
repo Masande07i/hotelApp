@@ -35,7 +35,7 @@ interface AccommodationState {
     imagesByAccommodation: Record<number, AccommodationImage[]>;
     loading: boolean;
     error: string | null;
-    selectedImage: File | null;
+    selectedImages: File[];
 }
 interface CreateAccommodationResponse {
     message: string;
@@ -54,7 +54,7 @@ const initialState: AccommodationState = {
         star_rating: ''
     },
         showForm: false,
-         selectedImage: null,
+        selectedImages: [],
         imagesByAccommodation: {},
         loading: false,
         error: null
@@ -231,11 +231,11 @@ const accommodationSlice = createSlice({
     closeAccommodationForm: (state) => {
         state.showForm = false;
     },
-    setSelectedImage: (
+    setSelectedImages: (
         state,
-        action: PayloadAction<File | null>
+        action: PayloadAction<File[]>
     ) => {
-        state.selectedImage = action.payload;
+        state.selectedImages = action.payload;
     },
 },
 
@@ -307,7 +307,7 @@ extraReducers: (builder) => {
 }
 
 });
-export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm,    setSelectedImage
+export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm,setSelectedImages
 
 } = accommodationSlice.actions;
 

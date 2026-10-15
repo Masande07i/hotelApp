@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodationImages } from "../../features/accomodationSlice"
+import style from "./accomodationCard.module.css"
 
 interface AccommodationCardProps {
     id: number;
@@ -25,19 +26,26 @@ export const AccommodationCard = ({id,name,description,address,city,country,star
 console.log("Rendering accommodation card:", id);
 
 useEffect(() => {
-    console.log("Fetching images for accommodation:", id);
-    dispatch(fetchAccommodationImages(id));
-}, [dispatch, id]);
+    if (images === undefined) {
+        dispatch(fetchAccommodationImages(id));
+    }
+}, [dispatch, id, images]);
 
     return (
         <div>
-          {accommodationImages.length > 0 && (
-    <img
-        src={accommodationImages[0].image_url}
-        alt={name}
-        width="300"
-    />
-)}
+          
+        <div className="accommodation-gallery">
+            {accommodationImages.map((image) => (
+                <img
+                    key={image.id}
+                    src={image.image_url}
+                    alt={name}
+                    width="300"
+                />
+            ))}
+        </div>
+
+
             <Text variant="h2">{name}</Text>
             <Text variant="p">{description}</Text>
             <Text variant="p" >{address}</Text>
