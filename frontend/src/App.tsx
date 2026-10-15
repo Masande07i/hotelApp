@@ -2,7 +2,7 @@ import './App.css'
 import { landing as Landing } from './pages/landing/landing'
 import { login as Login } from './pages/login/login'
 import { signup as Signup } from './pages/signup/signup'
-import { accomodations as Accomodations } from "./pages/accomodations/accomodations"
+import { accomodations as Accomodations } from "./pages/customer/accomodations"
 import { adminDashboard as AdminDashboard } from "./pages/adminDashboard/adminDashboard"
 import { AdminAccommodations } from "./pages/admin/adminAccommodations"
 import { ProtectedAdminRoute } from "./components/protectedAdminRoutes/protectedAdminRoute"
