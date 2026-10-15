@@ -2,8 +2,9 @@ import { Text } from "../Text/text";
 import { Button } from "../button/button";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/store";
-import { updateAccommodationInputs } from "../../features/accomodationSlice"
+import { updateAccommodationInputs,createAccommodation } from "../../features/accomodationSlice"
 import type { FormEvent } from "react";
+
 
 interface AccommodationPopupProps {
     onClose: () => void;
@@ -14,11 +15,16 @@ export const AccommodationPopup = ({onClose}: AccommodationPopupProps) => {
     const dispatch = useDispatch<AppDispatch>();
 
    const inputs = useSelector((state: RootState) => state.accommodation.inputs);
-
-   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+   const error = useSelector((state: RootState) => state.accommodation.error);
+   
+const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(inputs);
+    const result = await dispatch(createAccommodation());
+
+    if (createAccommodation.fulfilled.match(result)) {
+        onClose();
+    }
 };
 
 return (
@@ -122,6 +128,9 @@ return (
                 <option value="5">5 Stars</option>
             </select>
 
+            {error && <p>{error}</p>}
+            
+
             <Button label="Save Accommodation" type="submit" />
 
             <Button
@@ -129,7 +138,10 @@ return (
                 onClick={onClose}
                 type="button"
             />
+
+     
         </form>
+        
     </div>
 );
 

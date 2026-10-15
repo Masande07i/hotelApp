@@ -35,6 +35,10 @@ interface AccommodationState {
     loading: boolean;
     error: string | null;
 }
+interface CreateAccommodationResponse {
+    message: string;
+    accommodation: Accommodation;
+}
 
 
 const initialState: AccommodationState = {
@@ -74,6 +78,61 @@ export const fetchAccommodations = createAsyncThunk("accommodation/fetchAll",asy
         }
     }
 );
+
+
+export const createAccommodation = createAsyncThunk<
+    CreateAccommodationResponse,
+    void,
+    { rejectValue: string }
+>(
+    "accommodation/create",
+    async (_, thunkAPI) => {
+        const state = thunkAPI.getState() as {
+            auth: { token: string | null };
+            accommodation: { inputs: AccommodationInputs };
+        };
+
+        const { inputs } = state.accommodation;
+        const token = state.auth.token;
+
+        if (!token) {
+            return thunkAPI.rejectWithValue(
+                "Please log in before creating an accommodation"
+            );
+        }
+
+        try {
+            const response = await fetch("/api/accommodations", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    ...inputs,
+                    star_rating: inputs.star_rating
+                        ? Number(inputs.star_rating)
+                        : null
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to create accommodation"
+                );
+            }
+
+            return data as CreateAccommodationResponse;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
 
 
 export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchImages",async (accommodationId: number, thunkAPI) => {
@@ -143,7 +202,30 @@ extraReducers: (builder) => {
             state.imagesByAccommodation[action.meta.arg] = action.payload;
         })
         .addCase(fetchAccommodationImages.rejected, () => {
+        })
+     
+        .addCase(createAccommodation.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(createAccommodation.fulfilled, (state, action) => {
+            state.loading = false;
+            state.accommodations.push(action.payload.accommodation);
+            state.inputs = {
+                name: "",
+                description: "",
+                address: "",
+                city: "",
+                country: "",
+                star_rating: ""
+            };
+            state.showForm = false;
+        })
+        .addCase(createAccommodation.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload || "Failed to create accommodation";
         });
+
 }
 
 });
