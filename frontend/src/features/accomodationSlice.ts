@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,type PayloadAction } from "@reduxjs/toolkit";
 
 export interface Accommodation {
     id: number;
@@ -18,9 +18,19 @@ export interface AccommodationImage {
     public_id: string;
     created_at: string;
 }
+interface AccommodationInputs {
+    name: string
+    description: string
+    address: string
+    city: string
+    country: string
+    star_rating: string
+}
 
 interface AccommodationState {
     accommodations: Accommodation[];
+    inputs: AccommodationInputs
+    showForm: boolean
     imagesByAccommodation: Record<number, AccommodationImage[]>;
     loading: boolean;
     error: string | null;
@@ -29,9 +39,18 @@ interface AccommodationState {
 
 const initialState: AccommodationState = {
     accommodations: [],
-    imagesByAccommodation: {},
-    loading: false,
-    error: null
+        inputs: {
+        name: '',
+        description: '',
+        address: '',
+        city: '',
+        country: '',
+        star_rating: ''
+    },
+        showForm: false,
+        imagesByAccommodation: {},
+        loading: false,
+        error: null
 };
 
 
@@ -83,7 +102,25 @@ export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchIma
 const accommodationSlice = createSlice({
     name: "accommodation",
     initialState,
-    reducers: {},
+   reducers: {
+    updateAccommodationInputs: (
+        state,
+        action: PayloadAction<Partial<AccommodationInputs>>
+    ) => {
+        state.inputs = {
+            ...state.inputs,
+            ...action.payload
+        };
+    },
+
+    openAccommodationForm: (state) => {
+        state.showForm = true;
+    },
+
+    closeAccommodationForm: (state) => {
+        state.showForm = false;
+    }
+},
 
 extraReducers: (builder) => {
     builder
@@ -110,5 +147,7 @@ extraReducers: (builder) => {
 }
 
 });
+export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm
+} = accommodationSlice.actions;
 
 export default accommodationSlice.reducer;

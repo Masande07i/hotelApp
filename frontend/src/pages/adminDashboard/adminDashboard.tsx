@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Text } from "../../components/Text/text";
 import { Button } from "../../components/button/button";
-import { AccommodationPopup } from "../../components/accommodationPopup/accommodation";
+import { AccommodationPopup } from "../../components/accommodationPopup/accommodationPopup";
 export const adminDashboard = () => {
     const [showForm, setShowForm] = useState(false);
 
