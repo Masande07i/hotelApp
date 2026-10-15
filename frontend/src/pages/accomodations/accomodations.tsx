@@ -4,7 +4,7 @@ import type { AppDispatch, RootState } from "../../store/store"
 import { fetchAccommodations } from "../../features/accomodationSlice"
 import { Text } from "../../components/Text/text";
 import { AccommodationCard } from "../../components/accomodationCard/accomodationCard"
-
+import { CustomerAccommodationCard } from"../../components/customerAccommodationCard/customerAccommodationCard";
 
 
 
@@ -29,8 +29,11 @@ if (error) {
     <div>
         <Text variant="h1" >Explore Accommodations</Text>
 
-       {accommodations.map((accommodation) => (
-    <AccommodationCard key={accommodation.id}{...accommodation}/>
+      {accommodations.map((accommodation) => (
+    <CustomerAccommodationCard
+        key={accommodation.id}
+        {...accommodation}
+    />
 ))}
     </div>
 );
