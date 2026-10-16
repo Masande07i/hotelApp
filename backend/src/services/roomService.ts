@@ -105,3 +105,16 @@ export const deleteRoom = async (
 
     return rows[0] ?? null;
 };
+
+export const getRoomsByAccommodationId = async (
+    accommodation_id: number
+): Promise<Room[]> => {
+    const { rows } = await query(
+        `SELECT * FROM rooms
+         WHERE accommodation_id = $1
+         ORDER BY created_at DESC`,
+        [accommodation_id]
+    );
+
+    return rows;
+};
