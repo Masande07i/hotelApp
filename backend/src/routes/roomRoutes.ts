@@ -1,10 +1,11 @@
 import { Router } from "express";
-import {createRoom,getAllRooms} from "../controllers/roomController";
+import {createRoom,getAllRooms,getRoomById} from "../controllers/roomController";
 import { protect, adminOnly } from "../middleware/authMiddleware";
 
 const router = Router();
 
 router.get("/", getAllRooms);
+router.get("/:id", getRoomById);
 
 router.post("/", protect, adminOnly, createRoom);
 
