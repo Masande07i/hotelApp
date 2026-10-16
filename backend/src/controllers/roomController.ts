@@ -97,3 +97,66 @@ export const getRoomById = async (
     }
 };
 
+export const updateRoom = async (
+    req: Request,
+    res: Response
+) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            message: "Invalid room ID"
+        });
+    }
+
+    const {
+        accommodation_id,
+        room_type,
+        description,
+        bed_type,
+        capacity,
+        price_per_night,
+        total_rooms,
+        amenities
+    } = req.body;
+
+    if (!accommodation_id ||!room_type ||capacity === undefined ||price_per_night === undefined ||total_rooms === undefined ||
+        !Array.isArray(amenities)
+    ) {
+        return res.status(400).json({
+            message: "Accommodation, room type, capacity, price, total rooms and amenities are required"
+        });
+    }
+
+    try {
+        const room = await roomService.updateRoom(
+            id,
+            accommodation_id,
+            room_type,
+            description ?? null,
+            bed_type ?? null,
+            capacity,
+            price_per_night,
+            total_rooms,
+            amenities
+        );
+
+        if (!room) {
+            return res.status(404).json({
+                message: "Room not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Room updated successfully",
+            room
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error updating room"
+        });
+    }
+};
+
