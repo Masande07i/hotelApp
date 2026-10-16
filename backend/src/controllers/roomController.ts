@@ -47,3 +47,22 @@ export const createRoom = async (
         });
     }
 };
+
+
+export const getAllRooms = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const rooms = await roomService.getAllRooms();
+
+        return res.status(200).json(rooms);
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error fetching rooms"
+        });
+    }
+};
+
