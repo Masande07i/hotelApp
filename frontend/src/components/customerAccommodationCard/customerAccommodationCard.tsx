@@ -1,10 +1,8 @@
-
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
-import {
-    fetchAccommodationImages
-} from "../../features/accomodationSlice";
+import {fetchAccommodationImages} from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
@@ -21,6 +19,7 @@ export const CustomerAccommodationCard = ({
     star_rating
 }: CustomerAccommodationCardProps) => {
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const images = useSelector(
         (state: RootState) =>
@@ -60,9 +59,7 @@ export const CustomerAccommodationCard = ({
 
             <Button
                 label="View Details"
-                onClick={() => {
-                    // We'll add the accommodation details page next.
-                }}
+                onClick={() => navigate(`/accommodations/${id}`)}
                 type="button"
             />
         </div>
