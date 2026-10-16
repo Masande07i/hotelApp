@@ -31,3 +31,13 @@ export const createRoom = async (
 
     return rows[0];
 };
+
+
+export const getAllRooms = async (): Promise<Room[]> => {
+    const { rows } = await query(
+        `SELECT * FROM rooms
+         ORDER BY created_at DESC`
+    );
+
+    return rows;
+};
