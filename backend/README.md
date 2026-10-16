@@ -64,6 +64,23 @@ CREATE TABLE IF NOT EXISTS rooms (
     "star_rating": 4
 }
   
+  {
+  "accommodation_id": 13,
+  "room_type": " Room",
+  "description": "A comfortable room with a balcony.",
+  "bed_type": "Double",
+  "capacity": 2,
+  "price_per_night": 1200,
+  "total_rooms": 6,
+  "amenities": [
+    "Wi-Fi",
+    "Air conditioning",
+    "TV",
+    "Mini fridge",
+    "Balcony"
+  ]
+}
+  
 Create	POST /api/auth/register	Already implemented
 Read all	GET /api/users	Retrieve users
 Read one	GET /api/users/:id	Retrieve one user

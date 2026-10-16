@@ -41,3 +41,15 @@ export const getAllRooms = async (): Promise<Room[]> => {
 
     return rows;
 };
+
+export const getRoomById = async (
+    id: number
+): Promise<Room | null> => {
+    const { rows } = await query(
+        `SELECT * FROM rooms
+         WHERE id = $1`,
+        [id]
+    );
+
+    return rows[0] ?? null;
+};
