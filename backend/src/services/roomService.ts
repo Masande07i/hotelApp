@@ -53,3 +53,42 @@ export const getRoomById = async (
 
     return rows[0] ?? null;
 };
+export const updateRoom = async (
+    id: number,
+    accommodation_id: number,
+    room_type: string,
+    description: string | null,
+    bed_type: string | null,
+    capacity: number,
+    price_per_night: number,
+    total_rooms: number,
+    amenities: string[]
+): Promise<Room | null> => {
+    const { rows } = await query(
+        `UPDATE rooms
+         SET accommodation_id = $1,
+             room_type = $2,
+             description = $3,
+             bed_type = $4,
+             capacity = $5,
+             price_per_night = $6,
+             total_rooms = $7,
+             amenities = $8,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $9
+         RETURNING *`,
+        [
+            accommodation_id,
+            room_type,
+            description,
+            bed_type,
+            capacity,
+            price_per_night,
+            total_rooms,
+            amenities,
+            id
+        ]
+    );
+
+    return rows[0] ?? null;
+};
