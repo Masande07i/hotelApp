@@ -160,3 +160,37 @@ export const updateRoom = async (
     }
 };
 
+export const deleteRoom = async (
+    req: Request,
+    res: Response
+) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({
+            message: "Invalid room ID"
+        });
+    }
+
+    try {
+        const room = await roomService.deleteRoom(id);
+
+        if (!room) {
+            return res.status(404).json({
+                message: "Room not found"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Room deleted successfully",
+            room
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error deleting room"
+        });
+    }
+};
+
