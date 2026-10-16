@@ -38,6 +38,22 @@ CREATE TABLE IF NOT EXISTS accommodation_images (
 );
 
 
+CREATE TABLE IF NOT EXISTS rooms (
+    id SERIAL PRIMARY KEY,
+    accommodation_id INTEGER NOT NULL REFERENCES accommodations(id) ON DELETE CASCADE,
+    room_type VARCHAR(100) NOT NULL,
+    description TEXT,
+    bed_type VARCHAR(100),
+    capacity INTEGER NOT NULL CHECK (capacity > 0),
+    price_per_night NUMERIC(10, 2) NOT NULL CHECK (price_per_night >= 0),
+    total_rooms INTEGER NOT NULL DEFAULT 1 CHECK (total_rooms > 0),
+    amenities TEXT[] NOT NULL DEFAULT '{}',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
 
 {
     "name": "Havenly Ocean View",
