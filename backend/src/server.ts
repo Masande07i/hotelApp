@@ -5,7 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import accommodationRoutes from "./routes/accommodationRoutes";
 import accommodationImageRoutes from "./routes/accommodationImageRoutes";
-
+import roomRoutes from "./routes/roomRoutes";
 
 dotenv.config();
 const app = express();
@@ -20,6 +20,7 @@ const startServer = async () => {
   app.use("/api/users", userRoutes);
   app.use("/api/accommodations", accommodationRoutes);
   app.use("/api/accommodations", accommodationImageRoutes);
+  app.use("/api/rooms", roomRoutes);
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
