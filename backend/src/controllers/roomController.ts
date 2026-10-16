@@ -40,13 +40,24 @@ export const createRoom = async (
             room
         });
     } catch (error) {
-        console.error(error);
+    console.error(error);
 
-        return res.status(500).json({
-            message: "Error creating room"
+    if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        error.code === "23503"
+    ) {
+        return res.status(400).json({
+            message: "The accommodation does not exist"
         });
     }
-};
+
+    return res.status(500).json({
+        message: "Error creating room"
+    });
+}
+}
 
 
 export const getAllRooms = async (
