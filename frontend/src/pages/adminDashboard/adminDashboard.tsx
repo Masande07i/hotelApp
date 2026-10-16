@@ -13,10 +13,11 @@ export const adminDashboard = () => {
 
             <Text variant="h2">Manage Accommodations</Text>
 
-            <Link to="/admin/accommodations">
-    Manage Accommodations
-</Link>
+            <Text variant="h2">Manage Accommodations</Text>
 
+                <Link to="/admin/accommodations">
+                    Manage Accommodations
+                </Link>
             <Button
                 label="Add Accommodation"
                 onClick={() => setShowForm(!showForm)}

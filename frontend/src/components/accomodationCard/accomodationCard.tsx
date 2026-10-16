@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
@@ -100,6 +99,7 @@ export const AccommodationCard = ({
                     onClose={() => setShowEditForm(false)}
                 />
             )}
+           
         </div>
     );
 };
