@@ -3,13 +3,13 @@ import styles from "./accommodationDetails.module.css";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/store";
-import { fetchRoomsByAccommodation } from "../../features/roomSlice";
+import type { AppDispatch, RootState } from "../../../store/store";
+import { fetchRoomsByAccommodation } from "../../../features/roomSlice";
 import {
     fetchAccommodations,
     fetchAccommodationImages
-} from "../../features/accomodationSlice";
-import { Text } from "../../components/Text/text";
+} from "../../../features/accomodationSlice";
+import { Text } from "../../../components/Text/text";
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();

@@ -1,17 +1,16 @@
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/store";
+import type { AppDispatch, RootState } from "../../../store/store";
 import {
     fetchAccommodations,
     openAccommodationForm,
     closeAccommodationForm,
     updateAccommodationInputs
-} from "../../features/accomodationSlice";
-import { Text } from "../../components/Text/text";
-import { Button } from "../../components/button/button";
-import { AccommodationCard } from "../../components/accomodationCard/accomodationCard";
-import { AccommodationPopup } from "../../components/Popup/accommodationPopup/accommodationPopup";
+} from "../../../features/accomodationSlice";
+import { Text } from "../../../components/Text/text";
+import { Button } from "../../../components/button/button";
+import { AccommodationCard } from "../../../components/accomodationCard/accomodationCard";
+import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
 
 export const AdminAccommodations = () => {
     const dispatch = useDispatch<AppDispatch>();

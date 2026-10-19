@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/store"
-import { fetchAccommodations } from "../../features/accomodationSlice"
-import { Text } from "../../components/Text/text";
-import { CustomerAccommodationCard } from"../../components/customerAccommodationCard/customerAccommodationCard";
+import type { AppDispatch, RootState } from "../../../store/store"
+import { fetchAccommodations } from "../../../features/accomodationSlice"
+import { Text } from "../../../components/Text/text";
+import { CustomerAccommodationCard } from"../../../components/customerAccommodationCard/customerAccommodationCard";
 
 
 

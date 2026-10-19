@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Text } from "../../components/Text/text";
-import { Button } from "../../components/button/button";
-import { AccommodationPopup } from "../../components/Popup/accommodationPopup/accommodationPopup";
+import { Text } from "../../../components/Text/text";
+import { Button } from "../../../components/button/button";
+import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
 
 export const adminDashboard = () => {
     const [showForm, setShowForm] = useState(false);

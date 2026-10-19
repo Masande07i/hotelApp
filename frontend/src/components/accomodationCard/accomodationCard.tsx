@@ -9,6 +9,7 @@ import {
 } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { AccommodationPopup } from "../Popup/accommodationPopup/accommodationPopup";
+import { useNavigate } from "react-router-dom";
 
 interface AccommodationCardProps extends Accommodation {}
 
@@ -25,7 +26,7 @@ export const AccommodationCard = ({
 }: AccommodationCardProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const [showEditForm, setShowEditForm] = useState(false);
-
+    const navigate = useNavigate();
     const images = useSelector(
         (state: RootState) => state.accommodation.imagesByAccommodation[id]
     );
@@ -90,6 +91,12 @@ export const AccommodationCard = ({
             <Button
                 label="Delete Accommodation"
                 onClick={handleDelete}
+                type="button"
+            />
+
+           <Button
+                label="View Details"
+                onClick={() => navigate(`/accommodations/${id}`)}
                 type="button"
             />
 
