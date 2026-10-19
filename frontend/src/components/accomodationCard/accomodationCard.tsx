@@ -96,7 +96,7 @@ export const AccommodationCard = ({
 
            <Button
                 label="View Details"
-                onClick={() => navigate(`/accommodations/${id}`)}
+                onClick={() => navigate(`/admin/accommodations/${id}`)}
                 type="button"
             />
 

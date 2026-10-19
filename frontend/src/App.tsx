@@ -7,6 +7,7 @@ import { adminDashboard as AdminDashboard } from "./pages/ADMIN/adminDashboard/a
 import { AdminAccommodations } from "./pages/ADMIN/adminAccommodation/adminAccommodations"
 import { ProtectedAdminRoute } from "./components/protectedAdminRoutes/protectedAdminRoute"
 import { AccommodationDetails } from "./pages/CUSTOMER/accommodationDetails/accommodationDetails";
+import { AdminDetails } from './pages/ADMIN/adminADetails/adminDetails'
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/accommodations"element={<AdminAccommodations />}/>
+          <Route path="/admin/accommodations/:id"element={<AdminDetails/>}/>
         </Route>
       </Routes>
     </div>
