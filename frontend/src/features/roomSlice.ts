@@ -203,6 +203,18 @@ const roomSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload || "Failed to create room";
             })
+
+            .addCase(deleteRoom.pending, (state) => {
+                state.error = null;
+            })
+            .addCase(deleteRoom.fulfilled, (state, action) => {
+                state.rooms = state.rooms.filter(
+                    (room) => room.id !== action.payload
+                );
+            })
+            .addCase(deleteRoom.rejected, (state, action) => {
+                state.error = action.payload || "Failed to delete room";
+            });
     }
 });
 
