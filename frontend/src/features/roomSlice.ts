@@ -28,9 +28,20 @@ export interface CreateRoomInputs {
     amenities: string[];
 }
 
+export interface RoomInputs {
+    room_type: string;
+    description: string;
+    bed_type: string;
+    capacity: string;
+    price_per_night: string;
+    total_rooms: string;
+    amenities: string;
+}
+
 
 interface RoomState {
     rooms: Room[];
+    inputs: RoomInputs;
     loading: boolean;
     error: string | null;
 }
@@ -38,6 +49,15 @@ interface RoomState {
 
 const initialState: RoomState = {
     rooms: [],
+     inputs: {
+        room_type: "",
+        description: "",
+        bed_type: "",
+        capacity: "1",
+        price_per_night: "",
+        total_rooms: "1",
+        amenities: ""
+    },
     loading: false,
     error: null
 };
@@ -107,7 +127,13 @@ const roomSlice = createSlice({
     reducers: {
         setRooms: (state, action: PayloadAction<Room[]>) => {
             state.rooms = action.payload;
-        }
+        },
+        updateRoomInputs: (state, action: PayloadAction<Partial<RoomInputs>>) => {
+        state.inputs = {
+        ...state.inputs,
+        ...action.payload
+    };
+},
     },
     extraReducers: (builder) => {
         builder
@@ -139,6 +165,6 @@ const roomSlice = createSlice({
 });
 
 
-export const { setRooms } = roomSlice.actions;
+export const { setRooms, updateRoomInputs } = roomSlice.actions;
 
 export default roomSlice.reducer;

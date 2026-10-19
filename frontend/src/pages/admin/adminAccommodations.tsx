@@ -11,7 +11,7 @@ import {
 import { Text } from "../../components/Text/text";
 import { Button } from "../../components/button/button";
 import { AccommodationCard } from "../../components/accomodationCard/accomodationCard";
-import { AccommodationPopup } from "../../components/accommodationPopup/accommodationPopup";
+import { AccommodationPopup } from "../../components/Popup/accommodationPopup/accommodationPopup";
 
 export const AdminAccommodations = () => {
     const dispatch = useDispatch<AppDispatch>();

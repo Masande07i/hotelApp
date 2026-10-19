@@ -8,7 +8,7 @@ import {
     deleteAccommodation
 } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
-import { AccommodationPopup } from "../accommodationPopup/accommodationPopup";
+import { AccommodationPopup } from "../Popup/accommodationPopup/accommodationPopup";
 
 interface AccommodationCardProps extends Accommodation {}
 

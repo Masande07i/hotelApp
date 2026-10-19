@@ -1,16 +1,16 @@
-import { Text } from "../Text/text";
-import { Button } from "../button/button";
+import { Text } from "../../Text/text";
+import { Button } from "../../button/button";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import type { RootState, AppDispatch } from "../../store/store";
+import type { RootState, AppDispatch } from "../../../store/store";
 import {
     updateAccommodationInputs,
     createAccommodation,
     updateAccommodation,
     setSelectedImages,
     uploadAccommodationImage
-} from "../../features/accomodationSlice";
-import type { Accommodation } from "../../features/accomodationSlice";
+} from "../../../features/accomodationSlice";
+import type { Accommodation } from "../../../features/accomodationSlice";
 import type { FormEvent } from "react";
 
 interface AccommodationPopupProps {
