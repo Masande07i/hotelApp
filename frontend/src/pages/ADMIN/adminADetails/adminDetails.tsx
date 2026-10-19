@@ -2,12 +2,18 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
+import {fetchAccommodations,fetchAccommodationImages} from "../../../features/accomodationSlice";
 import {
-    fetchAccommodations,
-    fetchAccommodationImages
-} from "../../../features/accomodationSlice";
+    type CreateRoomInputs,
+    fetchRoomsByAccommodation,
+    createRoom,
+    updateRoomInputs,
+    openRoomForm,
+    closeRoomForm
+} from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
-import { fetchRoomsByAccommodation } from "../../../features/roomSlice";
+import { Button } from "../../../components/button/button";
+import { AddRoomForm } from "../../../components/Popup/roomPopup/roomPopup"
 
 export const AdminDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -25,9 +31,10 @@ export const AdminDetails = () => {
     const accommodation = accommodations.find(
         (item) => item.id === Number(id)
     );
-    const { rooms, loading, error } = useSelector(
-    (state: RootState) => state.room
-);  
+
+    const { rooms, loading, error, inputs, showForm } = useSelector(
+        (state: RootState) => state.room
+    );
 
     useEffect(() => {
         if (accommodations.length === 0) {
@@ -35,12 +42,46 @@ export const AdminDetails = () => {
         }
     }, [dispatch, accommodations.length]);
 
-   useEffect(() => {
-    if (id) {
-        dispatch(fetchAccommodationImages(Number(id)));
-        dispatch(fetchRoomsByAccommodation(Number(id)));
-    }
-}, [dispatch, id]);
+    useEffect(() => {
+        if (id) {
+            dispatch(fetchAccommodationImages(Number(id)));
+            dispatch(fetchRoomsByAccommodation(Number(id)));
+        }
+    }, [dispatch, id]);
+
+    const handleAddRoom = async () => {
+        if (!id) return;
+
+        const roomData: CreateRoomInputs = {
+            accommodation_id: Number(id),
+            room_type: inputs.room_type,
+            description: inputs.description || null,
+            bed_type: inputs.bed_type || null,
+            capacity: Number(inputs.capacity),
+            price_per_night: Number(inputs.price_per_night),
+            total_rooms: Number(inputs.total_rooms),
+            amenities: inputs.amenities
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean)
+        };
+
+        const result = await dispatch(createRoom(roomData));
+
+        if (createRoom.fulfilled.match(result)) {
+            dispatch(updateRoomInputs({
+                room_type: "",
+                description: "",
+                bed_type: "",
+                capacity: "1",
+                price_per_night: "",
+                total_rooms: "1",
+                amenities: ""
+            }));
+
+            dispatch(closeRoomForm());
+        }
+    };
 
     if (!accommodation) {
         return <Text variant="p">Loading accommodation details...</Text>;
@@ -75,33 +116,66 @@ export const AdminDetails = () => {
 
             <hr />
 
-        <Text variant="h1">Manage Rooms</Text>
+            <Text variant="h1">Manage Rooms</Text>
 
-        {loading ? (
-            <Text variant="p">Loading rooms...</Text>
-        ) : error ? (
-            <Text variant="p">{error}</Text>
-        ) : rooms.length === 0 ? (
-            <Text variant="p">No rooms have been added to this accommodation yet.</Text>
-        ) : (
-            rooms.map((room) => (
-                <div key={room.id}>
-                    <Text variant="h2">{room.room_type}</Text>
-                    <Text variant="p">
-                        {room.description ?? "No description available"}
-                    </Text>
-                    <Text variant="p">
-                        Bed type: {room.bed_type ?? "Not specified"}
-                    </Text>
-                    <Text variant="p">Capacity: {room.capacity} guests</Text>
-                    <Text variant="p">Price per night: R{room.price_per_night}</Text>
-                    <Text variant="p">Total rooms: {room.total_rooms}</Text>
-                    <Text variant="p">
-                        Amenities: {room.amenities?.join(", ") || "None listed"}
-                    </Text>
-                </div>
-            ))
-        )}
+            <Button
+                label="Add Room"
+                type="button"
+                onClick={() => {
+                    dispatch(updateRoomInputs({
+                        room_type: "",
+                        description: "",
+                        bed_type: "",
+                        capacity: "1",
+                        price_per_night: "",
+                        total_rooms: "1",
+                        amenities: ""
+                    }));
+
+                    dispatch(openRoomForm());
+                }}
+            />
+
+            {showForm && (
+                <AddRoomForm
+                    onSubmit={handleAddRoom}
+                    onClose={() => dispatch(closeRoomForm())}
+                />
+            )}
+
+            {loading ? (
+                <Text variant="p">Loading rooms...</Text>
+            ) : error ? (
+                <Text variant="p">{error}</Text>
+            ) : rooms.length === 0 ? (
+                <Text variant="p">
+                    No rooms have been added to this accommodation yet.
+                </Text>
+            ) : (
+                rooms.map((room) => (
+                    <div key={room.id}>
+                        <Text variant="h2">{room.room_type}</Text>
+                        <Text variant="p">
+                            {room.description ?? "No description available"}
+                        </Text>
+                        <Text variant="p">
+                            Bed type: {room.bed_type ?? "Not specified"}
+                        </Text>
+                        <Text variant="p">
+                            Capacity: {room.capacity} guests
+                        </Text>
+                        <Text variant="p">
+                            Price per night: R{room.price_per_night}
+                        </Text>
+                        <Text variant="p">
+                            Total rooms: {room.total_rooms}
+                        </Text>
+                        <Text variant="p">
+                            Amenities: {room.amenities?.join(", ") || "None listed"}
+                        </Text>
+                    </div>
+                ))
+            )}
         </div>
     );
 };

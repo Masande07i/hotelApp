@@ -42,6 +42,7 @@ export interface RoomInputs {
 interface RoomState {
     rooms: Room[];
     inputs: RoomInputs;
+    showForm: boolean;
     loading: boolean;
     error: string | null;
 }
@@ -59,6 +60,7 @@ const initialState: RoomState = {
         amenities: ""
     },
     loading: false,
+    showForm: false,
     error: null
 };
 
@@ -134,6 +136,12 @@ const roomSlice = createSlice({
         ...action.payload
     };
 },
+       openRoomForm: (state) => {
+       state.showForm = true;
+        },
+        closeRoomForm: (state) => {
+            state.showForm = false;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -165,6 +173,6 @@ const roomSlice = createSlice({
 });
 
 
-export const { setRooms, updateRoomInputs } = roomSlice.actions;
+export const { setRooms, updateRoomInputs,closeRoomForm,openRoomForm } = roomSlice.actions;
 
 export default roomSlice.reducer;
