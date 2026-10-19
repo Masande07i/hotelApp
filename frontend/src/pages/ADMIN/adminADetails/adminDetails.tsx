@@ -9,8 +9,8 @@ import {
     createRoom,
     deleteRoom,
     updateRoomInputs,
-    openRoomForm,
-    closeRoomForm
+    openRoomForm,updateRoom,
+    closeRoomForm,
 } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
