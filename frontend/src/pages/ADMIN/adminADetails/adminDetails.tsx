@@ -7,6 +7,7 @@ import {
     type CreateRoomInputs,
     fetchRoomsByAccommodation,
     createRoom,
+    deleteRoom,
     updateRoomInputs,
     openRoomForm,
     closeRoomForm
@@ -108,6 +109,8 @@ export const AdminDetails = () => {
                         alt={accommodation.name}
                         width="300"
                     />
+
+                    
                 ))}
             </div>
 
@@ -135,6 +138,7 @@ export const AdminDetails = () => {
                     dispatch(openRoomForm());
                 }}
             />
+
 
             {showForm && (
                 <AddRoomForm
@@ -173,6 +177,12 @@ export const AdminDetails = () => {
                         <Text variant="p">
                             Amenities: {room.amenities?.join(", ") || "None listed"}
                         </Text>
+
+                        <Button
+                            label="Delete Room"
+                            type="button"
+                            onClick={() => dispatch(deleteRoom(room.id))}
+                        />
                     </div>
                 ))
             )}
