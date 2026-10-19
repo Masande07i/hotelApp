@@ -83,6 +83,15 @@ export const AdminDetails = () => {
             dispatch(closeRoomForm());
         }
     };
+    const handleDeleteRoom = async (roomId: number, roomType: string) => {
+    const confirmed = window.confirm(
+        `Are you sure you want to delete ${roomType}?`
+    );
+
+    if (!confirmed) return;
+
+    await dispatch(deleteRoom(roomId));
+};
 
     if (!accommodation) {
         return <Text variant="p">Loading accommodation details...</Text>;
@@ -181,7 +190,7 @@ export const AdminDetails = () => {
                         <Button
                             label="Delete Room"
                             type="button"
-                            onClick={() => dispatch(deleteRoom(room.id))}
+                            onClick={() => handleDeleteRoom(room.id, room.room_type)}
                         />
                     </div>
                 ))
