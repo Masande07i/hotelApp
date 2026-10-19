@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
 import {fetchAccommodations,fetchAccommodationImages} from "../../../features/accomodationSlice";
-import {
+import {type Room,
     type CreateRoomInputs,
     fetchRoomsByAccommodation,
     createRoom,
     deleteRoom,
-    updateRoomInputs,
+    updateRoomInputs,updateRoom,
     openRoomForm,
     closeRoomForm,
 } from "../../../features/roomSlice";
@@ -50,27 +50,15 @@ export const AdminDetails = () => {
         }
     }, [dispatch, id]);
 
-    const handleAddRoom = async () => {
-        if (!id) return;
+   const handleAddRoom = async () => {
+    if (!id) return;
 
-        const roomData: CreateRoomInputs = {
-            accommodation_id: Number(id),
-            room_type: inputs.room_type,
-            description: inputs.description || null,
-            bed_type: inputs.bed_type || null,
-            capacity: Number(inputs.capacity),
-            price_per_night: Number(inputs.price_per_night),
-            total_rooms: Number(inputs.total_rooms),
-            amenities: inputs.amenities
-                .split(",")
-                .map((item) => item.trim())
-                .filter(Boolean)
-        };
+    if (inputs.id) {
+        const result = await dispatch(updateRoom(inputs));
 
-        const result = await dispatch(createRoom(roomData));
-
-        if (createRoom.fulfilled.match(result)) {
+        if (updateRoom.fulfilled.match(result)) {
             dispatch(updateRoomInputs({
+                id: undefined,
                 room_type: "",
                 description: "",
                 bed_type: "",
@@ -79,10 +67,54 @@ export const AdminDetails = () => {
                 total_rooms: "1",
                 amenities: ""
             }));
-
             dispatch(closeRoomForm());
         }
+
+        return;
+    }
+
+    const roomData: CreateRoomInputs = {
+        accommodation_id: Number(id),
+        room_type: inputs.room_type,
+        description: inputs.description || null,
+        bed_type: inputs.bed_type || null,
+        capacity: Number(inputs.capacity),
+        price_per_night: Number(inputs.price_per_night),
+        total_rooms: Number(inputs.total_rooms),
+        amenities: inputs.amenities.split(",").map((item) => item.trim()).filter(Boolean)
     };
+
+    const result = await dispatch(createRoom(roomData));
+
+    if (createRoom.fulfilled.match(result)) {
+        dispatch(updateRoomInputs({
+            id: undefined,
+            room_type: "",
+            description: "",
+            bed_type: "",
+            capacity: "1",
+            price_per_night: "",
+            total_rooms: "1",
+            amenities: ""
+        }));
+        dispatch(closeRoomForm());
+    }
+};
+
+    const handleEditRoom = (room: Room) => {
+    dispatch(updateRoomInputs({
+        id: room.id,
+        room_type: room.room_type,
+        description: room.description ?? "",
+        bed_type: room.bed_type ?? "",
+        capacity: String(room.capacity),
+        price_per_night: String(room.price_per_night),
+        total_rooms: String(room.total_rooms),
+        amenities: room.amenities?.join(", ") ?? ""
+    }));
+
+    dispatch(openRoomForm());
+};
     const handleDeleteRoom = async (roomId: number, roomType: string) => {
     const confirmed = window.confirm(
         `Are you sure you want to delete ${roomType}?`
@@ -184,6 +216,12 @@ export const AdminDetails = () => {
                         <Text variant="p">
                             Amenities: {room.amenities?.join(", ") || "None listed"}
                         </Text>
+
+                        <Button
+                            label="Edit Room"
+                            type="button"
+                            onClick={() => handleEditRoom(room)}
+                        />
 
                         <Button
                             label="Delete Room"

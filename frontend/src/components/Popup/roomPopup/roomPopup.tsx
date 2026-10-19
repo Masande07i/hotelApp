@@ -111,8 +111,10 @@ export const AddRoomForm = ({ onClose, onSubmit }: AddRoomFormProps) => {
 
                 {error && <p>{error}</p>}
 
-                <Button label="Add Room" type="submit" />
-                <Button label="Cancel" type="button" onClick={onClose} />
+                <Text variant="h2">
+                {inputs.id ? "Edit Room" : "Add Room"}</Text>
+            
+            <Button label="Cancel" type="button" onClick={onClose} />
             </form>
         </div>
     );
