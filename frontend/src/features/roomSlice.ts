@@ -251,6 +251,25 @@ const roomSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload || "Failed to create room";
             })
+            .addCase(updateRoom.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateRoom.fulfilled, (state, action) => {
+            state.loading = false;
+
+            const index = state.rooms.findIndex(
+                (room) => room.id === action.payload.id
+            );
+
+            if (index !== -1) {
+                state.rooms[index] = action.payload;
+            }
+        })
+        .addCase(updateRoom.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload || "Failed to update room";
+        })
 
             .addCase(deleteRoom.pending, (state) => {
                 state.error = null;
