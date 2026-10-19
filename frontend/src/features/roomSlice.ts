@@ -29,6 +29,7 @@ export interface CreateRoomInputs {
 }
 
 export interface RoomInputs {
+    id?: number;
     room_type: string;
     description: string;
     bed_type: string;
@@ -108,6 +109,53 @@ export const createRoom = createAsyncThunk<Room,CreateRoomInputs,{ rejectValue: 
             if (!response.ok) {
                 return thunkAPI.rejectWithValue(
                     data.message || "Failed to create room"
+                );
+            }
+
+            return data.room as Room;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+export const updateRoom = createAsyncThunk<
+    Room,
+    RoomInputs,
+    { rejectValue: string; state: RootState }
+>(
+    "room/updateRoom",
+    async (roomData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch(`/api/rooms/${roomData.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    room_type: roomData.room_type,
+                    description: roomData.description || null,
+                    bed_type: roomData.bed_type || null,
+                    capacity: Number(roomData.capacity),
+                    price_per_night: Number(roomData.price_per_night),
+                    total_rooms: Number(roomData.total_rooms),
+                    amenities: roomData.amenities
+                        .split(",")
+                        .map((item) => item.trim())
+                        .filter(Boolean)
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to update room"
                 );
             }
 
