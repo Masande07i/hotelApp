@@ -121,6 +121,40 @@ export const createRoom = createAsyncThunk<Room,CreateRoomInputs,{ rejectValue: 
 );
 
 
+export const deleteRoom = createAsyncThunk<
+    number,
+    number,
+    { rejectValue: string; state: RootState }
+>(
+    "room/deleteRoom",
+    async (roomId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch(`/api/rooms/${roomId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to delete room"
+                );
+            }
+
+            return roomId;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
 
 
 const roomSlice = createSlice({
