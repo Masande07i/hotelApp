@@ -9,7 +9,7 @@ import {
     createRoom,
     deleteRoom,
     updateRoomInputs,
-    openRoomForm,updateRoom,
+    openRoomForm,
     closeRoomForm,
 } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
@@ -168,11 +168,9 @@ export const AdminDetails = () => {
                 rooms.map((room) => (
                     <div key={room.id}>
                         <Text variant="h2">{room.room_type}</Text>
-                        <Text variant="p">
-                            {room.description ?? "No description available"}
+                        <Text variant="p">{room.description ?? "No description available"}
                         </Text>
-                        <Text variant="p">
-                            Bed type: {room.bed_type ?? "Not specified"}
+                        <Text variant="p">Bed type: {room.bed_type ?? "Not specified"}
                         </Text>
                         <Text variant="p">
                             Capacity: {room.capacity} guests
