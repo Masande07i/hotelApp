@@ -121,7 +121,6 @@ export const updateRoom = async (
     }
 
     const {
-        accommodation_id,
         room_type,
         description,
         bed_type,
@@ -131,18 +130,17 @@ export const updateRoom = async (
         amenities
     } = req.body;
 
-    if (!accommodation_id ||!room_type ||capacity === undefined ||price_per_night === undefined ||total_rooms === undefined ||
+    if (!room_type ||capacity === undefined ||price_per_night === undefined ||total_rooms === undefined ||
         !Array.isArray(amenities)
     ) {
         return res.status(400).json({
-            message: "Accommodation, room type, capacity, price, total rooms and amenities are required"
+            message: "Room type, capacity, price, total rooms and amenities are required"
         });
     }
 
     try {
-        const room = await roomService.updateRoom(
+       const room = await roomService.updateRoom(
             id,
-            accommodation_id,
             room_type,
             description ?? null,
             bed_type ?? null,
