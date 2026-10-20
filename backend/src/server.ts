@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import accommodationRoutes from "./routes/accommodationRoutes";
 import accommodationImageRoutes from "./routes/accommodationImageRoutes";
+import bookingRoutes from "./routes/bookingRoutes";
 import roomRoutes from "./routes/roomRoutes";
 
 dotenv.config();
@@ -21,6 +22,7 @@ const startServer = async () => {
   app.use("/api/accommodations", accommodationRoutes);
   app.use("/api/accommodations", accommodationImageRoutes);
   app.use("/api/rooms", roomRoutes);
+  app.use("/api/bookings", bookingRoutes);
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
