@@ -151,9 +151,6 @@ export const updateRoom = createAsyncThunk<Room,RoomInputs, { rejectValue: strin
 
            const data = await response.json();
 
-console.log("Update room status:", response.status);
-console.log("Update room response:", data);
-
 if (!response.ok) {
     return thunkAPI.rejectWithValue(
         data.message || "Failed to update room"
@@ -161,8 +158,7 @@ if (!response.ok) {
 }
 
 return data.room as Room;
-
-            return data.room as Room;
+     
         } catch {
             return thunkAPI.rejectWithValue(
                 "Unable to connect to the server"
