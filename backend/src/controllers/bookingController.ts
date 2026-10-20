@@ -75,3 +75,59 @@ export const getAvailableRooms = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const calculateBookingPrice = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const room_id = Number(req.params.room_id);
+        const { check_in, check_out, number_of_rooms } = req.query;
+
+        if (!Number.isInteger(room_id) || room_id <= 0) {
+            return res.status(400).json({
+                message: "Invalid room ID"
+            });
+        }
+
+        if (
+            typeof check_in !== "string" ||
+            typeof check_out !== "string" ||
+            !check_in ||
+            !check_out ||
+            check_in >= check_out
+        ) {
+            return res.status(400).json({
+                message: "Valid check-in and check-out dates are required"
+            });
+        }
+
+        const rooms = Number(number_of_rooms);
+
+        if (!Number.isInteger(rooms) || rooms <= 0) {
+            return res.status(400).json({
+                message: "Number of rooms must be a positive integer"
+            });
+        }
+
+        const total_price = await bookingService.calculateBookingPrice(
+            room_id,
+            check_in,
+            check_out,
+            rooms
+        );
+
+        return res.status(200).json({
+            room_id,
+            check_in,
+            check_out,
+            number_of_rooms: rooms,
+            total_price
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error calculating booking price"
+        });
+    }
+};
