@@ -53,6 +53,69 @@ CREATE TABLE IF NOT EXISTS rooms (
 );
 
 
+CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    check_in DATE NOT NULL,
+    check_out DATE NOT NULL,
+    number_of_rooms INTEGER NOT NULL,
+    number_of_guests INTEGER NOT NULL,
+    total_price NUMERIC(10, 2) NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_booking_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT valid_booking_dates
+        CHECK (check_in < check_out),
+
+    CONSTRAINT valid_number_of_rooms
+        CHECK (number_of_rooms > 0),
+
+    CONSTRAINT valid_number_of_guests
+        CHECK (number_of_guests > 0),
+
+    CONSTRAINT valid_total_price
+        CHECK (total_price >= 0),
+
+    CONSTRAINT valid_booking_status
+        CHECK (status IN ('pending', 'confirmed', 'cancelled'))
+);
+
+
+CREATE TABLE booking_rooms (
+    id SERIAL PRIMARY KEY,
+    booking_id INTEGER NOT NULL,
+    room_id INTEGER NOT NULL,
+    number_of_rooms INTEGER NOT NULL,
+    price_per_night NUMERIC(10, 2) NOT NULL,
+
+    CONSTRAINT fk_booking_rooms_booking
+        FOREIGN KEY (booking_id)
+        REFERENCES bookings(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_booking_rooms_room
+        FOREIGN KEY (room_id)
+        REFERENCES rooms(id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT valid_booking_room_quantity
+        CHECK (number_of_rooms > 0),
+
+    CONSTRAINT valid_booking_room_price
+        CHECK (price_per_night >= 0),
+
+    CONSTRAINT unique_booking_room
+        UNIQUE (booking_id, room_id)
+);
+
+
+
 
 
 {
