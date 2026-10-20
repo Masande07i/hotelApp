@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import style from "./adminDetails.module.css";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
@@ -125,94 +126,97 @@ export const AdminDetails = () => {
     await dispatch(deleteRoom(roomId));
 };
 
-    if (!accommodation) {
-        return <Text variant="p">Loading accommodation details...</Text>;
-    }
+    
+if (!accommodation) {
+    return <Text variant="p">Loading accommodation details...</Text>;
+}
 
-    return (
-        <div>
-            <Text variant="h1">{accommodation.name}</Text>
+return (
+    <div className={style.details}>
+        <Text variant="h1">{accommodation.name}</Text>
 
-            <Text variant="p">
-                {accommodation.address}, {accommodation.city},{" "}
-                {accommodation.country}
-            </Text>
+        <Text variant="p">
+            {accommodation.address}, {accommodation.city},{" "}
+            {accommodation.country}
+        </Text>
 
-            <Text variant="p">
-                Rating: {accommodation.star_rating ?? "Not rated"}
-            </Text>
+        <Text variant="p">
+            Rating: {accommodation.star_rating ?? "Not rated"}
+        </Text>
 
-            <div>
-                {images?.map((image) => (
-                    <img
-                        key={image.id}
-                        src={image.image_url}
-                        alt={accommodation.name}
-                        width="300"
-                    />
-
-                    
-                ))}
-            </div>
-
-            <Text variant="h2">About this accommodation</Text>
-            <Text variant="p">{accommodation.description}</Text>
-
-            <hr />
-
-            <Text variant="h1">Manage Rooms</Text>
-
-            <Button
-                label="Add Room"
-                type="button"
-                onClick={() => {
-                    dispatch(updateRoomInputs({
-                        room_type: "",
-                        description: "",
-                        bed_type: "",
-                        capacity: "1",
-                        price_per_night: "",
-                        total_rooms: "1",
-                        amenities: ""
-                    }));
-
-                    dispatch(openRoomForm());
-                }}
-            />
-
-
-            {showForm && (
-                <AddRoomForm
-                    onSubmit={handleAddRoom}
-                    onClose={() => dispatch(closeRoomForm())}
+        <div className={style.gallery}>
+            {images?.map((image) => (
+                <img
+                    key={image.id}
+                    src={image.image_url}
+                    alt={accommodation.name}
                 />
-            )}
+            ))}
+        </div>
 
-            {loading ? (
-                <Text variant="p">Loading rooms...</Text>
-            ) : error ? (
-                <Text variant="p">{error}</Text>
-            ) : rooms.length === 0 ? (
-                <Text variant="p">
-                    No rooms have been added to this accommodation yet.
-                </Text>
-            ) : (
-                rooms.map((room) => (
-                    <div key={room.id}>
+        <Text variant="h2">About this accommodation</Text>
+        <Text variant="p">{accommodation.description}</Text>
+
+        <hr />
+
+        <Text variant="h1">Manage Rooms</Text>
+
+        <Button
+            label="Add Room"
+            type="button"
+            onClick={() => {
+                dispatch(updateRoomInputs({
+                    id: undefined,
+                    room_type: "",
+                    description: "",
+                    bed_type: "",
+                    capacity: "1",
+                    price_per_night: "",
+                    total_rooms: "1",
+                    amenities: ""
+                }));
+
+                dispatch(openRoomForm());
+            }}
+        />
+
+        {showForm && (
+            <AddRoomForm
+                onSubmit={handleAddRoom}
+                onClose={() => dispatch(closeRoomForm())}
+            />
+        )}
+
+        {loading ? (
+            <Text variant="p">Loading rooms...</Text>
+        ) : error ? (
+            <Text variant="p">{error}</Text>
+        ) : rooms.length === 0 ? (
+            <Text variant="p">
+                No rooms have been added to this accommodation yet.
+            </Text>
+        ) : (
+            rooms.map((room) => (
+                <div className={style.room} key={room.id}>
+                    <div>
                         <Text variant="h2">{room.room_type}</Text>
-                        <Text variant="p">{room.description ?? "No description available"}
+
+                        <Text variant="p">
+                            {room.description ?? "No description available"}
                         </Text>
-                        <Text variant="p">Bed type: {room.bed_type ?? "Not specified"}
+
+                        <Text variant="p">
+                            Bed type: {room.bed_type ?? "Not specified"}
                         </Text>
+
                         <Text variant="p">
                             Capacity: {room.capacity} guests
                         </Text>
-                        <Text variant="p">
-                            Price per night: R{room.price_per_night}
-                        </Text>
+
                         <Text variant="p">
                             Total rooms: {room.total_rooms}
                         </Text>
+
                         <Text variant="p">
                             Amenities: {room.amenities?.join(", ") || "None listed"}
                         </Text>
@@ -229,8 +233,14 @@ export const AdminDetails = () => {
                             onClick={() => handleDeleteRoom(room.id, room.room_type)}
                         />
                     </div>
-                ))
-            )}
-        </div>
-    );
-};
+
+                    <div className={style.roomPrice}>
+                        <Text variant="h2">R{room.price_per_night}</Text>
+                        <Text variant="p">per night</Text>
+                    </div>
+                </div>
+            ))
+        )}
+    </div>
+);
+}
