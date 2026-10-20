@@ -13,13 +13,8 @@ interface AddRoomFormProps {
 export const AddRoomForm = ({ onClose, onSubmit }: AddRoomFormProps) => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const inputs = useSelector(
-        (state: RootState) => state.room.inputs
-    );
-
-    const error = useSelector(
-        (state: RootState) => state.room.error
-    );
+    const inputs = useSelector((state: RootState) => state.room.inputs);
+    const error = useSelector((state: RootState) => state.room.error);
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -79,7 +74,7 @@ export const AddRoomForm = ({ onClose, onSubmit }: AddRoomFormProps) => {
                     id="price_per_night"
                     type="number"
                     min="0"
-                    step="0.01"
+                    step="10"
                     value={inputs.price_per_night}
                     onChange={(event) =>
                         dispatch(updateRoomInputs({ price_per_night: event.target.value }))
@@ -111,8 +106,8 @@ export const AddRoomForm = ({ onClose, onSubmit }: AddRoomFormProps) => {
 
                 {error && <p>{error}</p>}
 
-                <Text variant="h2">
-                {inputs.id ? "Edit Room" : "Add Room"}</Text>
+               <Button label={inputs.id ? "Update Room" : "Add Room"}
+             type="submit"/>
             
             <Button label="Cancel" type="button" onClick={onClose} />
             </form>

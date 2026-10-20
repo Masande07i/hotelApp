@@ -121,10 +121,7 @@ export const createRoom = createAsyncThunk<Room,CreateRoomInputs,{ rejectValue: 
     }
 );
 
-export const updateRoom = createAsyncThunk<
-    Room,
-    RoomInputs,
-    { rejectValue: string; state: RootState }
+export const updateRoom = createAsyncThunk<Room,RoomInputs, { rejectValue: string; state: RootState }
 >(
     "room/updateRoom",
     async (roomData, thunkAPI) => {
@@ -138,6 +135,7 @@ export const updateRoom = createAsyncThunk<
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
+                    
                     room_type: roomData.room_type,
                     description: roomData.description || null,
                     bed_type: roomData.bed_type || null,
@@ -151,13 +149,18 @@ export const updateRoom = createAsyncThunk<
                 })
             });
 
-            const data = await response.json();
+           const data = await response.json();
 
-            if (!response.ok) {
-                return thunkAPI.rejectWithValue(
-                    data.message || "Failed to update room"
-                );
-            }
+console.log("Update room status:", response.status);
+console.log("Update room response:", data);
+
+if (!response.ok) {
+    return thunkAPI.rejectWithValue(
+        data.message || "Failed to update room"
+    );
+}
+
+return data.room as Room;
 
             return data.room as Room;
         } catch {
