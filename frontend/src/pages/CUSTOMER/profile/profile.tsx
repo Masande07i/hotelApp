@@ -1,12 +1,21 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import type { RootState } from "../../../store/store"
 import { Text } from "../../../components/Text/text"
 
 export const Profile = () => {
+    const navigate = useNavigate()
     const user = useSelector((state: RootState) => state.auth.user)
 
+    useEffect(() => {
+        if (!user) {
+            navigate('/login')
+        }
+    }, [user, navigate])
+
     if (!user) {
-        return <Text variant="p">Please log in to view your profile.</Text>
+        return null
     }
 
     return (
