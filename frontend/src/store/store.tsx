@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from "../features/authSlice"
 import accommodationReducer from "../features/accomodationSlice"
 import roomReducer from "../features/roomSlice";
+import customersReducer from "../features/customerSlice"
 
 export const store = configureStore({
 reducer: {
     auth: authReducer,
     accommodation: accommodationReducer,
-    room: roomReducer
+    room: roomReducer,
+    customers: customersReducer
 }})
 
 export type RootState = ReturnType<typeof store.getState>
