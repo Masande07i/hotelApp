@@ -58,6 +58,41 @@ export const fetchCustomers = createAsyncThunk<
 );
 
 
+export const deleteCustomer = createAsyncThunk<
+    number,
+    number,
+    { state: RootState; rejectValue: string }
+>(
+    "customers/deleteCustomer",
+    async (id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch(`/api/users/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to delete user"
+                );
+            }
+
+            return id;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
 
 const customersSlice = createSlice({
     name: "customers",
@@ -77,6 +112,8 @@ const customersSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload || "Failed to fetch customers";
             });
+
+            
     }
 });
 
