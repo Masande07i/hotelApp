@@ -155,6 +155,23 @@ const customersSlice = createSlice({
             })
 
             
+            .addCase(updateCustomer.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateCustomer.fulfilled, (state, action) => {
+                state.loading = false;
+                state.customers = state.customers.map((customer) =>
+                    customer.id === action.payload.id ? action.payload : customer
+                );
+            })
+            .addCase(updateCustomer.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to update user";
+            })
+
+
+            
             .addCase(deleteCustomer.pending, (state) => {
                 state.loading = true;
                 state.error = null;
