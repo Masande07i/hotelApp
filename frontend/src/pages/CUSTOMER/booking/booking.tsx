@@ -128,7 +128,7 @@ export const Booking = () => {
 
                     <div className={style.hotelInfo}>
                         <div className={style.hotelPlaceholder}>
-                            <span>🏨</span>
+                            
                         </div>
 
                         <div>
@@ -151,8 +151,7 @@ export const Booking = () => {
                     </div>
 
                     <div className={style.priceRow}>
-                        <span>Service fee</span>
-                        <span>Calculated later</span>
+                           
                     </div>
 
                     <div className={style.totalRow}>
@@ -170,9 +169,7 @@ export const Booking = () => {
                         Continue to Payment
                     </button>
 
-                    <Text variant="p">
-                        Your booking and payment have not been submitted.
-                    </Text>
+                    
                 </aside>
             </div>
         </div>
