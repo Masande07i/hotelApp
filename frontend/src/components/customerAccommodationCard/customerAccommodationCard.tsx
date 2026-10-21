@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,11 +41,7 @@ export const CustomerAccommodationCard = ({
         setCurrentImageIndex((currentImageIndex + 1) % accommodationImages.length);
     };
 
-    const showPreviousImage = () => {
-        setCurrentImageIndex(
-            (currentImageIndex - 1 + accommodationImages.length) % accommodationImages.length
-        );
-    };
+   
 
     useEffect(() => {
         setCurrentImageIndex(0);
