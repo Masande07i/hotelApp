@@ -68,12 +68,12 @@ const handleLogout = () => {
                         </button>
 
                        <div className={style.logout}>
-                            <button type="button" onClick={handleLogout}>
-                                <LuLogOut />
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                       
+                         <button type="button" onClick={handleLogout}>
+                            <LuLogOut />
+                            <span>Logout</span>
+                         </button>
+                      </div>
+                    
                     </nav>
                 </aside>
 
