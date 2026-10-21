@@ -44,7 +44,7 @@ export const AdminCustomers = () => {
                                 </td>
                                 <td>
                                     <button type="button">
-                                        View
+                                        Update
                                     </button>
                                     <button type="button">
                                         Delete
