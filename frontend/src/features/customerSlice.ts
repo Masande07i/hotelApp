@@ -16,6 +16,11 @@ interface CustomersState {
     loading: boolean;
     error: string | null;
 }
+interface UpdateCustomerData {
+    id: number;
+    name: string;
+    email: string;
+}
 
 const initialState: CustomersState = {
     customers: [],
@@ -49,6 +54,42 @@ export const fetchCustomers = createAsyncThunk<
             }
 
             return data as Customer[];
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+export const updateCustomer = createAsyncThunk<
+    Customer,
+    UpdateCustomerData,
+    { state: RootState; rejectValue: string }
+>(
+    "customers/updateCustomer",
+    async ({ id, name, email }, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch(`/api/users/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ name, email })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to update user"
+                );
+            }
+
+            return data.user as Customer;
         } catch {
             return thunkAPI.rejectWithValue(
                 "Unable to connect to the server"
