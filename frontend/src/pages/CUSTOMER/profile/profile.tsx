@@ -8,12 +8,19 @@ import style from "./profile.module.css"
 import { LuLogOut } from "react-icons/lu"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "../../../store/store"
-import { logout } from "../../../features/authSlice"
+import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,updateUserProfile } from "../../../features/authSlice"
 
 export const Profile = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const user = useSelector((state: RootState) => state.auth.user)
+    const isEditing = useSelector((state: RootState) => state.auth.isEditingProfile)
+    const profileInputs = useSelector((state: RootState) => state.auth.profileInputs)
+    const error = useSelector((state: RootState) => state.auth.error)
+
+    const handleSave = async () => {
+    await dispatch(updateUserProfile(profileInputs))
+    }
 
     useEffect(() => {
         if (!user) {
@@ -45,9 +52,58 @@ const handleLogout = () => {
             <div className={style.profileLayout}>
                 <aside className={style.sidebar}>
                     <div className={style.userInfo}>
-                        <div className={style.avatar}>{initials}</div>
+                    <div className={style.avatar}>{initials}</div>
+
+                    {isEditing ? (
+                        <div>
+                        <label>
+                            Full name
+                            <input
+                            type="text"
+                            value={profileInputs.name}
+                            onChange={(event) =>
+                                dispatch(updateProfileInputs({ name: event.target.value }))
+                            }
+                            />
+                        </label>
+
+                        <label>
+                            Email
+                            <input
+                            type="email"
+                            value={profileInputs.email}
+                            onChange={(event) =>
+                                dispatch(updateProfileInputs({ email: event.target.value }))
+                            }
+                            />
+                        </label>
+
+                        {error && <p>{error}</p>}
+
+                        <button type="button" onClick={handleSave}>
+                            Save Changes
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => dispatch(cancelEditingProfile())}
+                        >
+                            Cancel
+                        </button>
+                        </div>
+                    ) : (
+                        <>
                         <Text variant="h2">{user.name}</Text>
                         <Text variant="p">{user.email}</Text>
+
+                        <button
+                            type="button"
+                            onClick={() => dispatch(startEditingProfile())}
+                        >
+                            Edit Profile
+                        </button>
+                        </>
+                    )}
                     </div>
 
                     <nav className={style.profileNav}>
