@@ -7,7 +7,7 @@ import { fetchAccommodationImages } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
-import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
+import {  CiCircleChevRight } from "react-icons/ci";
 
 interface CustomerAccommodationCardProps extends Accommodation {}
 

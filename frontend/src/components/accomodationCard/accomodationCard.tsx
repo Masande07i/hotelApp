@@ -10,6 +10,7 @@ import {
 import type { Accommodation } from "../../features/accomodationSlice";
 import { AccommodationPopup } from "../Popup/accommodationPopup/accommodationPopup";
 import { useNavigate } from "react-router-dom";
+import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 
 interface AccommodationCardProps extends Accommodation {}
 
@@ -26,6 +27,7 @@ export const AccommodationCard = ({
 }: AccommodationCardProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const [showEditForm, setShowEditForm] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const navigate = useNavigate();
     const images = useSelector(
         (state: RootState) => state.accommodation.imagesByAccommodation[id]
@@ -38,6 +40,10 @@ export const AccommodationCard = ({
             dispatch(fetchAccommodationImages(id));
         }
     }, [dispatch, id, images]);
+
+    useEffect(() => {
+    setCurrentImageIndex(0);
+}, [id]);
 
     const handleDelete = async () => {
         const confirmed = window.confirm(
@@ -63,16 +69,52 @@ export const AccommodationCard = ({
 
     return (
         <div>
-            <div className="accommodation-gallery">
-                {accommodationImages.map((image) => (
-                    <img
-                        key={image.id}
-                        src={image.image_url}
-                        alt={name}
-                        width="300"
-                    />
-                ))}
-            </div>
+            
+<div className="accommodation-gallery">
+    {accommodationImages.length > 0 && (
+        <>
+            <img
+                src={accommodationImages[currentImageIndex]?.image_url}
+                alt={name}
+                width="300"
+            />
+
+            {accommodationImages.length > 1 && (
+                <>
+                    <button
+                        type="button"
+                        className="previousImage"
+                        aria-label="Previous image"
+                        onClick={() =>
+                            setCurrentImageIndex(
+                                (currentImageIndex - 1 + accommodationImages.length) %
+                                accommodationImages.length
+                            )
+                        }
+                    >
+                        <CiCircleChevLeft />
+                    </button>
+
+                    <button
+                        type="button"
+                        className="nextImage"
+                        aria-label="Next image"
+                        onClick={() =>
+                            setCurrentImageIndex(
+                                (currentImageIndex + 1) % accommodationImages.length
+                            )
+                        }
+                    >
+                        <CiCircleChevRight />
+                    </button>
+
+                    
+                </>
+            )}
+        </>
+    )}
+</div>
+
 
             <Text variant="h2">{name}</Text>
             <Text variant="p">{description}</Text>
