@@ -3,34 +3,58 @@ import { Link } from "react-router-dom";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
 import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
+import style from "./adminDashboard.module.css";
 
 export const adminDashboard = () => {
     const [showForm, setShowForm] = useState(false);
 
     return (
-        <div>
-            <Text variant="h1">Admin Dashboard</Text>
+        <div className={style.dashboard}>
+            <header className={style.header}>
+                <Text variant="h1">Admin Dashboard</Text>
+                <Text variant="p">
+                    Manage your Havenly accommodations and reservations.
+                </Text>
+            </header>
 
-            <Text variant="h2">Manage Accommodations</Text>
+            <main className={style.content}>
+                <section className={style.section}>
+                    <div className={style.sectionHeading}>
+                        <div>
+                            <Text variant="h2">Manage Accommodations</Text>
+                            <Text variant="p">
+                                Add and manage your hotel properties.
+                            </Text>
+                        </div>
 
-            <Text variant="h2">Manage Accommodations</Text>
+                        <Button
+                            label="Add Accommodation"
+                            onClick={() => setShowForm(!showForm)}
+                            type="button"
+                        />
+                    </div>
 
-                <Link to="/admin/accommodations">
-                    Manage Accommodations
-                </Link>
-            <Button
-                label="Add Accommodation"
-                onClick={() => setShowForm(!showForm)}
-                type="button"
-            />
+                    <div className={style.managementLink}>
+                        <Text variant="h2">Your Accommodations</Text>
+                        <Link to="/admin/accommodations">
+                            Manage Accommodations 
+                        </Link>
+                    </div>
 
-            {showForm && (
-                <AccommodationPopup
-                    onClose={() => setShowForm(false)}
-                />
-            )}
+                    {showForm && (
+                        <AccommodationPopup
+                            onClose={() => setShowForm(false)}
+                        />
+                    )}
+                </section>
 
-            <Text variant="h2">Manage Reservations</Text>
+                <section className={style.section}>
+                    <Text variant="h2">Manage Reservations</Text>
+                    <Text variant="p">
+                        View and manage customer bookings.
+                    </Text>
+                </section>
+            </main>
         </div>
     );
 };
