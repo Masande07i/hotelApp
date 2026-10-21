@@ -31,6 +31,11 @@ interface LoginResponse {
   token: string
   user: AuthUser
 }
+
+interface UpdateUserProfileInputs {
+  name: string
+  email: string
+}
 interface AuthState {
   inputs: SignupInputs
   loginInputs: LoginInputs
@@ -129,6 +134,42 @@ export const loginUser = createAsyncThunk<
   }
 )
 
+export const updateUserProfile = createAsyncThunk<
+  AuthUser,
+  UpdateUserProfileInputs,
+  { state: { auth: AuthState }; rejectValue: string }
+>(
+  'auth/updateUserProfile',
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.token
+
+      const response = await fetch('/api/users/me', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(userData)
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        return thunkAPI.rejectWithValue(
+          data.message || 'Failed to update profile'
+        )
+      }
+
+      return data.user as AuthUser
+    } catch {
+      return thunkAPI.rejectWithValue(
+        'Unable to connect to the server'
+      )
+    }
+  }
+)
+
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -187,6 +228,21 @@ export const authSlice = createSlice({
       state.error = action.payload as string
       state.success = false
 })
+
+    .addCase(updateUserProfile.pending, (state) => {
+      state.loading = true
+      state.error = null
+    })
+    .addCase(updateUserProfile.fulfilled, (state, action) => {
+      state.loading = false
+      state.user = action.payload
+      state.success = true
+    })
+    .addCase(updateUserProfile.rejected, (state, action) => {
+      state.loading = false
+      state.error = action.payload || 'Failed to update profile'
+      state.success = false
+    })
   }
 })
 
