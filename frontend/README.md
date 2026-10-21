@@ -222,7 +222,7 @@ export const AccommodationDetails = () => {
     </div>
 )} </div>)}
 
-
+//details
 .details {
     padding: 24px;
 }
@@ -287,6 +287,187 @@ export const AccommodationDetails = () => {
 
 .roomTable td:last-child {
     white-space: nowrap;
+}
+
+
+//bookings
+
+.bookingPage {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #1e3838;
+}
+
+.bookingPage > h1 {
+    margin: 20px 0 8px;
+}
+
+.backButton {
+    border: none;
+    background: transparent;
+    color: #176b66;
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.bookingLayout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr);
+    gap: 28px;
+    margin-top: 28px;
+    align-items: start;
+}
+
+.bookingForm,
+.bookingSummary {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.section,
+.bookingSummary {
+    background: #fff;
+    border: 1px solid #e2eaea;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.section h2,
+.bookingSummary h2 {
+    margin: 0 0 20px;
+    font-size: 21px;
+}
+
+.section label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #405858;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.dateFields,
+.guestFields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.dateFields label,
+.guestFields label {
+    min-width: 0;
+}
+
+.section input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #d7e2e2;
+    border-radius: 7px;
+    outline: none;
+    font: inherit;
+    color: #243b3b;
+}
+
+.section input:focus {
+    border-color: #087f76;
+}
+
+.hotelInfo {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5eeee;
+}
+
+.hotelPlaceholder {
+    width: 105px;
+    min-width: 105px;
+    height: 100px;
+    border-radius: 9px;
+    background: #eaf2f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+}
+
+.hotelInfo h2 {
+    margin-bottom: 8px;
+    font-size: 17px;
+}
+
+.hotelInfo p {
+    color: #718181;
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+.priceRow,
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    font-size: 14px;
+}
+
+.priceRow {
+    margin-top: 4px;
+}
+
+.totalRow {
+    border-top: 1px solid #e2eaea;
+    padding-top: 18px;
+    font-size: 16px;
+}
+
+.continueButton {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #075b56;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.continueButton:hover {
+    background: #08756d;
+}
+
+.bookingSummary > p {
+    color: #758585;
+    font-size: 12px;
+    text-align: center;
+}
+
+@media (max-width: 750px) {
+    .bookingPage {
+        padding: 20px 14px;
+    }
+
+    .bookingLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .dateFields,
+    .guestFields {
+        gap: 10px;
+    }
+
+    .section,
+    .bookingSummary {
+        padding: 18px;
+    }
 }
 
 
