@@ -139,13 +139,18 @@ export const authSlice = createSlice({
     },
    updateLogin: (state, action: PayloadAction<Partial<LoginInputs>>) => {
       state.loginInputs = { ...state.loginInputs, ...action.payload }
-
 },
     clearForm: (state) => {
       state.inputs = initialState.inputs
       state.error = null
       state.success = false
-    }
+    },
+    logout: (state) => {
+    state.user = null
+    state.token = null
+    state.success = false
+    state.error = null
+},
   },
   extraReducers: (builder) => {
     builder
@@ -185,6 +190,6 @@ export const authSlice = createSlice({
   }
 })
 
-export const { updateRegister,updateLogin, clearForm } = authSlice.actions
+export const { updateRegister,updateLogin, clearForm,logout } = authSlice.actions
 
 export default authSlice.reducer
