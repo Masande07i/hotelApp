@@ -1,60 +1,95 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useLocation, useNavigate,Link } from "react-router-dom";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
 import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
+import { CiHome,  CiCalendar, CiUser, CiLogout } from "react-icons/ci";
 import style from "./adminDashboard.module.css";
 
 export const adminDashboard = () => {
     const [showForm, setShowForm] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     return (
-        <div className={style.dashboard}>
-            <header className={style.header}>
-                <Text variant="h1">Admin Dashboard</Text>
-                <Text variant="p">
-                    Manage your Havenly accommodations and reservations.
-                </Text>
-            </header>
+        <div className={style.adminLayout}>
+            <aside className={style.sidebar}>
+                <div className={style.logo}>
+                    <Text variant="h2">Havenly</Text>
+                    <Text variant="p">Admin Panel</Text>
+                </div>
 
-            <main className={style.content}>
-                <section className={style.section}>
-                    <div className={style.sectionHeading}>
-                        <div>
-                            <Text variant="h2">Manage Accommodations</Text>
-                            <Text variant="p">
-                                Add and manage your hotel properties.
-                            </Text>
+             <nav className={style.navigation}>
+                <button
+                    type="button"
+                    className={location.pathname === "/admin" ? style.activeLink : ""}
+                    onClick={() => navigate("/admin")}
+                >
+                    <CiHome />
+                    Dashboard
+                </button>
+
+                <button
+                    type="button"
+                    className={location.pathname.startsWith("/admin/accommodations") ? style.activeLink : ""}
+                    onClick={() => navigate("/admin/accommodations")}
+                >
+                    
+                    Accommodations
+                </button>
+
+                <button
+                    type="button"
+                    className={location.pathname.startsWith("/admin/reservations") ? style.activeLink : ""}
+                    onClick={() => navigate("/admin/reservations")}
+                >
+                    <CiCalendar />
+                    Reservations
+                </button>
+
+                <button
+                    type="button"
+                    className={location.pathname.startsWith("/admin/customers") ? style.activeLink : ""}
+                    onClick={() => navigate("/admin/customers")}
+                >
+                    <CiUser />
+                    Customers
+                </button>
+            </nav>
+            </aside>
+
+            <div className={style.mainArea}>
+                <header className={style.header}>
+                    <Text variant="h1">Admin Dashboard</Text>
+                    <Text variant="p">
+                        Manage your Havenly accommodations and reservations.
+                    </Text>
+                </header>
+
+                <main className={style.content}>
+                    <section className={style.section}>
+                        <div className={style.sectionHeading}>
+                            <div>
+                                <Text variant="h2">Manage Accommodations</Text>
+                                
+                            </div>
+
+                            <Button
+                                label="Add Accommodation"
+                                onClick={() => setShowForm(!showForm)}
+                                type="button"
+                            />
                         </div>
 
-                        <Button
-                            label="Add Accommodation"
-                            onClick={() => setShowForm(!showForm)}
-                            type="button"
-                        />
-                    </div>
+                        {showForm && (
+                            <AccommodationPopup
+                                onClose={() => setShowForm(false)}
+                            />
+                        )}
+                    </section>
 
-                    <div className={style.managementLink}>
-                        <Text variant="h2">Your Accommodations</Text>
-                        <Link to="/admin/accommodations">
-                            Manage Accommodations 
-                        </Link>
-                    </div>
-
-                    {showForm && (
-                        <AccommodationPopup
-                            onClose={() => setShowForm(false)}
-                        />
-                    )}
-                </section>
-
-                <section className={style.section}>
-                    <Text variant="h2">Manage Reservations</Text>
-                    <Text variant="p">
-                        View and manage customer bookings.
-                    </Text>
-                </section>
-            </main>
+                </main>
+            </div>
         </div>
     );
 };
