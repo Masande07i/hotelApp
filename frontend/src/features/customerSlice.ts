@@ -57,3 +57,28 @@ export const fetchCustomers = createAsyncThunk<
     }
 );
 
+
+
+const customersSlice = createSlice({
+    name: "customers",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchCustomers.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchCustomers.fulfilled, (state, action) => {
+                state.loading = false;
+                state.customers = action.payload;
+            })
+            .addCase(fetchCustomers.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to fetch customers";
+            });
+    }
+});
+
+export default customersSlice.reducer;
+
