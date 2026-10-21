@@ -18,6 +18,45 @@ export const AdminCustomers = () => {
         <div className={style.customersPage}>
             <Text variant="h1">Manage Customers</Text>
             
+            {loading && <Text variant="p">Loading customers...</Text>}
+
+            {error && <Text variant="p">{error}</Text>}
+
+            {!loading && !error && (
+                <table className={style.customersTable}>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Registered</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {customers.map((customer) => (
+                            <tr key={customer.id}>
+                                <td>{customer.name}</td>
+                                <td>{customer.email}</td>
+                                <td>{customer.role}</td>
+                                <td>
+                                    {new Date(customer.created_at).toLocaleDateString()}
+                                </td>
+                                <td>
+                                    <button type="button">
+                                        View
+                                    </button>
+                                    <button type="button">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+
+            
 
             {loading && <Text variant="p">Loading customers...</Text>}
 
