@@ -44,6 +44,11 @@ interface AuthState {
   loading: boolean
   error: string | null
   success: boolean
+  isEditingProfile: boolean
+  profileInputs: {
+  name: string
+  email: string
+}
 }
 
 const initialState: AuthState = {
@@ -57,6 +62,11 @@ const initialState: AuthState = {
   email: '',
   password: ''
 },
+  isEditingProfile: false,
+  profileInputs: {
+    name: '',
+    email: ''
+  },
   token: null,
   user: null,
   loading: false,
@@ -186,12 +196,41 @@ export const authSlice = createSlice({
       state.error = null
       state.success = false
     },
-    logout: (state) => {
-    state.user = null
-    state.token = null
-    state.success = false
-    state.error = null
+   logout: (state) => {
+  state.user = null
+  state.token = null
+  state.success = false
+  state.error = null
+  state.isEditingProfile = false
+  state.profileInputs = {
+    name: '',
+    email: ''
+  }
 },
+
+   startEditingProfile: (state) => {
+  state.isEditingProfile = true
+  state.profileInputs = {
+    name: state.user?.name ?? '',
+    email: state.user?.email ?? ''
+  }
+    },
+    updateProfileInputs: (
+      state,
+      action: PayloadAction<Partial<{ name: string; email: string }>>
+    ) => {
+      state.profileInputs = {
+        ...state.profileInputs,
+        ...action.payload
+      }
+    },
+    cancelEditingProfile: (state) => {
+      state.isEditingProfile = false
+      state.profileInputs = {
+        name: state.user?.name ?? '',
+        email: state.user?.email ?? ''
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -237,6 +276,7 @@ export const authSlice = createSlice({
       state.loading = false
       state.user = action.payload
       state.success = true
+      state.isEditingProfile = false
     })
     .addCase(updateUserProfile.rejected, (state, action) => {
       state.loading = false
@@ -246,6 +286,6 @@ export const authSlice = createSlice({
   }
 })
 
-export const { updateRegister,updateLogin, clearForm,logout } = authSlice.actions
+export const { updateRegister,updateLogin, clearForm,logout,startEditingProfile,updateProfileInputs,cancelEditingProfile} = authSlice.actions
 
 export default authSlice.reducer
