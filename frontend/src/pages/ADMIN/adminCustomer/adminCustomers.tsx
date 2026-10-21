@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
-import { fetchCustomers } from "../../../features/customerSlice"
+import { fetchCustomers,deleteCustomer } from "../../../features/customerSlice"
 import { Text } from "../../../components/Text/text";
 import style from "./adminCustomers.module.css";
+import { Button } from "../../../components/button/button";
 
 export const AdminCustomers = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -46,9 +47,19 @@ export const AdminCustomers = () => {
                                     <button type="button">
                                         Update
                                     </button>
-                                    <button type="button">
-                                        Delete
-                                    </button>
+                                   <Button
+                                       type="button"
+                                       label="Delete"
+                                        onClick={() => {
+                                            const confirmed = window.confirm(
+                                                `Are you sure you want to delete ${customer.name}?`
+                                            );
+
+                                            if (confirmed) {
+                                                dispatch(deleteCustomer(customer.id));
+                                            }
+                                        }}
+                                  />
                                 </td>
                             </tr>
                         ))}
