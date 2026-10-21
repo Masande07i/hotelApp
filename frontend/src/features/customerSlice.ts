@@ -111,9 +111,24 @@ const customersSlice = createSlice({
             .addCase(fetchCustomers.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to fetch customers";
-            });
+            })
 
             
+            .addCase(deleteCustomer.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteCustomer.fulfilled, (state, action) => {
+                state.loading = false;
+                state.customers = state.customers.filter(
+                    (customer) => customer.id !== action.payload
+                );
+            })
+            .addCase(deleteCustomer.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to delete user";
+            });
+
     }
 });
 
