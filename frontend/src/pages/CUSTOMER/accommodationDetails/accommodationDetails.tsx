@@ -1,4 +1,4 @@
-
+import { useNavigate } from "react-router-dom";
 import styles from "./accommodationDetails.module.css";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ import { Text } from "../../../components/Text/text";
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
     const { rooms, loading, error } = useSelector(
         (state: RootState) => state.room
@@ -118,14 +119,15 @@ export const AccommodationDetails = () => {
                             <Text variant="p">per night</Text>
 
                             <button
-                                type="button"
-                                className={styles.bookButton}
-                                onClick={() =>
-                                    console.log("Selected room:", room.id)
-                                }
-                            >
-                                Book Now
-                            </button>
+                                    type="button"
+                                    className={styles.bookButton}
+                                    onClick={() =>
+                                        navigate("/booking", {
+                                            state: {
+                                                accommodation,
+                                                room } })}>
+                                    Book Now
+                                </button>
                         </div>
                     </div>
                 ))
