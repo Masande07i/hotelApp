@@ -33,11 +33,16 @@ const initialState: BookingState = {
     error: null
 };
 
-export const createBooking = createAsyncThunk(
+
+export const createBooking = createAsyncThunk<
+    Booking,
+    CreateBooking,
+    { state: { auth: { token: string | null } }; rejectValue: string }
+>(
     "booking/createBooking",
-    async (bookingData: CreateBooking, { rejectWithValue }) => {
+    async (bookingData, thunkAPI) => {
         try {
-            const token = localStorage.getItem("token");
+            const token = thunkAPI.getState().auth.token;
 
             const response = await fetch("/api/bookings", {
                 method: "POST",
@@ -51,15 +56,20 @@ export const createBooking = createAsyncThunk(
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.message || "Failed to create booking");
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to create booking"
+                );
             }
 
             return data.booking as Booking;
         } catch {
-            return rejectWithValue("Something went wrong while creating the booking");
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
         }
     }
 );
+
 
 const bookingSlice = createSlice({
     name: "booking",
