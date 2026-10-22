@@ -122,6 +122,19 @@ const bookingSlice = createSlice({
             .addCase(createBooking.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to create booking";
+            })
+
+            .addCase(fetchMyBookings.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchMyBookings.fulfilled, (state, action) => {
+                state.loading = false;
+                state.bookings = action.payload;
+            })
+            .addCase(fetchMyBookings.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to retrieve bookings";
             });
     }
 });
