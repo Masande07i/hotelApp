@@ -70,6 +70,40 @@ export const createBooking = createAsyncThunk<
     }
 );
 
+export const fetchMyBookings = createAsyncThunk<
+    Booking[],
+    void,
+    { state: { auth: { token: string | null } }; rejectValue: string }
+>(
+    "booking/fetchMyBookings",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch("/api/bookings/my-bookings", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to retrieve bookings"
+                );
+            }
+
+            return data.bookings as Booking[];
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
+
 
 const bookingSlice = createSlice({
     name: "booking",
