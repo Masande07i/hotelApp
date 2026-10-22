@@ -259,3 +259,44 @@ export const getMyBookings = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const cancelBooking = async (req: Request, res: Response) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Please log in first"
+            });
+        }
+
+        const booking_id = Number(req.params.booking_id);
+
+        if (!Number.isInteger(booking_id) || booking_id <= 0) {
+            return res.status(400).json({
+                message: "Invalid booking ID"
+            });
+        }
+
+        const user_id = req.user.id;
+
+        const booking = await bookingService.cancelBooking(
+            booking_id,
+            user_id
+        );
+
+        if (!booking) {
+            return res.status(404).json({
+                message: "Booking not found or already cancelled"
+            });
+        }
+
+        return res.status(200).json({
+            message: "Booking cancelled successfully",
+            booking
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error cancelling booking"
+        });
+    }
+};
