@@ -249,3 +249,17 @@ export const cancelBooking = async (
     return rows[0] ?? null;
 };
 
+export const getAllBookings = async () => {
+    const { rows } = await query(
+        `SELECT
+            b.*,
+            u.name AS customer_name,
+            u.email AS customer_email
+         FROM bookings b
+         JOIN users u ON u.id = b.user_id
+         ORDER BY b.created_at DESC`
+    );
+
+    return rows;
+};
+
