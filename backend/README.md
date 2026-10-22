@@ -154,7 +154,7 @@ Update	PUT /api/users/:id	Update user details
     "email": "mine@gmail.com",
     "password": "123"
 }
-
+ http://localhost:3000/api/auth/login
 {
     "name" : "Sami",
     "email": "Sami@gmail.com",
@@ -169,6 +169,7 @@ Update	PUT /api/users/:id	Update user details
     "number_of_rooms": 1,
     "number_of_guests": 2
 }
+POsthttp://localhost:3000/api/bookings
 
 
 GET	/api/users/me	Any logged-in user
