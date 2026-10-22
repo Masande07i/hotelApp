@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface Booking {
     id: number;
@@ -32,6 +32,34 @@ const initialState: BookingState = {
     loading: false,
     error: null
 };
+
+export const createBooking = createAsyncThunk(
+    "booking/createBooking",
+    async (bookingData: CreateBooking, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch("/api/bookings", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(bookingData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return rejectWithValue(data.message || "Failed to create booking");
+            }
+
+            return data.booking as Booking;
+        } catch {
+            return rejectWithValue("Something went wrong while creating the booking");
+        }
+    }
+);
 
 const bookingSlice = createSlice({
     name: "booking",
