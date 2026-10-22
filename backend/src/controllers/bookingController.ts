@@ -300,3 +300,16 @@ export const cancelBooking = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getAllBookings = async (req: Request, res: Response) => {
+    try {
+        const bookings = await bookingService.getAllBookings();
+
+        return res.status(200).json({ bookings });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error retrieving all bookings"
+        });
+    }
+};
