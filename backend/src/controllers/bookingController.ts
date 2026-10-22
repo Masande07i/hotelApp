@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import * as bookingService from "../services/bookingService";
 
@@ -50,9 +51,13 @@ export const getAvailableRooms = async (req: Request, res: Response) => {
             });
         }
 
-        if (check_in >= check_out) {
+        if (
+            Number.isNaN(Date.parse(check_in)) ||
+            Number.isNaN(Date.parse(check_out)) ||
+            check_in >= check_out
+        ) {
             return res.status(400).json({
-                message: "Check-out must be after check-in"
+                message: "Valid check-in and check-out dates are required"
             });
         }
 
@@ -95,6 +100,8 @@ export const calculateBookingPrice = async (
             typeof check_out !== "string" ||
             !check_in ||
             !check_out ||
+            Number.isNaN(Date.parse(check_in)) ||
+            Number.isNaN(Date.parse(check_out)) ||
             check_in >= check_out
         ) {
             return res.status(400).json({
@@ -126,8 +133,109 @@ export const calculateBookingPrice = async (
         });
     } catch (error) {
         console.log(error);
+
+        if (error instanceof Error && error.message === "Room not found") {
+            return res.status(404).json({
+                message: error.message
+            });
+        }
+
         return res.status(500).json({
             message: "Error calculating booking price"
+        });
+    }
+};
+
+export const createBooking = async (req: Request, res: Response) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Please log in first"
+            });
+        }
+
+        const user_id = req.user.id;
+        const {
+            check_in,
+            check_out,
+            room_id,
+            number_of_rooms,
+            number_of_guests
+        } = req.body;
+
+        if (
+            typeof check_in !== "string" ||
+            typeof check_out !== "string" ||
+            !check_in ||
+            !check_out ||
+            Number.isNaN(Date.parse(check_in)) ||
+            Number.isNaN(Date.parse(check_out)) ||
+            check_in >= check_out
+        ) {
+            return res.status(400).json({
+                message: "Valid check-in and check-out dates are required"
+            });
+        }
+
+        const roomId = Number(room_id);
+        const rooms = Number(number_of_rooms);
+        const guests = Number(number_of_guests);
+
+        if (!Number.isInteger(roomId) || roomId <= 0) {
+            return res.status(400).json({
+                message: "Invalid room ID"
+            });
+        }
+
+        if (!Number.isInteger(rooms) || rooms <= 0) {
+            return res.status(400).json({
+                message: "Number of rooms must be a positive integer"
+            });
+        }
+
+        if (!Number.isInteger(guests) || guests <= 0) {
+            return res.status(400).json({
+                message: "Number of guests must be a positive integer"
+            });
+        }
+
+        const booking = await bookingService.createBooking(
+            user_id,
+            check_in,
+            check_out,
+            roomId,
+            rooms,
+            guests
+        );
+
+        return res.status(201).json({
+            message: "Booking created successfully",
+            booking
+        });
+    } catch (error) {
+        console.log(error);
+
+        if (error instanceof Error) {
+            if (error.message === "Room not found") {
+                return res.status(404).json({
+                    message: error.message
+                });
+            }
+
+            if (
+                error.message === "Invalid booking dates" ||
+                error.message === "Invalid number of rooms" ||
+                error.message === "Invalid number of guests" ||
+                error.message === "Not enough rooms available"
+            ) {
+                return res.status(400).json({
+                    message: error.message
+                });
+            }
+        }
+
+        return res.status(500).json({
+            message: "Error creating booking"
         });
     }
 };

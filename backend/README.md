@@ -161,6 +161,16 @@ Update	PUT /api/users/:id	Update user details
     "password": "sami"
 }
 
+
+{
+    "check_in": "2026-11-10",
+    "check_out": "2026-11-13",
+    "room_id": 1,
+    "number_of_rooms": 1,
+    "number_of_guests": 2
+}
+
+
 GET	/api/users/me	Any logged-in user
 PUT	/api/users/me	Any logged-in user
 GET	/api/users	Admin only
@@ -242,6 +252,11 @@ startServer();
     )
     return price_per_night * number_of_rooms * number_of_nights;
 
+    1 second = 1,000 milliseconds
+    1 minute = 60 seconds
+    1 hour = 60 minutes
+    1 day = 24 hours
+
 
 ## Why do I need a database transaction
 
@@ -267,3 +282,8 @@ Customer B can then proceed and check the updated availability. If there aren't 
 
 ### export const getClient = () => pool.connect();
 Get a database connection that you can use for several related queries as one transaction.
+
+Technique	Purpose
+Database transaction	Makes related database changes succeed or fail together.
+Availability check	Determines whether enough rooms are available for the requested dates.
+Concurrency control	Prevents simultaneous requests from using the same remaining availability.
