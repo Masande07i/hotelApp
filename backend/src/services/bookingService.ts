@@ -217,3 +217,17 @@ export const createBooking = async (
         client.release();
     }
 };
+
+
+export const getMyBookings = async (user_id: number) => {
+    const { rows } = await query(
+        `SELECT *
+         FROM bookings
+         WHERE user_id = $1
+         ORDER BY created_at DESC`,
+        [user_id]
+    );
+
+    return rows;
+};
+
