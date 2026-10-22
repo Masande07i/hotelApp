@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getRoomForBooking,getAvailableRooms,calculateBookingPrice,createBooking} from "../controllers/bookingController";
+import {getRoomForBooking,getAvailableRooms,calculateBookingPrice,createBooking,getMyBookings} from "../controllers/bookingController";
 import { protect } from "../middleware/authMiddleware";
 
 const router = Router();
@@ -9,5 +9,6 @@ router.get("/room/:room_id/availability", getAvailableRooms);
 router.get("/room/:room_id/price", calculateBookingPrice);
 
 router.post("/", protect, createBooking);
+router.get("/my-bookings", protect, getMyBookings);
 
 export default router;
