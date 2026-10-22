@@ -1,5 +1,6 @@
-import { query } from "../config/database";
+import { query,getClient  } from "../config/database";
 import { Room } from "../types/room.types";
+
 
 export const getRoomForBooking = async (
     room_id: number

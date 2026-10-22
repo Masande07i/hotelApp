@@ -225,3 +225,45 @@ const startServer = async () => {
 };
 
 startServer();
+
+
+
+## how to calculate booking costs
+  const price_per_night = Number(rows[0].price_per_night);
+
+    const checkInDate = new Date(check_in);
+    const checkOutDate = new Date(check_out);
+
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+
+    const number_of_nights = Math.round(
+        (checkOutDate.getTime() - checkInDate.getTime()) /
+        millisecondsPerDay
+    )
+    return price_per_night * number_of_rooms * number_of_nights;
+
+
+## Why do I need a database transaction
+
+//Suppose the first operation succeeds, but the second one fails because of a database error.
+- The bookings table contains a booking.
+- The booking_rooms table contains no rooms for that booking.
+- Havenly now has an incomplete booking record.
+
+// Its eisther we commit or we rollback
+
+Begin, commit, rollback
+
+
+## Why do I check availability again
+ // to avoid concurrency so we are gonna use concurrent control
+ for my app im goona use the -
+ #### transaction and row-level locking
+ //Customer A and Customer B request the same room dates.
+The backend starts a transaction and locks the relevant room record using SELECT ... FOR UPDATE.
+Customer A checks availability and saves the booking while holding the lock.
+Customer A commits the transaction, releasing the lock.
+Customer B can then proceed and check the updated availability. If there aren't enough rooms left, Customer B's booking is rejected.
+
+### export const getClient = () => pool.connect();
+Get a database connection that you can use for several related queries as one transaction.
