@@ -231,3 +231,21 @@ export const getMyBookings = async (user_id: number) => {
     return rows;
 };
 
+export const cancelBooking = async (
+    booking_id: number,
+    user_id: number
+) => {
+    const { rows } = await query(
+        `UPDATE bookings
+         SET status = 'cancelled',
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1
+         AND user_id = $2
+         AND status != 'cancelled'
+         RETURNING *`,
+        [booking_id, user_id]
+    );
+
+    return rows[0] ?? null;
+};
+
