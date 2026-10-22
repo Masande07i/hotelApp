@@ -74,7 +74,22 @@ export const createBooking = createAsyncThunk<
 const bookingSlice = createSlice({
     name: "booking",
     initialState,
-    reducers: {}
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(createBooking.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createBooking.fulfilled, (state, action) => {
+                state.loading = false;
+                state.bookings.push(action.payload);
+            })
+            .addCase(createBooking.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to create booking";
+            });
+    }
 });
 
 export default bookingSlice.reducer;
