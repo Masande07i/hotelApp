@@ -1,4 +1,4 @@
-import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice,createAsyncThunk,type PayloadAction } from "@reduxjs/toolkit";
 
 export interface Booking {
     id: number;
@@ -21,14 +21,30 @@ export interface CreateBooking {
     number_of_guests: number;
 }
 
+export interface BookingInputs {
+    check_in: string;
+    check_out: string;
+    room_id: string;
+    number_of_rooms: string;
+    number_of_guests: string;
+}
+
 interface BookingState {
     bookings: Booking[];
+    inputs: BookingInputs;
     loading: boolean;
     error: string | null;
 }
 
 const initialState: BookingState = {
     bookings: [],
+    inputs: {
+        check_in: "",
+        check_out: "",
+        room_id: "",
+        number_of_rooms: "1",
+        number_of_guests: "1"
+    },
     loading: false,
     error: null
 };
@@ -108,7 +124,21 @@ export const fetchMyBookings = createAsyncThunk<
 const bookingSlice = createSlice({
     name: "booking",
     initialState,
-    reducers: {},
+    reducers: {
+    updateBookingInputs: (
+        state,
+        action: PayloadAction<Partial<BookingInputs>>
+    ) => {
+        state.inputs = {
+            ...state.inputs,
+            ...action.payload
+        };
+    },
+     setSelectedRoom: (state, action: PayloadAction<number>) => {
+        state.inputs.room_id = String(action.payload);
+    }
+},
+
     extraReducers: (builder) => {
         builder
             .addCase(createBooking.pending, (state) => {
@@ -138,5 +168,7 @@ const bookingSlice = createSlice({
             });
     }
 });
+
+export const { updateBookingInputs , setSelectedRoom} = bookingSlice.actions;
 
 export default bookingSlice.reducer;
