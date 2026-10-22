@@ -239,3 +239,23 @@ export const createBooking = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getMyBookings = async (req: Request, res: Response) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Please log in first"
+            });
+        }
+
+        const user_id = req.user.id;
+        const bookings = await bookingService.getMyBookings(user_id);
+
+        return res.status(200).json({ bookings });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error retrieving your bookings"
+        });
+    }
+};
