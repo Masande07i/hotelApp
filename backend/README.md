@@ -172,6 +172,8 @@ Update	PUT /api/users/:id	Update user details
 POsthttp://localhost:3000/api/bookings
 
 
+status, Patch http://localhost:3000/api/bookings/1/status
+
 GET	/api/users/me	Any logged-in user
 PUT	/api/users/me	Any logged-in user
 GET	/api/users	Admin only

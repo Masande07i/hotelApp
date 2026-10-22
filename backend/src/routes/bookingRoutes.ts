@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getRoomForBooking,getAvailableRooms,calculateBookingPrice,createBooking,getMyBookings,cancelBooking,getAllBookings} from "../controllers/bookingController";
+import {getRoomForBooking,getAvailableRooms,calculateBookingPrice,createBooking,getMyBookings,cancelBooking,getAllBookings,updateBookingStatus} from "../controllers/bookingController";
 import { protect , adminOnly} from "../middleware/authMiddleware";
 
 const router = Router();
@@ -12,5 +12,6 @@ router.post("/", protect, createBooking);
 router.get("/my-bookings", protect, getMyBookings);
 router.patch("/:booking_id/cancel", protect, cancelBooking);
 router.get("/all", protect, adminOnly, getAllBookings);
+router.patch("/:booking_id/status", protect, adminOnly, updateBookingStatus);
 
 export default router;
