@@ -197,16 +197,17 @@ export const authSlice = createSlice({
       state.success = false
     },
    logout: (state) => {
-  state.user = null
-  state.token = null
-  state.success = false
-  state.error = null
-  state.isEditingProfile = false
-  state.profileInputs = {
-    name: '',
-    email: ''
-  }
-},
+    localStorage.removeItem("auth")
+    state.user = null
+    state.token = null
+    state.success = false
+    state.error = null
+    state.isEditingProfile = false
+    state.profileInputs = {
+      name: '',
+      email: ''
+    }
+  },
 
    startEditingProfile: (state) => {
   state.isEditingProfile = true
@@ -258,7 +259,12 @@ export const authSlice = createSlice({
     .addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false
       state.token = action.payload.token
+      console.log("Token saved after login:", !!action.payload.token)
       state.user = action.payload.user
+      localStorage.setItem("auth", JSON.stringify({
+        token: action.payload.token,
+        user: action.payload.user
+  }))
       state.success = true
     })
 

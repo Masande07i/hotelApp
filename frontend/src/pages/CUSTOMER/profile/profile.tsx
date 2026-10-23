@@ -42,6 +42,7 @@ export const Profile = () => {
 
 const handleLogout = () => {
     dispatch(logout())
+    localStorage.removeItem("auth")
     navigate('/')
 }
 
