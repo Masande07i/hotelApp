@@ -9,7 +9,7 @@ import { LuLogOut } from "react-icons/lu"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "../../../store/store"
 import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,updateUserProfile } from "../../../features/authSlice"
-import { fetchMyBookings } from "../../../features/bookingSlice"
+import { fetchMyBookings,setSelectedTab  } from "../../../features/bookingSlice"
 
 export const Profile = () => {
     const navigate = useNavigate()
@@ -21,6 +21,22 @@ export const Profile = () => {
     const bookings = useSelector((state: RootState) => state.booking.bookings)
     const loading = useSelector((state: RootState) => state.booking.loading)
     const bookingError = useSelector((state: RootState) => state.booking.error)
+    const selectedTab = useSelector((state: RootState) => state.booking.selectedTab)
+     
+    
+    const filteredBookings = bookings.filter((booking) => {
+        if (selectedTab === "cancelled") {
+            return booking.status === "cancelled"
+        }
+
+        if (selectedTab === "past") {
+            return booking.status !== "cancelled" &&
+                new Date(booking.check_out) < new Date()
+        }
+
+        return booking.status !== "cancelled" &&
+            new Date(booking.check_in) >= new Date()
+    })
 
     const handleSave = async () => {
     await dispatch(updateUserProfile(profileInputs))
@@ -146,21 +162,49 @@ const handleLogout = () => {
 
                 <main className={style.profileContent}>
                     <Text variant="h2">My Bookings</Text>
-                    <div className={style.bookingTabs}>
-                        <button className={style.selectedTab}>Upcoming</button>
-                        <button>Past</button>
-                        <button>Cancelled</button>
-                    </div>
+                    
+                <div className={style.bookingTabs}>
+                    <button
+                        className={selectedTab === "upcoming" ? style.selectedTab : ""}
+                        onClick={() => dispatch(setSelectedTab("upcoming"))}
+                    >
+                        Upcoming
+                    </button>
+
+                    <button
+                        className={selectedTab === "past" ? style.selectedTab : ""}
+                        onClick={() => dispatch(setSelectedTab("past"))}
+                    >
+                        Past
+                    </button>
+
+                    <button
+                        className={selectedTab === "cancelled" ? style.selectedTab : ""}
+                        onClick={() => dispatch(setSelectedTab("cancelled"))}
+                    >
+                        Cancelled
+                    </button>
+                </div>
+
                 <div className={style.emptySection}>
                     {loading && <p>Loading your bookings...</p>}
 
                     {bookingError && <p>{bookingError}</p>}
 
-                    {!loading && !bookingError && bookings.length === 0 && (
-                        <p>You have no bookings yet.</p>
+                    
+                    {!loading && !bookingError && filteredBookings.length === 0 && (
+                        <p>
+                            {selectedTab === "upcoming" &&
+                                "You have no upcoming bookings yet."}
+                            {selectedTab === "past" &&
+                                "You have no past bookings yet."}
+                            {selectedTab === "cancelled" &&
+                                "You have no cancelled bookings yet."}
+                        </p>
                     )}
 
-                    {bookings.map((booking) => (
+
+                    {filteredBookings.map((booking) => (
                        <div key={booking.id} className={style.bookingCard}>
                             <Text variant="h2">{booking.accommodation_name}</Text>
                             <Text variant="p">{booking.accommodation_address}</Text>
