@@ -35,6 +35,7 @@ export interface BookingInputs {
 
 interface BookingState {
     bookings: Booking[];
+    adminBookings: Booking[];
     inputs: BookingInputs;
     loading: boolean;
     error: string | null;
@@ -43,6 +44,7 @@ interface BookingState {
 
 const initialState: BookingState = {
     bookings: [],
+    adminBookings: [],
     inputs: {
         check_in: "",
         check_out: "",
@@ -124,6 +126,41 @@ export const fetchMyBookings = createAsyncThunk<
         }
     }
 );
+
+
+export const fetchAllBookings = createAsyncThunk<
+    Booking[],
+    void,
+    { state: { auth: { token: string | null } }; rejectValue: string }
+>(
+    "booking/fetchAllBookings",
+    async (_, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch("/api/bookings/all", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to retrieve all bookings"
+                );
+            }
+
+            return data.bookings as Booking[];
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
+
 
 
 
