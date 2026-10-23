@@ -1,0 +1,41 @@
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #1e2938;
+}
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.heading h1 {
+    margin-bottom: 8px;
+}
+
+.heading p {
+    color: #64748b;
+}
+
+.listings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 20px 14px;
+    }
+
+    .heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}

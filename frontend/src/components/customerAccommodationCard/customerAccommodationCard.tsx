@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,8 @@ import { fetchAccommodationImages } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
-import {  CiCircleChevRight } from "react-icons/ci";
+import { CiCircleChevRight } from "react-icons/ci";
+import styles from "./customerAccommodationCard.module.css";
 
 interface CustomerAccommodationCardProps extends Accommodation {}
 
@@ -37,57 +39,71 @@ export const CustomerAccommodationCard = ({
         }
     }, [dispatch, id, images]);
 
-    const showNextImage = () => {
-        setCurrentImageIndex((currentImageIndex + 1) % accommodationImages.length);
-    };
-
-   
-
     useEffect(() => {
         setCurrentImageIndex(0);
     }, [id]);
 
-    return (
-        <div>
-            <div className="accommodation-gallery">
-                {accommodationImages.length > 0 && (
-                    <>
-                        <img
-                            src={accommodationImages[currentImageIndex]?.image_url}
-                            alt={name}
-                            width="300"
-                        />
+    const showNextImage = () => {
+        setCurrentImageIndex(
+            (currentImageIndex + 1) % accommodationImages.length
+        );
+    };
 
-                        {accommodationImages.length > 1 && (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={showNextImage}
-                                    aria-label="Next image"
-                                >
-                                    <CiCircleChevRight />
-                                </button>
-                            </>
-                        )}
-                    </>
+    return (
+        <article className={styles.card}>
+            <div className={styles.gallery}>
+                {accommodationImages.length > 0 ? (
+                    <img
+                        className={styles.accommodationImage}
+                        src={accommodationImages[currentImageIndex]?.image_url}
+                        alt={name}
+                    />
+                ) : (
+                    <div className={styles.imagePlaceholder}>
+                        No image available
+                    </div>
+                )}
+
+                {accommodationImages.length > 1 && (
+                    <button
+                        type="button"
+                        className={styles.nextImage}
+                        onClick={showNextImage}
+                        aria-label="Next image"
+                    >
+                        <CiCircleChevRight />
+                    </button>
                 )}
             </div>
 
-            <Text variant="h2">{name}</Text>
-            <Text variant="p">{description}</Text>
-            <Text variant="p">{address}</Text>
-            <Text variant="p">
-                {city}, {country}
-            </Text>
-            <Text variant="p">
-                Rating: {star_rating ?? "Not rated"}
-            </Text>
+            <div className={styles.info}>
+                <Text variant="h2">{name}</Text>
 
-            <Button
-                label="View Details"
-                onClick={() => navigate(`/accommodations/${id}`)}
-                type="button"
-            />
-        </div>
+                <Text variant="p">
+                    {city}, {country}
+                </Text>
+
+                <Text variant="p">{address}</Text>
+
+                <div className={styles.rating}>
+                    <span>★</span>
+                    <Text variant="p">
+                        {star_rating ?? "Not rated"}
+                    </Text>
+                </div>
+
+                <Text variant="p">
+                    {description || "Discover this accommodation on Havenly."}
+                </Text>
+            </div>
+
+            <div className={styles.actions}>
+                <Button
+                    label="View Details"
+                    onClick={() => navigate(`/accommodations/${id}`)}
+                    type="button"
+                />
+            </div>
+        </article>
     );
 };
