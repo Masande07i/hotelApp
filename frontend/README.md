@@ -470,4 +470,15 @@ export const AccommodationDetails = () => {
     }
 }
 
+//used this to store thr token to the local storage
+const savedAuth = localStorage.getItem("auth")
 
+const preloadedAuth = savedAuth
+  ? {
+      auth: {
+        ...authReducer(undefined, { type: "INIT" }),
+        ...JSON.parse(savedAuth)
+      }
+    }
+  : undefined
+  
