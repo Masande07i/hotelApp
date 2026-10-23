@@ -221,10 +221,17 @@ export const createBooking = async (
 
 export const getMyBookings = async (user_id: number) => {
     const { rows } = await query(
-        `SELECT *
+        `SELECT 
+            bookings.*,
+            accommodations.name AS accommodation_name,
+            accommodations.address AS accommodation_address,
+            rooms.room_type,
+            rooms.bed_type
          FROM bookings
-         WHERE user_id = $1
-         ORDER BY created_at DESC`,
+         JOIN rooms ON bookings.room_id = rooms.id
+         JOIN accommodations ON rooms.accommodation_id = accommodations.id
+         WHERE bookings.user_id = $1
+         ORDER BY bookings.created_at DESC`,
         [user_id]
     );
 
