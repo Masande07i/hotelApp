@@ -9,6 +9,7 @@ import { LuLogOut } from "react-icons/lu"
 import { useDispatch } from "react-redux"
 import type { AppDispatch } from "../../../store/store"
 import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,updateUserProfile } from "../../../features/authSlice"
+import { fetchMyBookings } from "../../../features/bookingSlice"
 
 export const Profile = () => {
     const navigate = useNavigate()
@@ -17,10 +18,19 @@ export const Profile = () => {
     const isEditing = useSelector((state: RootState) => state.auth.isEditingProfile)
     const profileInputs = useSelector((state: RootState) => state.auth.profileInputs)
     const error = useSelector((state: RootState) => state.auth.error)
+    const bookings = useSelector((state: RootState) => state.booking.bookings)
+    const loading = useSelector((state: RootState) => state.booking.loading)
+    const bookingError = useSelector((state: RootState) => state.booking.error)
 
     const handleSave = async () => {
     await dispatch(updateUserProfile(profileInputs))
     }
+
+    useEffect(() => {
+    if (user) {
+        dispatch(fetchMyBookings())
+    }
+}, [user, dispatch])
 
     useEffect(() => {
         if (!user) {
@@ -141,10 +151,32 @@ const handleLogout = () => {
                         <button>Past</button>
                         <button>Cancelled</button>
                     </div>
+                <div className={style.emptySection}>
+                    {loading && <p>Loading your bookings...</p>}
 
-                    <div className={style.emptySection}>
-                        Your bookings will appear here.
-                    </div>
+                    {bookingError && <p>{bookingError}</p>}
+
+                    {!loading && !bookingError && bookings.length === 0 && (
+                        <p>You have no bookings yet.</p>
+                    )}
+
+                    {bookings.map((booking) => (
+                       <div key={booking.id} className={style.bookingCard}>
+                            <Text variant="h2">{booking.accommodation_name}</Text>
+                            <Text variant="p">{booking.accommodation_address}</Text>
+                            <Text variant="p">Room: {booking.room_type}</Text>
+                            <Text variant="p">Bed: {booking.bed_type || "Not specified"}</Text>
+                            <Text variant="p">Check-in: {booking.check_in}</Text>
+                            <Text variant="p">Check-out: {booking.check_out}</Text>
+                            <Text variant="p">Rooms: {booking.number_of_rooms}</Text>
+                            <Text variant="p">Guests: {booking.number_of_guests}</Text>
+                            <Text variant="p">
+                                Total: R{Number(booking.total_price).toFixed(2)}
+                            </Text>
+                            <Text variant="p">Status: {booking.status}</Text>
+                        </div>
+                    ))}
+                </div>
 
                     <Text variant="h2">Favourite Hotels</Text>
                     <div className={style.emptySection}>

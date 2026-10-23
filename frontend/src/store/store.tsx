@@ -15,21 +15,17 @@ const preloadedAuth = savedAuth
       }
     }
   : undefined
-  
+
 export const store = configureStore({
-reducer: {
-    auth: authReducer,
-    accommodation: accommodationReducer,
-    room: roomReducer,
-    customers: customersReducer,
-    booking: bookingReducer
-},
-preloadedState: preloadedAuth
+    reducer: {
+        auth: authReducer,
+        accommodation: accommodationReducer,
+        room: roomReducer,
+        customers: customersReducer,
+        booking: bookingReducer
+    },
+    preloadedState: preloadedAuth
 })
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
-
-store.subscribe(() => {
-  console.log("Redux auth token exists:", !!store.getState().auth.token)
-})

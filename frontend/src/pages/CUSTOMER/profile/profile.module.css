@@ -55,6 +55,50 @@
     margin: 0 auto;
 }
 
+
+.bookingCard {
+    padding: 22px;
+    margin-bottom: 20px;
+    border: 1px solid #e5eeee;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(108, 69, 117, 0.08);
+}
+
+.bookingCard h2 {
+    color: rgb(108, 69, 117);
+    font-size: 20px;
+    margin: 0 0 8px;
+}
+
+.bookingCard p {
+    margin: 8px 0;
+    color: #647477;
+    font-size: 14px;
+}
+
+.bookingDetails {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e5eeee;
+}
+
+.bookingStatus {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-top: 12px;
+    border-radius: 20px;
+    background: #fff2d6;
+    color: #946200;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+
 .profileNav {
     display: flex;
     flex-direction: column;
@@ -163,4 +207,14 @@
         padding: 10px 5px;
         font-size: 12px;
     }
+  
+    .bookingDetails {
+        grid-template-columns: 1fr;
+    }
+
+    .bookingCard {
+        padding: 16px;
+    }
+
+
 }
