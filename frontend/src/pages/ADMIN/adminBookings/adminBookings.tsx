@@ -1,0 +1,78 @@
+import { Text } from "../../../components/Text/text";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../store/store";
+import { fetchAllBookings } from "../../../features/bookingSlice"
+
+export const AdminBookings = () => {
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const { adminBookings, loading, error } = useSelector(
+        (state: RootState) => state.booking
+    );
+
+useEffect(() => {
+    dispatch(fetchAllBookings());
+}, [dispatch]);
+   return (
+    <div>
+        <Text variant="h1">Manage Bookings</Text>
+        <Text variant="p">
+            View and manage customer bookings.
+        </Text>
+
+        {loading && (
+            <Text variant="p">Loading bookings...</Text>
+        )}
+
+        {error && (
+            <Text variant="p">{error}</Text>
+        )}
+
+        {!loading && !error && adminBookings.length === 0 && (
+            <Text variant="p">No bookings found.</Text>
+        )}
+
+        {!loading && adminBookings.length > 0 && (
+            <div>
+                {adminBookings.map((booking) => (
+                    <div key={booking.id}>
+                        <Text variant="h2">
+                            Booking #{booking.id}
+                        </Text>
+
+                        <Text variant="p">
+                            Accommodation: {booking.accommodation_name}
+                        </Text>
+
+                        <Text variant="p">
+                            Room: {booking.room_type}
+                        </Text>
+
+                        <Text variant="p">
+                            Check-in: {booking.check_in}
+                        </Text>
+
+                        <Text variant="p">
+                            Check-out: {booking.check_out}
+                        </Text>
+
+                        <Text variant="p">
+                            Guests: {booking.number_of_guests}
+                        </Text>
+
+                        <Text variant="p">
+                            Total: R{booking.total_price}
+                        </Text>
+
+                        <Text variant="p">
+                            Status: {booking.status}
+                        </Text>
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
+);
+}
