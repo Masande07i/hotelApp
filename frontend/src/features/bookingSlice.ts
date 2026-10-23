@@ -264,6 +264,23 @@ const bookingSlice = createSlice({
             .addCase(fetchAllBookings.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to retrieve all bookings";
+            })
+            .addCase(updateBookingStatus.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateBookingStatus.fulfilled, (state, action) => {
+                state.loading = false;
+
+                state.adminBookings = state.adminBookings.map((booking) =>
+                    booking.id === action.payload.id
+                        ? { ...booking, ...action.payload }
+                        : booking
+                );
+            })
+            .addCase(updateBookingStatus.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to update booking status";
             });
 
     }
