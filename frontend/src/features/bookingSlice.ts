@@ -161,6 +161,41 @@ export const fetchAllBookings = createAsyncThunk<
     }
 );
 
+export const updateBookingStatus = createAsyncThunk<
+    Booking,
+    { bookingId: number; status: "pending" | "confirmed" | "cancelled" },
+    { state: { auth: { token: string | null } }; rejectValue: string }
+>(
+    "booking/updateBookingStatus",
+    async ({ bookingId, status }, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
+
+            const response = await fetch(`/api/bookings/${bookingId}/status`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ status })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to update booking status"
+                );
+            }
+
+            return data.booking as Booking;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
 
 
 
