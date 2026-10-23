@@ -260,19 +260,30 @@ export const cancelBooking = async (
     return rows[0] ?? null;
 };
 
+
 export const getAllBookings = async () => {
     const { rows } = await query(
         `SELECT
             b.*,
             u.name AS customer_name,
-            u.email AS customer_email
+            u.email AS customer_email,
+            a.name AS accommodation_name,
+            a.address AS accommodation_address,
+            r.room_type,
+            r.bed_type,
+            br.number_of_rooms AS booked_rooms,
+            br.price_per_night
          FROM bookings b
          JOIN users u ON u.id = b.user_id
+         JOIN booking_rooms br ON br.booking_id = b.id
+         JOIN rooms r ON r.id = br.room_id
+         JOIN accommodations a ON a.id = r.accommodation_id
          ORDER BY b.created_at DESC`
     );
 
     return rows;
 };
+
 
 export const updateBookingStatus = async (
     booking_id: number,
