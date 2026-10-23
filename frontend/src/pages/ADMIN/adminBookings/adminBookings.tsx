@@ -2,7 +2,7 @@ import { Text } from "../../../components/Text/text";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
-import { fetchAllBookings } from "../../../features/bookingSlice"
+import { fetchAllBookings,updateBookingStatus } from "../../../features/bookingSlice"
 
 export const AdminBookings = () => {
 
@@ -66,9 +66,26 @@ useEffect(() => {
                             Total: R{booking.total_price}
                         </Text>
 
-                        <Text variant="p">
-                            Status: {booking.status}
-                        </Text>
+                     <div>
+                        <Text variant="p">Status: {booking.status}</Text>
+
+                        <select
+                            value={booking.status}
+                            onChange={(e) =>
+                                dispatch(
+                                    updateBookingStatus({
+                                        bookingId: booking.id,
+                                        status: e.target.value as
+                                            "pending" | "confirmed" | "cancelled"
+                                    })
+                                )
+                            }
+                        >
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
                     </div>
                 ))}
             </div>
