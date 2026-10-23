@@ -219,6 +219,7 @@ export const createBooking = async (
 };
 
 
+
 export const getMyBookings = async (user_id: number) => {
     const { rows } = await query(
         `SELECT 
@@ -226,17 +227,20 @@ export const getMyBookings = async (user_id: number) => {
             accommodations.name AS accommodation_name,
             accommodations.address AS accommodation_address,
             rooms.room_type,
-            rooms.bed_type
+            rooms.bed_type,
+            booking_rooms.number_of_rooms AS booked_rooms,
+            booking_rooms.price_per_night
          FROM bookings
-         JOIN rooms ON bookings.room_id = rooms.id
+         JOIN booking_rooms ON bookings.id = booking_rooms.booking_id
+         JOIN rooms ON booking_rooms.room_id = rooms.id
          JOIN accommodations ON rooms.accommodation_id = accommodations.id
          WHERE bookings.user_id = $1
          ORDER BY bookings.created_at DESC`,
         [user_id]
     );
-
     return rows;
 };
+
 
 export const cancelBooking = async (
     booking_id: number,
