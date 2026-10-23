@@ -38,6 +38,7 @@ interface BookingState {
     inputs: BookingInputs;
     loading: boolean;
     error: string | null;
+    selectedTab: "upcoming" | "past" | "cancelled";
 }
 
 const initialState: BookingState = {
@@ -49,6 +50,7 @@ const initialState: BookingState = {
         number_of_rooms: "1",
         number_of_guests: "1"
     },
+    selectedTab: "upcoming",
     loading: false,
     error: null
 };
@@ -140,7 +142,14 @@ const bookingSlice = createSlice({
     },
      setSelectedRoom: (state, action: PayloadAction<number>) => {
         state.inputs.room_id = String(action.payload);
-    }
+    },
+    setSelectedTab: (
+        state,
+        action: PayloadAction<"upcoming" | "past" | "cancelled">
+    ) => {
+        state.selectedTab = action.payload;
+    },
+
 },
 
     extraReducers: (builder) => {
@@ -173,6 +182,6 @@ const bookingSlice = createSlice({
     }
 });
 
-export const { updateBookingInputs , setSelectedRoom} = bookingSlice.actions;
+export const { updateBookingInputs , setSelectedRoom,setSelectedTab} = bookingSlice.actions;
 
 export default bookingSlice.reducer;
