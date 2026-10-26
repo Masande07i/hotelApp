@@ -72,3 +72,17 @@ export const updateReview = async (
 
     return rows[0] || null;
 };
+export const deleteReview = async (
+    user_id: number,
+    accommodation_id: number
+): Promise<Review | null> => {
+    const { rows } = await query(
+        `DELETE FROM reviews
+         WHERE user_id = $1
+         AND accommodation_id = $2
+         RETURNING *`,
+        [user_id, accommodation_id]
+    );
+
+    return rows[0] || null;
+};
