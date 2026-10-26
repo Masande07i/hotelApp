@@ -235,6 +235,23 @@ export const reviewSlice = createSlice({
         state.error = action.payload as string;
         state.success = false;
     })
+    .addCase(removeReview.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+    state.success = false;
+    })
+    .addCase(removeReview.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews = state.reviews.filter(
+            (review) => review.accommodation_id !== action.payload
+        );
+        state.success = true;
+    })
+    .addCase(removeReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+    });
 
     }
 });
