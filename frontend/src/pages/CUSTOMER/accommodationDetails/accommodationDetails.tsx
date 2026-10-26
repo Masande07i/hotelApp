@@ -42,7 +42,7 @@ export const AccommodationDetails = () => {
     const userReview = reviews.find(
     (review) => review.user_id === user?.id
     );
-    const { inputs: reviewInputs, error: reviewError, success: reviewSuccess,editing } = useSelector(
+    const { inputs: reviewInputs, error: reviewError,loading: reviewLoading, success: reviewSuccess,editing } = useSelector(
     (state: RootState) => state.review
     );
 
@@ -152,7 +152,7 @@ export const AccommodationDetails = () => {
                 )))}
             <hr />
 
-            {user && !userReview && (
+           {user && (!userReview || editing) && (
                 <div className={styles.reviewForm}>
                     <Text variant="h2">
                         {editing ? "Edit Your Review" : "Write a Review"}
@@ -188,6 +188,7 @@ export const AccommodationDetails = () => {
 
                        <button
                             type="button"
+                            disabled={reviewLoading}
                             onClick={() => {
                                 if (id) {
                                     if (editing) {
@@ -204,8 +205,11 @@ export const AccommodationDetails = () => {
                                 }
                             }}
                         >
-                            {editing ? "Update Review" : "Submit Review"}
-                        </button>
+                             {reviewLoading ? "Submitting..."
+                            : editing
+                                ? "Update Review"
+                                : "Submit Review"}
+                                            </button>
 
                     {reviewError && (
                         <Text variant="p">{reviewError}</Text>
@@ -218,12 +222,15 @@ export const AccommodationDetails = () => {
             )}
                 <Text variant="h1">Customer Reviews</Text>
 
-                {reviews.length === 0 ? (
+                {reviewLoading ? (
+                        <Text variant="p">Loading reviews...</Text>
+                    ) : reviews.length === 0 ? (
                     <Text variant="p">No reviews yet. Be the first to review this accommodation!</Text>
                 ) : (
                     
                     reviews.map((review) => (
                         <div key={review.id} className={styles.review}>
+                            <Text variant="h2">{review.user_name}</Text>
                             <Text variant="h2">Rating: {review.rating}/5</Text>
                             <Text variant="p">{review.comment}</Text>
                             <Text variant="span">
@@ -246,10 +253,10 @@ export const AccommodationDetails = () => {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    if (id) {
-                                        dispatch(removeReview(Number(id)));
-                                    }
-                                }}
+                                if (id && window.confirm("Are you sure you want to delete this review?")) {
+                                    dispatch(removeReview(Number(id)));
+                                }
+                            }}
                             >
                                 Delete
                             </button>

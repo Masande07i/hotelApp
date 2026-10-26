@@ -9,6 +9,7 @@ export interface Review {
     comment: string;
     created_at: string;
     updated_at: string;
+    user_name: string;
 }
 
 export interface ReviewInputs {
