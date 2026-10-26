@@ -63,75 +63,74 @@ export const CustomerAccommodationCard = ({
     }
 };
 
-    return (
-        <article className={styles.card}>
-            <div className={styles.gallery}>
-                {accommodationImages.length > 0 ? (
-                    <img
-                        className={styles.accommodationImage}
-                        src={accommodationImages[currentImageIndex]?.image_url}
-                        alt={name}
-                    />
-                ) : (
-                    <div className={styles.imagePlaceholder}>
-                        No image available
-                    </div>
-                )}
+  return (
+    <article className={styles.card}>
+        <div className={styles.gallery}>
+            {accommodationImages.length > 0 ? (
+                <img
+                    className={styles.accommodationImage}
+                    src={accommodationImages[currentImageIndex]?.image_url}
+                    alt={name}
+                />
+            ) : (
+                <div className={styles.imagePlaceholder}>
+                    No image available
+                </div>
+            )}
 
-                {accommodationImages.length > 1 && (
-                    <button
-                        type="button"
-                        className={styles.nextImage}
-                        onClick={showNextImage}
-                        aria-label="Next image"
-                    >
-                        <CiCircleChevRight />
-                    </button>
-                    
-                )}
+            {accommodationImages.length > 1 && (
                 <button
                     type="button"
-                    className={styles.favouriteButton}
-                    onClick={handleFavourite}
-                    aria-label={isFavourite ? "Remove from favourites" : "Add to favourites"}
+                    className={styles.nextImage}
+                    onClick={showNextImage}
+                    aria-label="Next image"
                 >
-                   <FaHeart
-                        className={isFavourite ? styles.activeHeart : ""}
-                    />
+                    <CiCircleChevRight />
                 </button>
-            </div>
+            )}
 
-            <div className={styles.info}>
-                <Text variant="h2">{name}</Text>
-
-                <div className={styles.location}>
-                    <CiLocationOn />
-                    <Text variant="p">{city}, {country}</Text>
-                </div>
-
-                <div className={styles.location}>
-                    <MdOutlineLocationCity />
-                    <Text variant="p">{address}</Text>
-                </div>
-                <div className={styles.rating}>
-                    <FaStar />
-                    <Text variant="p">
-                        {star_rating ?? "Not rated"}
-                    </Text>
-                </div>
-
-                <Text variant="p">
-                    {description || "Discover this accommodation on Havenly."}
-                </Text>
-            </div>
-
-            <div className={styles.actions}>
-                <Button
-                    label="View Details"
-                    onClick={() => navigate(`/accommodations/${id}`)}
-                    type="button"
+            <button
+                type="button"
+                className={styles.favouriteButton}
+                onClick={handleFavourite}
+                aria-label={isFavourite ? "Remove from favourites" : "Add to favourites"}
+            >
+                <FaHeart
+                    className={isFavourite ? styles.activeHeart : ""}
                 />
+            </button>
+        </div>
+
+        <div className={styles.info}>
+            <Text variant="h2">{name}</Text>
+
+            <div className={styles.rating}>
+                <FaStar />
+                <Text variant="p">{star_rating ?? "Not rated"}</Text>
             </div>
-        </article>
-    );
-};
+
+            <div className={styles.location}>
+                <CiLocationOn />
+                <Text variant="p">{city}, {country}</Text>
+            </div>
+
+            <Text variant="p">
+                {description || "Discover this accommodation on Havenly."}
+            </Text>
+
+            <div className={styles.location}>
+                <MdOutlineLocationCity />
+                <Text variant="p">{address}</Text>
+            </div>
+        </div>
+
+        <div className={styles.actions}>
+            <Button
+                label="View Details"
+                onClick={() => navigate(`/accommodations/${id}`)}
+                type="button"
+            />
+        </div>
+    </article>
+);
+}
