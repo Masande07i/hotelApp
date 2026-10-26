@@ -10,6 +10,7 @@ import {
     fetchAccommodationImages
 } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
+import { fetchReviewsByAccommodation } from "../../../features/reviewSlice"
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -32,6 +33,9 @@ export const AccommodationDetails = () => {
         (state: RootState) =>
             state.accommodation.imagesByAccommodation[Number(id)]
     );
+    const { reviews} = useSelector(
+    (state: RootState) => state.review
+);
 
     useEffect(() => {
         if (accommodations.length === 0) {
@@ -43,6 +47,7 @@ export const AccommodationDetails = () => {
         if (id) {
             dispatch(fetchRoomsByAccommodation(Number(id)));
             dispatch(fetchAccommodationImages(Number(id)));
+            dispatch(fetchReviewsByAccommodation(Number(id)));
         }
     }, [dispatch, id]);
 
@@ -132,6 +137,23 @@ export const AccommodationDetails = () => {
                     </div>
                 ))
             )}
+            <hr />
+
+                <Text variant="h1">Customer Reviews</Text>
+
+                {reviews.length === 0 ? (
+                    <Text variant="p">No reviews yet. Be the first to review this accommodation!</Text>
+                ) : (
+                    reviews.map((review) => (
+                        <div key={review.id} className={styles.review}>
+                            <Text variant="h2">Rating: {review.rating}/5</Text>
+                            <Text variant="p">{review.comment}</Text>
+                            <Text variant="span">
+                                {new Date(review.created_at).toLocaleDateString()}
+                            </Text>
+                        </div>
+                    ))
+                )}
         </div>
     );
 };
