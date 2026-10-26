@@ -1,13 +1,17 @@
 import { query } from "../config/database";
 import { Favourite } from "../types/favourite.types"
+import { Accommodation } from "../types/accomodation.types";
 
 export const getFavourites = async (
     user_id: number
-): Promise<Favourite[]> => {
+): Promise<Accommodation[]> => {
     const { rows } = await query(
-        `SELECT * FROM favourites
-         WHERE user_id = $1
-         ORDER BY created_at DESC`,
+        `SELECT accommodations.*
+         FROM favourites
+         JOIN accommodations
+         ON favourites.accommodation_id = accommodations.id
+         WHERE favourites.user_id = $1
+         ORDER BY favourites.created_at DESC`,
         [user_id]
     );
 
