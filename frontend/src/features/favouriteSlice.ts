@@ -95,3 +95,46 @@ export const addFavourite = createAsyncThunk<
         }
     }
 );
+
+export const removeFavourite = createAsyncThunk<
+    number,
+    number,
+    { rejectValue: string; state: RootState }
+>(
+    "favourite/remove",
+    async (accommodationId, thunkAPI) => {
+        const token = thunkAPI.getState().auth.token;
+
+        if (!token) {
+            return thunkAPI.rejectWithValue(
+                "Please log in to remove favourites"
+            );
+        }
+
+        try {
+            const response = await fetch(
+                `/api/favourites/${accommodationId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to remove favourite"
+                );
+            }
+
+            return accommodationId;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
