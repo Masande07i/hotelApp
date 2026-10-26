@@ -31,3 +31,24 @@ export const hasCompletedBooking = async (
 
     return rows.length > 0;
 };
+
+export const createReview = async (
+    user_id: number,
+    accommodation_id: number,
+    rating: number,
+    comment: string
+): Promise<Review> => {
+    const { rows } = await query(
+        `INSERT INTO reviews (
+            user_id,
+            accommodation_id,
+            rating,
+            comment
+        )
+        VALUES ($1, $2, $3, $4)
+        RETURNING *`,
+        [user_id, accommodation_id, rating, comment]
+    );
+
+    return rows[0];
+};
