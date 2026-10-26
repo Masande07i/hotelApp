@@ -12,6 +12,7 @@ import { Profile } from "./pages/CUSTOMER/profile/profile"
 import { Booking } from "./pages/CUSTOMER/booking/booking";
 import { AdminCustomers } from "./pages/ADMIN/adminCustomer/adminCustomers"
 import { AdminBookings } from "./pages/ADMIN/adminBookings/adminBookings";
+import { Favourites } from "./pages/CUSTOMER/favourites/favourites"
 import { Routes, Route } from 'react-router-dom'
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/accommodations/:id"element={<AccommodationDetails />}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/favourites" element={<Favourites />} />
 
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminDashboard />} />
