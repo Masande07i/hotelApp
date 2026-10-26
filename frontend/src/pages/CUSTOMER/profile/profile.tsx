@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux"
 import type { AppDispatch } from "../../../store/store"
 import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,updateUserProfile } from "../../../features/authSlice"
 import { fetchMyBookings,setSelectedTab  } from "../../../features/bookingSlice"
+import { fetchFavourites } from "../../../features/favouriteSlice"
 
 export const Profile = () => {
     const navigate = useNavigate()
@@ -22,7 +23,7 @@ export const Profile = () => {
     const loading = useSelector((state: RootState) => state.booking.loading)
     const bookingError = useSelector((state: RootState) => state.booking.error)
     const selectedTab = useSelector((state: RootState) => state.booking.selectedTab)
-     
+    const favourites = useSelector((state: RootState) => state.favourite.favourites)
     
     const filteredBookings = bookings.filter((booking) => {
         if (selectedTab === "cancelled") {
@@ -42,9 +43,10 @@ export const Profile = () => {
     await dispatch(updateUserProfile(profileInputs))
     }
 
-    useEffect(() => {
+  useEffect(() => {
     if (user) {
         dispatch(fetchMyBookings())
+        dispatch(fetchFavourites())
     }
 }, [user, dispatch])
 
@@ -222,11 +224,31 @@ const handleLogout = () => {
                     ))}
                 </div>
 
-                    <Text variant="h2">Favourite Hotels</Text>
+                   <Text variant="h2">Favourite Hotels</Text>
+
                     <div className={style.emptySection}>
-                        Your favourite hotels will appear here.
+                        {favourites.length === 0 ? (
+                            <p>You haven't added any favourite hotels yet.</p>
+                        ) : (
+                            favourites.map((accommodation) => (
+                                <div key={accommodation.id} className={style.bookingCard}>
+                                    <Text variant="h2">{accommodation.name}</Text>
+                                    <Text variant="p">
+                                        {accommodation.city}, {accommodation.country}
+                                    </Text>
+                                    <Text variant="p">{accommodation.address}</Text>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate(`/accommodations/${accommodation.id}`)}
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
+                            ))
+                        )}
                     </div>
-                </main>
+                 </main>
             </div>
         </div>
     )
