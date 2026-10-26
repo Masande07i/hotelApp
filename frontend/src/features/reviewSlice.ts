@@ -189,6 +189,19 @@ export const reviewSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        builder
+    .addCase(fetchReviewsByAccommodation.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+    })
+    .addCase(fetchReviewsByAccommodation.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews = action.payload;
+    })
+    .addCase(fetchReviewsByAccommodation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+    });
 
     }
 });
