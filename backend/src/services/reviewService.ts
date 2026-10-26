@@ -5,9 +5,13 @@ export const getReviewsByAccommodation = async (
     accommodation_id: number
 ): Promise<Review[]> => {
     const { rows } = await query(
-        `SELECT * FROM reviews
-         WHERE accommodation_id = $1
-         ORDER BY created_at DESC`,
+        `SELECT 
+            reviews.*,
+            users.name AS user_name
+         FROM reviews
+         JOIN users ON reviews.user_id = users.id
+         WHERE reviews.accommodation_id = $1
+         ORDER BY reviews.created_at DESC`,
         [accommodation_id]
     );
 
