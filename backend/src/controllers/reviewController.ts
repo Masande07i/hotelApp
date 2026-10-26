@@ -4,6 +4,7 @@ import {getReviewsByAccommodation,hasCompletedBooking,createReview,
     deleteReview
 } from "../services/reviewService";
 
+
 export const getAccommodationReviews = async (
     req: Request,
     res: Response
@@ -24,3 +25,54 @@ export const getAccommodationReviews = async (
         res.status(500).json({ message: "Failed to fetch reviews" });
     }
 };
+
+export const addReview = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const user_id = req.user!.id;
+        const accommodation_id = Number(req.params.accommodation_id);
+        const { rating, comment } = req.body;
+
+        if (!Number.isInteger(accommodation_id) || accommodation_id <= 0) {
+            res.status(400).json({ message: "Invalid accommodation ID" });
+            return;
+        }
+
+        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+            res.status(400).json({ message: "Rating must be between 1 and 5" });
+            return;
+        }
+
+        if (!comment || !comment.trim()) {
+            res.status(400).json({ message: "Comment is required" });
+            return;
+        }
+
+        const eligible = await hasCompletedBooking(user_id, accommodation_id);
+
+        if (!eligible) {
+            res.status(403).json({
+                message: "You can only review an accommodation after completing a confirmed booking."
+            });
+            return;
+        }
+
+        const review = await createReview(
+            user_id,
+            accommodation_id,
+            rating,
+            comment.trim()
+        );
+
+        res.status(201).json({
+            message: "Review added successfully",
+            review
+        });
+    } catch (error) {
+        console.error("Error adding review:", error);
+        res.status(500).json({ message: "Failed to add review" });
+    }
+};
+
