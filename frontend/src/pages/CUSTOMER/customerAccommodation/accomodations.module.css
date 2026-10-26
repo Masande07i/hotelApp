@@ -23,9 +23,9 @@
 }
 
 .listings {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
 }
 
 @media (max-width: 600px) {

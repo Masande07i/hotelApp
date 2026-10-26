@@ -1,13 +1,13 @@
-.actions button {
-    background-color: #e879a9;
-    color: white;
+button{
+    background-color: #EADDFF;
+    color:rgb(108, 69, 117);
     font-weight: 600;
-    padding: 12px 22px;
+    padding:10px;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    border-radius: 10px;
+    cursor:pointer;
 }
 
-.actions button:hover {
-    background-color: #d85d92;
+.button:hover{
+    background-color: white;
 }

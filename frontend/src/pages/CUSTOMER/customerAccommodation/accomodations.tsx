@@ -23,6 +23,16 @@ export const accomodations = () => {
     if (error) {
         return <Text variant="p">{error}</Text>;
     }
+    if (accommodations.length === 0) {
+    return (
+        <div className={styles.page}>
+            <Text variant="h2">No accommodations available</Text>
+            <Text variant="p">
+                Please check back later for available stays.
+            </Text>
+        </div>
+    );
+}
 
     return (
         <div className={styles.page}>
