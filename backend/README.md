@@ -200,6 +200,11 @@ GET	/api/users/1	Admin only
 PUT	/api/users/1	Admin only
 DELETE	/api/users/1	Admin only
 
+GET	/api/reviews/:accommodation_id	View reviews
+POST	/api/reviews/:accommodation_id	Add a review
+PUT	/api/reviews/:accommodation_id	Update a review
+DELETE	/api/reviews/:accommodation_id	Delete a review
+
 GET	/api/favourites	Get logged-in user's favourites
 POST	/api/favourites/:accommodation_id	Add a favourite
 DELETE	/api/favourites/:accommodation_id	Remove a favourite
