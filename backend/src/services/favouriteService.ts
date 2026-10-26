@@ -28,3 +28,17 @@ export const addFavourite = async (
 
     return rows[0];
 };
+
+export const removeFavourite = async (
+    user_id: number,
+    accommodation_id: number
+): Promise<Favourite | null> => {
+    const { rows } = await query(
+        `DELETE FROM favourites
+         WHERE user_id = $1 AND accommodation_id = $2
+         RETURNING *`,
+        [user_id, accommodation_id]
+    );
+
+    return rows[0] || null;
+};
