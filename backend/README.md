@@ -122,6 +122,17 @@ CREATE TABLE favourites (
     UNIQUE(user_id, accommodation_id)
 );
 
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    accommodation_id INTEGER NOT NULL REFERENCES accommodations(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, accommodation_id)
+);
+
 
 
 
