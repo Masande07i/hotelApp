@@ -44,15 +44,20 @@ export const addFavourite = async (
             message: "Accommodation added to favourites",
             favourite
         });
-    } catch (error) {
+       } catch (error: any) {
+        if (error.code === "23505") {
+            return res.status(409).json({
+                message: "Accommodation is already in your favourites"
+            });
+        }
+
         console.error(error);
 
         return res.status(500).json({
             message: "Error adding accommodation to favourites"
         });
     }
-};
-
+}
 
 export const removeFavourite = async (
     req: Request,
