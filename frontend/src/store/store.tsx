@@ -5,6 +5,7 @@ import roomReducer from "../features/roomSlice";
 import customersReducer from "../features/customerSlice"
 import bookingReducer from "../features/bookingSlice";
 import favouriteReducer from "../features/favouriteSlice";
+import reviewReducer from "../features/reviewSlice";
 
 const savedAuth = localStorage.getItem("auth")
 
@@ -24,7 +25,8 @@ export const store = configureStore({
         room: roomReducer,
         customers: customersReducer,
         booking: bookingReducer,
-        favourite: favouriteReducer
+        favourite: favouriteReducer,
+        review: reviewReducer,
     },
     preloadedState: preloadedAuth
 })

@@ -255,3 +255,7 @@ export const reviewSlice = createSlice({
 
     }
 });
+
+export const { updateReviewInputs, clearReviewForm } = reviewSlice.actions;
+
+export default reviewSlice.reducer;
