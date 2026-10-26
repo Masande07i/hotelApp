@@ -168,3 +168,27 @@ export const removeReview = createAsyncThunk<
         }
     }
 );
+
+export const reviewSlice = createSlice({
+    name: 'review',
+    initialState,
+    reducers: {
+        updateReviewInputs: (
+            state,
+            action: PayloadAction<Partial<ReviewInputs>>
+        ) => {
+            state.inputs = {
+                ...state.inputs,
+                ...action.payload
+            };
+        },
+        clearReviewForm: (state) => {
+            state.inputs = initialState.inputs;
+            state.error = null;
+            state.success = false;
+        }
+    },
+    extraReducers: (builder) => {
+
+    }
+});
