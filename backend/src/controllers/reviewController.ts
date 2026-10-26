@@ -131,3 +131,33 @@ export const editReview = async (
     }
 };
 
+export const removeReview = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+    try {
+        const user_id = req.user!.id;
+        const accommodation_id = Number(req.params.accommodation_id);
+
+        if (!Number.isInteger(accommodation_id) || accommodation_id <= 0) {
+            res.status(400).json({ message: "Invalid accommodation ID" });
+            return;
+        }
+
+        const review = await deleteReview(user_id, accommodation_id);
+
+        if (!review) {
+            res.status(404).json({ message: "Review not found" });
+            return;
+        }
+
+        res.status(200).json({
+            message: "Review deleted successfully",
+            review
+        });
+    } catch (error) {
+        console.error("Error deleting review:", error);
+        res.status(500).json({ message: "Failed to delete review" });
+    }
+};
+
