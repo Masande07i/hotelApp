@@ -20,3 +20,35 @@ export const getFavourites = async (
     }
 };
 
+export const addFavourite = async (
+    req: Request,
+    res: Response
+) => {
+    const accommodation_id = Number(req.params.accommodation_id);
+
+    if (!Number.isInteger(accommodation_id) || accommodation_id <= 0) {
+        return res.status(400).json({
+            message: "Invalid accommodation ID"
+        });
+    }
+
+    try {
+        const user_id = req.user!.id;
+
+        const favourite = await favouriteService.addFavourite(
+            user_id,
+            accommodation_id
+        );
+
+        return res.status(201).json({
+            message: "Accommodation added to favourites",
+            favourite
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Error adding accommodation to favourites"
+        });
+    }
+};
