@@ -52,3 +52,23 @@ export const createReview = async (
 
     return rows[0];
 };
+
+export const updateReview = async (
+    user_id: number,
+    accommodation_id: number,
+    rating: number,
+    comment: string
+): Promise<Review | null> => {
+    const { rows } = await query(
+        `UPDATE reviews
+         SET rating = $1,
+             comment = $2,
+             updated_at = CURRENT_TIMESTAMP
+         WHERE user_id = $3
+         AND accommodation_id = $4
+         RETURNING *`,
+        [rating, comment, user_id, accommodation_id]
+    );
+
+    return rows[0] || null;
+};
