@@ -54,7 +54,7 @@ export const fetchFavourites = createAsyncThunk<
 );
 
 export const addFavourite = createAsyncThunk<
-    Accommodation,
+    Accommodation[],
     number,
     { rejectValue: string; state: RootState }
 >(
@@ -87,7 +87,7 @@ export const addFavourite = createAsyncThunk<
                 );
             }
 
-            return data.favourite as Accommodation;
+            return await thunkAPI.dispatch(fetchFavourites()).unwrap();
         } catch {
             return thunkAPI.rejectWithValue(
                 "Unable to connect to the server"
@@ -138,3 +138,52 @@ export const removeFavourite = createAsyncThunk<
         }
     }
 );
+
+const favouriteSlice = createSlice({
+    name: "favourite",
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchFavourites.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchFavourites.fulfilled, (state, action) => {
+                state.loading = false;
+                state.favourites = action.payload;
+            })
+            .addCase(fetchFavourites.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to fetch favourites";
+            })
+            .addCase(addFavourite.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addFavourite.fulfilled, (state, action) => {
+                state.loading = false;
+                state.favourites = action.payload;
+            })
+            .addCase(addFavourite.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to add favourite";
+            })
+            .addCase(removeFavourite.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(removeFavourite.fulfilled, (state, action) => {
+                state.loading = false;
+                state.favourites = state.favourites.filter(
+                    (accommodation) => accommodation.id !== action.payload
+                );
+            })
+            .addCase(removeFavourite.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || "Failed to remove favourite";
+            });
+    }
+});
+
+export default favouriteSlice.reducer;
