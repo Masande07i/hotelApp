@@ -114,6 +114,14 @@ CREATE TABLE booking_rooms (
         UNIQUE (booking_id, room_id)
 );
 
+CREATE TABLE favourites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    accommodation_id INTEGER NOT NULL REFERENCES accommodations(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, accommodation_id)
+);
+
 
 
 
@@ -180,6 +188,10 @@ GET	/api/users	Admin only
 GET	/api/users/1	Admin only
 PUT	/api/users/1	Admin only
 DELETE	/api/users/1	Admin only
+
+GET	/api/favourites	Get logged-in user's favourites
+POST	/api/favourites/:accommodation_id	Add a favourite
+DELETE	/api/favourites/:accommodation_id	Remove a favourite
 
 
 Frontend page	API endpoint	Purpose
