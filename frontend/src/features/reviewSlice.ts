@@ -201,7 +201,40 @@ export const reviewSlice = createSlice({
     .addCase(fetchReviewsByAccommodation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-    });
+    })
+    .addCase(addReview.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+    state.success = false;
+    })
+    .addCase(addReview.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews.push(action.payload);
+        state.success = true;
+        state.inputs = initialState.inputs;
+    })
+    .addCase(addReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+    })
+    .addCase(updateReview.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+    state.success = false;
+    })
+    .addCase(updateReview.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews = state.reviews.map((review) =>
+            review.id === action.payload.id ? action.payload : review
+        );
+        state.success = true;
+    })
+    .addCase(updateReview.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+        state.success = false;
+    })
 
     }
 });
