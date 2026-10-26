@@ -1,4 +1,4 @@
-
+import {addFavourite,removeFavourite} from "../../features/favouriteSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,10 @@ import type { Accommodation } from "../../features/accomodationSlice";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
 import { CiCircleChevRight } from "react-icons/ci";
+import { FaHeart, FaStar  } from "react-icons/fa";
 import styles from "./customerAccommodationCard.module.css";
+import { CiLocationOn } from "react-icons/ci";
+import { MdOutlineLocationCity } from "react-icons/md";
 
 interface CustomerAccommodationCardProps extends Accommodation {}
 
@@ -25,7 +28,10 @@ export const CustomerAccommodationCard = ({
     const navigate = useNavigate();
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+    const isFavourite = useSelector((state: RootState) =>state.favourite.favourites.some(
+            (accommodation) => accommodation.id === id
+        )
+);
     const images = useSelector(
         (state: RootState) =>
             state.accommodation.imagesByAccommodation[id]
@@ -48,6 +54,14 @@ export const CustomerAccommodationCard = ({
             (currentImageIndex + 1) % accommodationImages.length
         );
     };
+
+    const handleFavourite = () => {
+    if (isFavourite) {
+        dispatch(removeFavourite(id));
+    } else {
+        dispatch(addFavourite(id));
+    }
+};
 
     return (
         <article className={styles.card}>
@@ -73,20 +87,34 @@ export const CustomerAccommodationCard = ({
                     >
                         <CiCircleChevRight />
                     </button>
+                    
                 )}
+                <button
+                    type="button"
+                    className={styles.favouriteButton}
+                    onClick={handleFavourite}
+                    aria-label={isFavourite ? "Remove from favourites" : "Add to favourites"}
+                >
+                   <FaHeart
+                        className={isFavourite ? styles.activeHeart : ""}
+                    />
+                </button>
             </div>
 
             <div className={styles.info}>
                 <Text variant="h2">{name}</Text>
 
-                <Text variant="p">
-                    {city}, {country}
-                </Text>
+                <div className={styles.location}>
+                    <CiLocationOn />
+                    <Text variant="p">{city}, {country}</Text>
+                </div>
 
-                <Text variant="p">{address}</Text>
-
+                <div className={styles.location}>
+                    <MdOutlineLocationCity />
+                    <Text variant="p">{address}</Text>
+                </div>
                 <div className={styles.rating}>
-                    <span>★</span>
+                    <FaStar />
                     <Text variant="p">
                         {star_rating ?? "Not rated"}
                     </Text>

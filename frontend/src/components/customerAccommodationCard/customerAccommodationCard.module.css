@@ -1,13 +1,10 @@
-
 .card {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 24px;
-    padding: 16px;
+    display: flex;
+    flex-direction: column;
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 16px;
+    overflow: hidden;
     box-shadow: 0 3px 12px rgba(15, 35, 45, 0.04);
     transition: box-shadow 0.2s ease;
 }
@@ -19,9 +16,8 @@
 .gallery {
     position: relative;
     width: 100%;
-    height: 170px;
+    height: 280px;
     overflow: hidden;
-    border-radius: 9px;
     background: #e8efed;
 }
 
@@ -62,12 +58,16 @@
 .info {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    min-width: 0;
+    gap: 10px;
+    width: 100%;
+    padding: 18px 18px 0;
+    box-sizing: border-box;
 }
 
 .info h2 {
     color: #1e2938;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .info p {
@@ -81,15 +81,61 @@
     gap: 6px;
 }
 
-.rating span {
+.rating svg {
     color: #f5a623;
     font-size: 18px;
 }
 
-.actions {
+.rating p {
+    color: #1e2938;
+    font-weight: 600;
+}
+.gallery {
+    position: relative;
+}
+
+.favouriteButton {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.favouriteButton svg {
+    font-size: 22px;
+    color: #131212;
+}
+
+.activeHeart {
+    color: #ef1717;
+}
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 18px 18px;
+    box-sizing: border-box;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.location svg {
+    color: #64748b;
+    font-size: 18px;
+    flex-shrink: 0;
 }
 
 @media (max-width: 800px) {
@@ -98,8 +144,8 @@
         gap: 16px;
     }
 
-    .gallery {
-        height: 160px;
+      .gallery {
+        height: 250px;
     }
 
     .actions {
