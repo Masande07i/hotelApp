@@ -19,6 +19,7 @@ export interface ReviewInputs {
 interface ReviewState {
     reviews: Review[];
     inputs: ReviewInputs;
+    editing: boolean;
     loading: boolean;
     error: string | null;
     success: boolean;
@@ -27,6 +28,7 @@ interface ReviewState {
 
 const initialState: ReviewState = {
     reviews: [],
+    editing: false,
     inputs: {
         rating: 5,
         comment: ''
@@ -160,7 +162,7 @@ export const removeReview = createAsyncThunk<
                 );
             }
 
-            return accommodation_id;
+            return data.review.id;
         } catch {
             return thunkAPI.rejectWithValue(
                 'Unable to connect to the server'
@@ -186,7 +188,11 @@ export const reviewSlice = createSlice({
             state.inputs = initialState.inputs;
             state.error = null;
             state.success = false;
-        }
+            state.editing = false;
+        },
+        startEditing: (state) => {
+            state.editing = true;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -227,9 +233,11 @@ export const reviewSlice = createSlice({
         state.loading = false;
         state.reviews = state.reviews.map((review) =>
             review.id === action.payload.id ? action.payload : review
-        );
+    );
         state.success = true;
-    })
+        state.editing = false;
+        state.inputs = initialState.inputs;
+})
     .addCase(updateReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
@@ -243,7 +251,7 @@ export const reviewSlice = createSlice({
     .addCase(removeReview.fulfilled, (state, action) => {
         state.loading = false;
         state.reviews = state.reviews.filter(
-            (review) => review.accommodation_id !== action.payload
+            (review) => review.id !== action.payload
         );
         state.success = true;
     })
@@ -256,6 +264,6 @@ export const reviewSlice = createSlice({
     }
 });
 
-export const { updateReviewInputs, clearReviewForm } = reviewSlice.actions;
+export const { updateReviewInputs, clearReviewForm ,startEditing} = reviewSlice.actions;
 
 export default reviewSlice.reducer;
