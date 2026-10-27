@@ -5,16 +5,21 @@ import { fetchAccommodations } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard";
 import styles from "./accomodations.module.css"
+import { fetchFavourites } from "../../../features/favouriteSlice";
 
 export const accomodations = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { accommodations, loading, error } = useSelector(
         (state: RootState) => state.accommodation
     );
+    const token = useSelector((state: RootState) => state.auth.token);
 
     useEffect(() => {
         dispatch(fetchAccommodations());
-    }, [dispatch]);
+        if (token) {
+            dispatch(fetchFavourites());
+        }
+    }, [dispatch, token]);
 
     if (loading) {
         return <Text variant="p">Loading accommodations...</Text>;
