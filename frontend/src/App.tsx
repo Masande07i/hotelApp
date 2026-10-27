@@ -13,6 +13,7 @@ import { Booking } from "./pages/CUSTOMER/booking/booking";
 import { AdminCustomers } from "./pages/ADMIN/adminCustomer/adminCustomers"
 import { AdminBookings } from "./pages/ADMIN/adminBookings/adminBookings";
 import { Favourites } from "./pages/CUSTOMER/favourites/favourites"
+import { Payment } from './pages/CUSTOMER/payment/payment'
 import { Reviews } from "./pages/review/review"
 import { Routes, Route } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/accommodations/:id"element={<AccommodationDetails />}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/payment" element={<Payment />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/reviews" element={<Reviews />} />
         
