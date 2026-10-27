@@ -6,6 +6,7 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    height: 9%;
 }
 
 .field {
@@ -25,3 +26,9 @@
     box-sizing: border-box;
 }
 
+.field :global(p) {
+    margin: 0;
+    color: #333;
+    font-size: 13px;
+    font-weight: 500;
+}
