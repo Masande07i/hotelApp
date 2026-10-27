@@ -1,5 +1,6 @@
 .hero {
-    min-height: 100vh;
+    height: 75vh;
+    min-height: 500px;
     background-image: url('../../assets/background.jpg');
     background-size: cover;
     background-position: center;
@@ -10,10 +11,9 @@
 }
 .heroContent {
     margin: auto 8%;
-    max-width: 700px;
-    padding-bottom: 80px;
+    max-width: 850px;
+    padding-bottom: 60px;
 }
-
 .heroContent h3 {
     font-size: 16px;
     letter-spacing: 3px;
@@ -30,4 +30,11 @@
 .heroContent p {
     font-size: 18px;
     line-height: 1.6;
+    margin-bottom: 30px;
+}
+.hero > :last-child {
+    position: absolute;
+    bottom: -30px;
+    left: 8%;
+    right: 8%;
 }
