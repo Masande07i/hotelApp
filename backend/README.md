@@ -134,6 +134,32 @@ CREATE TABLE reviews (
 );
 
 
+CREATE TABLE payments (
+    id SERIAL PRIMARY KEY,
+    booking_id INTEGER NOT NULL,
+    amount NUMERIC(10, 2) NOT NULL,
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    payment_reference VARCHAR(100) UNIQUE,
+    payment_method VARCHAR(50) DEFAULT 'PayFast',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_payment_booking
+        FOREIGN KEY (booking_id)
+        REFERENCES bookings(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT valid_payment_amount
+        CHECK (amount > 0),
+
+    CONSTRAINT valid_payment_status
+        CHECK (
+            payment_status IN ('pending', 'paid', 'failed', 'refunded')
+        )
+);
+
+
+
 
 
 
