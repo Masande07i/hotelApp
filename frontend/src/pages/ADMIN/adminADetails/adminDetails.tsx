@@ -15,7 +15,7 @@ import {type Room,
 } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
-import { AddRoomForm } from "../../../components/Popup/roomPopup/roomPopup"
+import { AddRoomForm } from "../../../components/Popup/roomPopup"
 
 export const AdminDetails = () => {
     const { id } = useParams<{ id: string }>();

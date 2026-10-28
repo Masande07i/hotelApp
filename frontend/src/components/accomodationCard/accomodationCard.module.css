@@ -1,0 +1,114 @@
+
+.imageContainer {
+    width: 65px;
+    height: 60px;
+    position: relative;
+}
+
+.image {
+    width: 65px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.noImage {
+    width: 65px;
+    height: 60px;
+    background-color: #e8eeee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #64748b;
+}
+
+.previousImage,
+.nextImage {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.85);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.previousImage {
+    left: 2px;
+}
+
+.nextImage {
+    right: 2px;
+}
+
+.name {
+    font-weight: 600;
+    color: #183b3a;
+    margin-bottom: 4px;
+}
+
+.address {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.rating {
+    color: #f5a623;
+    letter-spacing: 1px;
+}
+
+.ratingNumber {
+    display: block;
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.editButton,
+.deleteButton,
+.viewButton {
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: white;
+    font-size: 12px;
+}
+
+.editButton {
+    color: #087f68;
+    border: 1px solid #cce5df;
+}
+
+.deleteButton {
+    color: #e54848;
+    border: 1px solid #f3d3d3;
+}
+
+.viewButton {
+    color: #475569;
+    border: 1px solid #dce3e8;
+}
+
+.editButton:hover {
+    background-color: #eaf6f2;
+}
+
+.deleteButton:hover {
+    background-color: #fff1f1;
+}
+
+.viewButton:hover {
+    background-color: #f1f5f9;
+}

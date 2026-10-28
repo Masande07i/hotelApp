@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
@@ -7,10 +8,10 @@ import {
     closeAccommodationForm,
     updateAccommodationInputs
 } from "../../../features/accomodationSlice";
-import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
+import styles from "./adminAccommodations.module.css"
 import { AccommodationCard } from "../../../components/accomodationCard/accomodationCard";
-import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
+import { AccommodationPopup } from "../../../components/Popup/accommodationPopup";
 
 export const AdminAccommodations = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -39,23 +40,21 @@ export const AdminAccommodations = () => {
         dispatch(openAccommodationForm());
     };
 
-    if (loading) {
-        return <Text>Loading accommodations...</Text>;
-    }
-
-    if (error) {
-        return <Text variant="p">{error}</Text>;
-    }
+    if (loading) return <p>Loading accommodations...</p>;
+    if (error) return <p>{error}</p>;
 
     return (
-        <div>
-            <Text variant="h1">Manage Accommodations</Text>
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <h1>Accommodations</h1>
 
-            <Button
-                label="Add Accommodation"
-                onClick={handleAddAccommodation}
-                type="button"
-            />
+                <Button
+                    label="+ Add Accommodation"
+                    onClick={handleAddAccommodation}
+                    type="button"
+                    className={styles.addButton}
+                />
+            </div>
 
             {showForm && (
                 <AccommodationPopup
@@ -63,12 +62,29 @@ export const AdminAccommodations = () => {
                 />
             )}
 
-            {accommodations.map((accommodation) => (
-                <AccommodationCard
-                    key={accommodation.id}
-                    {...accommodation}
-                />
-            ))}
+            <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Accommodation Name</th>
+                            <th>Location</th>
+                            <th>Rating</th>
+                            <th>Rooms</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {accommodations.map((accommodation) => (
+                            <AccommodationCard
+                                key={accommodation.id}
+                                {...accommodation}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

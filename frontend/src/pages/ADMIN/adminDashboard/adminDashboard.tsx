@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
-import { AccommodationPopup } from "../../../components/Popup/accommodationPopup/accommodationPopup";
+import { AccommodationPopup } from "../../../components/Popup/accommodationPopup";
 import { CiHome,  CiCalendar, CiUser, } from "react-icons/ci";
 import style from "./adminDashboard.module.css";
 
