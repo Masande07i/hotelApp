@@ -1,52 +1,187 @@
 
 .details {
-    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #222;
+}
+
+.details h1 {
+    margin-bottom: 12px;
+}
+
+.details h2 {
+    margin-top: 24px;
+    margin-bottom: 12px;
 }
 
 .gallery {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 180px);
     gap: 12px;
-    overflow-x: auto;
-    margin: 20px 0;
+    margin: 24px 0 32px;
 }
 
 .gallery img {
-    width: 300px;
-    height: 200px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
+.gallery img:first-child {
+    grid-row: span 2;
+}
 .room {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    gap: 24px;
+    padding: 24px;
+    margin: 16px 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.room h2 {
+    margin-top: 0;
 }
 
 .roomPrice {
     text-align: right;
-    min-width: 150px;
+    min-width: 160px;
+}
+
+.roomPrice h2 {
+    color: #0b806e;
+    font-size: 24px;
+}
+
+.bookButton {
+    padding: 12px 24px;
+    margin-top: 12px;
+    background: #0b806e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.bookButton:hover {
+    background: #086657;
+}
+
+.reviewForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    padding: 24px;
+    margin: 24px 0;
+    background: #f8fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+.reviewForm label {
+    font-weight: 600;
+}
+
+.reviewForm textarea,
+.reviewForm select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font: inherit;
+    background: white;
+}
+
+.reviewForm textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.reviewForm button,
+.review button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #0b806e;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.reviewForm button:hover,
+.review button:hover {
+    background: #086657;
+}
+
+.reviewForm button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .review {
-    padding: 15px;
-    margin: 15px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-.review {
-    padding: 15px;
-    margin: 15px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: white;
 }
 
 .review h2 {
+    margin-top: 0;
     margin-bottom: 8px;
 }
 
+.review button {
+    margin: 12px 8px 0 0;
+}
+
+.details hr {
+    margin: 32px 0;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+}
+
+@media (max-width: 768px) {
+    .details {
+        padding: 20px 16px;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery img {
+        height: 180px;
+    }
+
+    .room {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .roomPrice {
+        text-align: left;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery img {
+        height: 220px;
+    }
+}

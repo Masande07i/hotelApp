@@ -11,6 +11,9 @@ import {
 } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
 import { fetchReviewsByAccommodation,updateReviewInputs,addReview,removeReview,startEditing,updateReview, clearReviewForm } from "../../../features/reviewSlice"
+import { AccommodationMap } from "../../../components/map/map";
+
+
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -88,7 +91,20 @@ export const AccommodationDetails = () => {
             </div>
 
             <Text variant="h2">About this accommodation</Text>
-            <Text variant="p">{accommodation.description}</Text>
+                <Text variant="p">{accommodation.description}</Text>
+
+                <Text variant="h2">Location</Text>
+
+                {accommodation.latitude !== null &&
+                accommodation.longitude !== null ? (
+                    <AccommodationMap
+                        latitude={Number(accommodation.latitude)}
+                        longitude={Number(accommodation.longitude)}
+                        name={accommodation.name}
+                    />
+                ) : (
+                    <Text variant="p">Location map not available.</Text>
+                )}
 
             <hr />
 

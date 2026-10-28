@@ -481,4 +481,14 @@ const preloadedAuth = savedAuth
       }
     }
   : undefined
+
+  //install google
+npm install google-auth-library -back
+npm install @react-oauth/google - front
+
+//Installs leaflet
+npm install leaflet react-leaflet
+npm install -D @types/leaflet
+
+
   

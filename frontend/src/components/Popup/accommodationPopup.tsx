@@ -47,7 +47,9 @@ export const AccommodationPopup = ({
                 address: accommodation.address,
                 city: accommodation.city,
                 country: accommodation.country,
-                star_rating: accommodation.star_rating?.toString() ?? ""
+                star_rating: accommodation.star_rating?.toString() ?? "",
+                latitude: accommodation.latitude?.toString() ?? "",
+                longitude: accommodation.longitude?.toString() ?? ""
             }));
 
             dispatch(setSelectedImages([]));
@@ -183,6 +185,38 @@ export const AccommodationPopup = ({
                             />
                         </div>
                     </div>
+
+                    <label htmlFor="latitude">Latitude *</label>
+                        <input
+                            id="latitude"
+                            name="latitude"
+                            type="number"
+                            step="any"
+                            placeholder="e.g. -29.8587"
+                            value={inputs.latitude}
+                            onChange={(event) =>
+                                dispatch(updateAccommodationInputs({
+                                    latitude: event.target.value
+                                }))
+                            }
+                            required
+                        />
+
+                        <label htmlFor="longitude">Longitude *</label>
+                        <input
+                            id="longitude"
+                            name="longitude"
+                            type="number"
+                            step="any"
+                            placeholder="e.g. 31.0218"
+                            value={inputs.longitude}
+                            onChange={(event) =>
+                                dispatch(updateAccommodationInputs({
+                                    longitude: event.target.value
+                                }))
+                            }
+                            required
+                        />
 
                     <label htmlFor="star_rating">Star Rating</label>
                     <select

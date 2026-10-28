@@ -67,7 +67,9 @@ export const AccommodationCard = ({
         country,
         star_rating,
         created_at,
-        updated_at
+        updated_at,
+        latitude: null,
+        longitude: null
     };
 
     return (

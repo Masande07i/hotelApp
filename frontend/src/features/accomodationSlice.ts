@@ -8,6 +8,8 @@ export interface Accommodation {
     address: string;
     city: string;
     country: string;
+    latitude: number | null;
+    longitude: number | null;
     star_rating: number | null;
     created_at: string;
     updated_at: string;
@@ -26,6 +28,8 @@ interface AccommodationInputs {
     city: string
     country: string
     star_rating: string
+    latitude: string
+    longitude: string
 }
 
 interface AccommodationState {
@@ -51,7 +55,9 @@ const initialState: AccommodationState = {
         address: '',
         city: '',
         country: '',
-        star_rating: ''
+        star_rating: '',
+        latitude: "",
+        longitude: ""
     },
         showForm: false,
         selectedImages: [],
@@ -112,11 +118,13 @@ export const createAccommodation = createAsyncThunk<
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-                body: JSON.stringify({
+               body: JSON.stringify({
                     ...inputs,
                     star_rating: inputs.star_rating
                         ? Number(inputs.star_rating)
-                        : null
+                        : null,
+                    latitude: Number(inputs.latitude),
+                    longitude: Number(inputs.longitude)
                 })
             });
 
@@ -167,7 +175,9 @@ export const updateAccommodation = createAsyncThunk<
                         ...inputs,
                         star_rating: inputs.star_rating
                             ? Number(inputs.star_rating)
-                            : null
+                            : null,
+                        latitude: Number(inputs.latitude),
+                        longitude: Number(inputs.longitude)
                     })
                 }
             );
@@ -375,7 +385,9 @@ extraReducers: (builder) => {
                 address: "",
                 city: "",
                 country: "",
-                star_rating: ""
+                star_rating: "",
+                latitude: "",
+                longitude: ""
             };
             state.showForm = false;
         })
@@ -407,7 +419,9 @@ extraReducers: (builder) => {
                 address: "",
                 city: "",
                 country: "",
-                star_rating: ""
+                star_rating: "",
+                latitude: "",
+                longitude: ""
             };
 
             state.showForm = false;
