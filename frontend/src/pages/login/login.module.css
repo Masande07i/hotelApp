@@ -30,3 +30,10 @@ margin: 0 0 22px;
 
 text-align: center;
 }
+
+.googleButton {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+}

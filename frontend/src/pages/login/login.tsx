@@ -91,10 +91,12 @@ const handleGoogleSuccess = async (credentialResponse: any) => {
           label={loading ? 'Logging in...' : 'Log in'}
           type="submit"
         />
-        <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={() => console.log('Google Login Failed')}
-          />
+        <div className={style.googleButton}>
+    <GoogleLogin
+        onSuccess={handleGoogleSuccess}
+        onError={() => console.log('Google Login Failed')}
+    />
+</div>
 
         <Text variant="p" className={style.signup}>
           Don't have an account? <Link to="/signup">Sign up</Link>
