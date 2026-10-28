@@ -5,6 +5,8 @@ import style from './login.module.css'
 import { Text } from '../../components/Text/text'
 import { Button } from '../../components/button/button'
 import { useNavigate, Link } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google'
+import { googleLoginUser } from '../../features/authSlice'
 
 export const login = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -20,6 +22,26 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 
   try {
     const result = await dispatch(loginUser(loginInputs)).unwrap()
+
+    if (result.user.role === 'admin') {
+      navigate('/admin')
+    } else {
+      navigate('/')
+    }
+  } catch {
+    // The error is displayed from Redux state.
+  }
+}
+
+const handleGoogleSuccess = async (credentialResponse: any) => {
+  if (!credentialResponse.credential) {
+    return
+  }
+
+  try {
+    const result = await dispatch(
+      googleLoginUser(credentialResponse.credential)
+    ).unwrap()
 
     if (result.user.role === 'admin') {
       navigate('/admin')
@@ -69,6 +91,10 @@ const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
           label={loading ? 'Logging in...' : 'Log in'}
           type="submit"
         />
+        <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => console.log('Google Login Failed')}
+          />
 
         <Text variant="p" className={style.signup}>
           Don't have an account? <Link to="/signup">Sign up</Link>

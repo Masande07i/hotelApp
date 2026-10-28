@@ -144,6 +144,39 @@ export const loginUser = createAsyncThunk<
   }
 )
 
+export const googleLoginUser = createAsyncThunk<
+  LoginResponse,
+  string,
+  { rejectValue: string }
+>(
+  'auth/googleLoginUser',
+  async (idToken, thunkAPI) => {
+    try {
+      const response = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ idToken })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        return thunkAPI.rejectWithValue(
+          data.message || 'Google login failed'
+        )
+      }
+
+      return data as LoginResponse
+    } catch {
+      return thunkAPI.rejectWithValue(
+        'Unable to connect to the server'
+      )
+    }
+  }
+)
+
 export const updateUserProfile = createAsyncThunk<
   AuthUser,
   UpdateUserProfileInputs,
@@ -272,7 +305,31 @@ export const authSlice = createSlice({
       state.loading = false
       state.error = action.payload as string
       state.success = false
-})
+      })
+      .addCase(googleLoginUser.pending, (state) => {
+        state.loading = true
+        state.error = null
+        state.success = false
+      })
+
+      .addCase(googleLoginUser.fulfilled, (state, action) => {
+        state.loading = false
+        state.token = action.payload.token
+        state.user = action.payload.user
+
+        localStorage.setItem("auth", JSON.stringify({
+          token: action.payload.token,
+          user: action.payload.user
+        }))
+
+        state.success = true
+      })
+
+      .addCase(googleLoginUser.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload || 'Google login failed'
+        state.success = false
+      })
 
     .addCase(updateUserProfile.pending, (state) => {
       state.loading = true
