@@ -15,6 +15,51 @@ export const findUserByEmail = async (
     return rows[0] || null;
 };
 
+export const findUserByGoogleId = async (
+    google_id: string
+): Promise<User | null> => {
+    const { rows } = await query(
+        "SELECT * FROM users WHERE google_id = $1",
+        [google_id]
+    );
+
+    return rows[0] || null;
+};
+
+export const createGoogleUser = async (
+    email: string,
+    name: string,
+    google_id: string,
+    profile_image: string | null
+): Promise<User> => {
+    const { rows } = await query(
+        `INSERT INTO users (email, name, google_id, profile_image, role)
+         VALUES ($1, $2, $3, $4, 'customer')
+         RETURNING *`,
+        [email, name, google_id, profile_image]
+    );
+
+    return rows[0];
+};
+
+export const linkGoogleAccount = async (
+    id: number,
+    google_id: string,
+    profile_image: string | null
+): Promise<User | null> => {
+    const { rows } = await query(
+        `UPDATE users
+         SET google_id = $1,
+             profile_image = COALESCE(profile_image, $2),
+             updated_at = CURRENT_TIMESTAMP
+         WHERE id = $3
+         RETURNING *`,
+        [google_id, profile_image, id]
+    );
+
+    return rows[0] || null;
+};
+
 export const createUser = async (
     email: string,
     password: string,
