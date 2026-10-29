@@ -63,16 +63,17 @@ export const linkGoogleAccount = async (
 export const createUser = async (
     email: string,
     password: string,
-    name: string
+    name: string,
+    role: "customer" | "admin" = "customer"
 ): Promise<User> => {
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
     const { rows } = await query(
-        `INSERT INTO users (email, password_hash, name)
-         VALUES ($1, $2, $3)
+        `INSERT INTO users (email, password_hash, name, role)
+         VALUES ($1, $2, $3, $4)
          RETURNING *`,
-        [email, password_hash, name]
+        [email, password_hash, name, role]
     );
 
     return rows[0];

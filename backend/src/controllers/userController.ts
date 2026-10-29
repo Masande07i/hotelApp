@@ -165,3 +165,46 @@ export const deleteUser = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const createUser = async (req: Request, res: Response) => {
+    const { name, email, password, role } = req.body;
+
+    if (!name || !email || !password || !role) {
+        return res.status(400).json({
+            message: "Name, email, password and role are required"
+        });
+    }
+
+    if (role !== "customer" && role !== "admin") {
+        return res.status(400).json({
+            message: "Invalid user role"
+        });
+    }
+
+    try {
+        const existingUser = await userService.findUserByEmail(email);
+
+        if (existingUser) {
+            return res.status(409).json({
+                message: "Email is already in use"
+            });
+        }
+
+        const newUser = await userService.createUser(
+            email,
+            password,
+            name,
+            role
+        );
+
+        return res.status(201).json({
+            message: "User created successfully",
+            user: newUser
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error creating user"
+        });
+    }
+};

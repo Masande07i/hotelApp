@@ -146,3 +146,14 @@ export const completePayment = async (
         client.release();
     }
 };
+
+
+export const getTotalRevenue = async (): Promise<number> => {
+    const { rows } = await query(
+        `SELECT COALESCE(SUM(amount), 0) AS total_revenue
+         FROM payments
+         WHERE payment_status = 'paid'`
+    );
+
+    return Number(rows[0].total_revenue);
+};

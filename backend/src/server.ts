@@ -30,6 +30,7 @@ const startServer = async () => {
   app.use("/api/favourites", favouriteRoutes);
   app.use("/api/reviews", reviewRoutes);
   app.use("/api/payments", paymentRoutes);
+  
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
