@@ -8,6 +8,7 @@ import { Button } from "../../../components/button/button";
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard";
 import styles from "./accomodations.module.css";
 import { fetchFavourites } from "../../../features/favouriteSlice";
+import { navbar as Navbar } from "../../../components/navbar/navbar";
 
 
 export const accomodations = () => {
@@ -62,6 +63,7 @@ export const accomodations = () => {
                         label="Back to Home"
                         onClick={() => navigate("/")}
                     />
+                     <Navbar className={styles.detailsNavbar} />
 
                     <Text variant="h1">Explore Accommodations</Text>
                     <Text variant="p">

@@ -19,6 +19,7 @@ import {
     clearReviewForm
 } from "../../../features/reviewSlice";
 import { AccommodationMap } from "../../../components/map/map";
+import { navbar as Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
 
 export const AccommodationDetails = () => {
@@ -113,11 +114,14 @@ export const AccommodationDetails = () => {
 
     return (
         <div className={styles.details}>
+
+            
             <Button
                 type="button"
                 label="Back to Accommodations"
                 onClick={() => navigate("/accomodations")}
             />
+            <Navbar className={styles.detailsNavbar} />
 
             <Text variant="h1">{accommodation.name}</Text>
 
@@ -185,14 +189,23 @@ export const AccommodationDetails = () => {
 
                             <Text variant="p">per night</Text>
 
-                            <button
+                           <button
                                 type="button"
                                 className={styles.bookButton}
-                                onClick={() =>
+                                onClick={() => {
+                                    if (!user) {
+                                        navigate("/login", {
+                                            state: {
+                                                from: `/accommodations/${accommodation.id}`
+                                            }
+                                        });
+                                        return;
+                                    }
+
                                     navigate("/booking", {
                                         state: { accommodation, room }
-                                    })
-                                }
+                                    });
+                                }}
                             >
                                 Book Now
                             </button>

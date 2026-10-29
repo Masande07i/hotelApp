@@ -14,6 +14,12 @@
     margin-top: 24px;
     margin-bottom: 12px;
 }
+.detailsNavbar {
+    width: 100%;
+    margin-bottom: 25px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
 
 .gallery {
     display: grid;

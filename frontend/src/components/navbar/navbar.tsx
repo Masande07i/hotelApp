@@ -1,3 +1,4 @@
+
 import style from './navbar.module.css';
 import { Text } from '../Text/text';
 import { Button } from '../button/button';
@@ -6,7 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 
-export const navbar = () => {
+interface NavbarProps {
+    className?: string;
+}
+
+export const navbar = ({ className }: NavbarProps) => {
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => state.auth.user);
 
@@ -23,7 +28,7 @@ export const navbar = () => {
     };
 
     return (
-        <nav className={style.navbar}>
+        <nav className={`${style.navbar} ${className || ""}`}>
             <div className={style.logo}>
                 <CiHome className={style.logoIcon} />
                 <Text variant="h2">Havenly</Text>
