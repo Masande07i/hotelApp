@@ -93,18 +93,7 @@ export const AccommodationDetails = () => {
             <Text variant="h2">About this accommodation</Text>
                 <Text variant="p">{accommodation.description}</Text>
 
-                <Text variant="h2">Location</Text>
-
-                {accommodation.latitude !== null &&
-                accommodation.longitude !== null ? (
-                    <AccommodationMap
-                        latitude={Number(accommodation.latitude)}
-                        longitude={Number(accommodation.longitude)}
-                        name={accommodation.name}
-                    />
-                ) : (
-                    <Text variant="p">Location map not available.</Text>
-                )}
+            
 
             <hr />
 
@@ -167,6 +156,19 @@ export const AccommodationDetails = () => {
                     
                 )))}
             <hr />
+
+                <Text variant="h2">Location</Text>
+
+                {accommodation.latitude !== null &&
+                accommodation.longitude !== null ? (
+                    <AccommodationMap
+                        latitude={Number(accommodation.latitude)}
+                        longitude={Number(accommodation.longitude)}
+                        name={accommodation.name}
+                    />
+                ) : (
+                    <Text variant="p">Location map not available.</Text>
+                )}
 
            {user && (!userReview || editing) && (
                 <div className={styles.reviewForm}>

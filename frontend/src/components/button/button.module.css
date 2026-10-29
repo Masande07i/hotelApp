@@ -1,13 +1,13 @@
-button{
-    background-color: #EADDFF;
-    color:rgb(108, 69, 117);
+button {
+    background-color: #075b53;
+    color: white;
     font-weight: 600;
-    padding:10px;
+    padding: 10px;
     border: none;
     border-radius: 10px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
-.button:hover{
-    background-color: white;
+button:hover {
+    background-color: #064840;
 }
