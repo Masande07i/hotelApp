@@ -1,8 +1,9 @@
+
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../../store/store";
-import { updateBookingInputs, setSelectedRoom ,createBooking} from "../../../features/bookingSlice";
+import { updateBookingInputs, setSelectedRoom, createBooking } from "../../../features/bookingSlice";
 import type { Accommodation } from "../../../features/accomodationSlice";
 import type { Room } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
@@ -65,225 +66,225 @@ export const Booking = () => {
     const nights =
         inputs.check_in && inputs.check_out
             ? Math.max(
-                  0,
-                  Math.ceil(
-                      (new Date(inputs.check_out).getTime() -
-                          new Date(inputs.check_in).getTime()) /
-                          (1000 * 60 * 60 * 24)
-                  )
-              )
+                0,
+                Math.ceil(
+                    (new Date(inputs.check_out).getTime() -
+                        new Date(inputs.check_in).getTime()) /
+                        (1000 * 60 * 60 * 24)
+                )
+            )
             : 0;
 
+    const numberOfRooms = Number(inputs.number_of_rooms) || 1;
     const totalPrice =
-        Number(room.price_per_night) *
-        Number(inputs.number_of_rooms) *
-        nights;
+        Number(room.price_per_night) * numberOfRooms * nights;
 
-  const handleContinue = async () => {
-    if (
-        !inputs.check_in ||
-        !inputs.check_out ||
-        inputs.check_in >= inputs.check_out
-    ) {
-        return;
-    }
+    const serviceFee = 0;
+    const grandTotal = totalPrice + serviceFee;
 
-    if (
-        Number(inputs.number_of_rooms) < 1 ||
-        Number(inputs.number_of_rooms) > room.total_rooms ||
-        Number(inputs.number_of_guests) < 1 ||
-        Number(inputs.number_of_guests) >
-            room.capacity * Number(inputs.number_of_rooms)
-    ) {
-        return;
-    }
+    const handleContinue = async () => {
+        if (
+            !inputs.check_in ||
+            !inputs.check_out ||
+            inputs.check_in >= inputs.check_out
+        ) {
+            return;
+        }
 
-    const result = await dispatch(
-        createBooking({
-            check_in: inputs.check_in,
-            check_out: inputs.check_out,
-            room_id: room.id,
-            number_of_rooms: Number(inputs.number_of_rooms),
-            number_of_guests: Number(inputs.number_of_guests)
-        })
-    );
+        if (
+            numberOfRooms < 1 ||
+            numberOfRooms > room.total_rooms ||
+            Number(inputs.number_of_guests) < 1 ||
+            Number(inputs.number_of_guests) >
+                room.capacity * numberOfRooms
+        ) {
+            return;
+        }
 
-    if (createBooking.fulfilled.match(result)) {
-        navigate("/payment", {
-            state: {
-                accommodation,
-                room,
-                booking: result.payload
-            }
-        });
-    }
-};
+        const result = await dispatch(
+            createBooking({
+                check_in: inputs.check_in,
+                check_out: inputs.check_out,
+                room_id: room.id,
+                number_of_rooms: numberOfRooms,
+                number_of_guests: Number(inputs.number_of_guests)
+            })
+        );
+
+        if (createBooking.fulfilled.match(result)) {
+            navigate("/payment", {
+                state: {
+                    accommodation,
+                    room,
+                    booking: result.payload
+                }
+            });
+        }
+    };
 
     return (
         <div className={style.bookingPage}>
-            <button
-                type="button"
-                className={style.backButton}
-                onClick={() =>
-                    navigate(`/accommodations/${accommodation.id}`)
-                }
-            >
-                ← Back to hotel
-            </button>
+            <div className={style.bookingCard}>
+                <button
+                    type="button"
+                    className={style.backButton}
+                    onClick={() =>
+                        navigate(`/accommodations/${accommodation.id}`)
+                    }
+                >
+                    ← Back to accommodation
+                </button>
 
-            <Text variant="h1">Complete Your Booking</Text>
-            <Text variant="p">
-                Review your room and booking details below.
-            </Text>
+                <Text variant="h1">Complete Your Booking</Text>
 
-            <div className={style.bookingLayout}>
-                <main className={style.bookingForm}>
-                    <section className={style.section}>
-                        <Text variant="h2">Your Stay</Text>
+                <div className={style.hotelInfo}>
+                    <div className={style.hotelPlaceholder}>
+                        <span>Havenly</span>
+                    </div>
 
-                        <div className={style.dateFields}>
-                            <label>
-                                Check-in
-                                <input
-                                    type="date"
-                                    value={inputs.check_in}
-                                    min={new Date().toISOString().split("T")[0]}
-                                    onChange={(event) =>
-                                        handleInputChange(
-                                            "check_in",
-                                            event.target.value
-                                        )
-                                    }
-                                    required
-                                />
-                            </label>
-
-                            <label>
-                                Check-out
-                                <input
-                                    type="date"
-                                    value={inputs.check_out}
-                                    min={
-                                        inputs.check_in ||
-                                        new Date().toISOString().split("T")[0]
-                                    }
-                                    onChange={(event) =>
-                                        handleInputChange(
-                                            "check_out",
-                                            event.target.value
-                                        )
-                                    }
-                                    required
-                                />
-                            </label>
-                        </div>
-
-                        <div className={style.guestFields}>
-                            <label>
-                                Rooms
-                                <input
-                                    type="number"
-                                    min="1"
-                                    max={room.total_rooms}
-                                    value={inputs.number_of_rooms}
-                                    onChange={(event) =>
-                                        handleInputChange(
-                                            "number_of_rooms",
-                                            event.target.value
-                                        )
-                                    }
-                                    required
-                                />
-                            </label>
-
-                            <label>
-                                Guests
-                                <input
-                                    type="number"
-                                    min="1"
-                                    max={
-                                        room.capacity *
-                                        Number(inputs.number_of_rooms)
-                                    }
-                                    value={inputs.number_of_guests}
-                                    onChange={(event) =>
-                                        handleInputChange(
-                                            "number_of_guests",
-                                            event.target.value
-                                        )
-                                    }
-                                    required
-                                />
-                            </label>
-                        </div>
-                    </section>
-
-                    <section className={style.section}>
-                        <Text variant="h2">Guest Information</Text>
+                    <div className={style.hotelDetails}>
+                        <Text variant="h2">{accommodation.name}</Text>
+                        <Text variant="p">{room.room_type}</Text>
                         <Text variant="p">
-                            Your contact details will be taken from your
-                            account when you continue.
+                            {accommodation.city}, {accommodation.country}
                         </Text>
-                    </section>
+                    </div>
+                </div>
 
-                    {error && (
-                        <Text variant="p">{error}</Text>
-                    )}
-                </main>
+                <div className={style.fields}>
+                    <label>
+                        Check-in
+                        <input
+                            type="date"
+                            value={inputs.check_in}
+                            min={new Date().toISOString().split("T")[0]}
+                            onChange={(event) =>
+                                handleInputChange("check_in", event.target.value)
+                            }
+                            required
+                        />
+                    </label>
 
-                <aside className={style.bookingSummary}>
-                    <Text variant="h2">Booking Summary</Text>
+                    <label>
+                        Check-out
+                        <input
+                            type="date"
+                            value={inputs.check_out}
+                            min={
+                                inputs.check_in ||
+                                new Date().toISOString().split("T")[0]
+                            }
+                            onChange={(event) =>
+                                handleInputChange("check_out", event.target.value)
+                            }
+                            required
+                        />
+                    </label>
+                </div>
 
-                    <div className={style.hotelInfo}>
-                        <div className={style.hotelPlaceholder}></div>
-                        <div>
-                            <Text variant="h2">{accommodation.name}</Text>
-                            <Text variant="p">
-                                {accommodation.city}, {accommodation.country}
-                            </Text>
-                            <Text variant="p">{room.room_type}</Text>
-                            <Text variant="p">
-                                Up to {room.capacity} guests per room
-                            </Text>
+                <div className={style.fields}>
+                    <label>
+                        Rooms
+                        <div className={style.counter}>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleInputChange(
+                                        "number_of_rooms",
+                                        String(Math.max(1, numberOfRooms - 1))
+                                    )
+                                }
+                            >
+                                −
+                            </button>
+
+                            <span>{inputs.number_of_rooms}</span>
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleInputChange(
+                                        "number_of_rooms",
+                                        String(Math.min(room.total_rooms, numberOfRooms + 1))
+                                    )
+                                }
+                            >
+                                +
+                            </button>
                         </div>
+                    </label>
+
+                    <label>
+                        Guests
+                        <div className={style.counter}>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleInputChange(
+                                        "number_of_guests",
+                                        String(
+                                            Math.max(1, Number(inputs.number_of_guests) - 1)
+                                        )
+                                    )
+                                }
+                            >
+                                
+                            </button>
+
+                            <span>{inputs.number_of_guests}</span>
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    handleInputChange(
+                                        "number_of_guests",
+                                        String(
+                                            Math.min(
+                                                room.capacity * numberOfRooms,
+                                                Number(inputs.number_of_guests) + 1
+                                            )
+                                        )
+                                    )
+                                }
+                            >
+                                +
+                            </button>
+                        </div>
+                    </label>
+                </div>
+
+                <div className={style.priceDetails}>
+                    <div className={style.priceRow}>
+                        <span>
+                            {nights} nights × R
+                            {Number(room.price_per_night).toLocaleString("en-ZA")}
+                        </span>
+                        <strong>R{totalPrice.toLocaleString("en-ZA")}</strong>
                     </div>
 
                     <div className={style.priceRow}>
-                        <span>Price per night</span>
-                        <strong>
-                            R
-                            {Number(room.price_per_night).toLocaleString(
-                                "en-ZA"
-                            )}
-                        </strong>
-                    </div>
-
-                    <div className={style.priceRow}>
-                        <span>Rooms</span>
-                        <strong>{inputs.number_of_rooms}</strong>
-                    </div>
-
-                    <div className={style.priceRow}>
-                        <span>Nights</span>
-                        <strong>{nights}</strong>
+                        <span>Service fee</span>
+                        <strong>R{serviceFee.toLocaleString("en-ZA")}</strong>
                     </div>
 
                     <div className={style.totalRow}>
-                        <span>Estimated total</span>
-                        <strong>
-                            R{totalPrice.toLocaleString("en-ZA")}
-                        </strong>
+                        <span>Total</span>
+                        <strong>R{grandTotal.toLocaleString("en-ZA")}</strong>
                     </div>
+                </div>
 
-                    <button
-                        type="button"
-                        className={style.continueButton}
-                        onClick={handleContinue}
-                        disabled={loading}
-                    >
-                        Continue to Payment
-                    </button>
-                </aside>
+                {error && (
+                    <Text variant="p">{error}</Text>
+                )}
+
+                <button
+                    type="button"
+                    className={style.continueButton}
+                    onClick={handleContinue}
+                    disabled={loading}
+                >
+                    {loading ? "Processing..." : "Continue to Payment"}
+                </button>
             </div>
         </div>
     );
