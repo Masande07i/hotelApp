@@ -1,0 +1,164 @@
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(10, 35, 34, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.formCard {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 550px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.title {
+    color: #183b3a;
+    font-size: 23px;
+    font-weight: 600;
+    margin: 0 0 25px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.form label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 7px;
+}
+
+.form input,
+.form textarea,
+.form select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #dce4e9;
+    border-radius: 7px;
+    background-color: #ffffff;
+    color: #334155;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form input:focus,
+.form textarea:focus,
+.form select:focus {
+    border-color: #087f68;
+}
+
+.form textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+    color: #a0acb8;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.uploadArea {
+    border: 1px dashed #cbd5df;
+    border-radius: 8px;
+    padding: 28px 15px;
+    text-align: center;
+    background-color: #fbfcfd;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.uploadArea:hover {
+    border-color: #087f68;
+    background-color: #f5fbf9;
+}
+
+.fileInput {
+    display: none;
+}
+
+.fileText {
+    color: #087f68;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+.error {
+    color: #dc2626;
+    font-size: 12px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.cancelButton,
+.submitButton {
+    flex: 1;
+    padding: 12px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancelButton {
+    background-color: white;
+    color: #475569;
+    border: 1px solid #dce4e9;
+}
+
+.submitButton {
+    background-color: #087f68;
+    color: white;
+    border: 1px solid #087f68;
+}
+
+.cancelButton:hover {
+    background-color: #f1f5f9;
+}
+
+.submitButton:hover {
+    background-color: #066653;
+}
+
+@media (max-width: 500px) {
+    .formCard {
+        padding: 20px;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+}

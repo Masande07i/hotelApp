@@ -1,0 +1,40 @@
+.hero {
+    height: 75vh;
+    min-height: 500px;
+    background-image: url('../../assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    position: relative;
+}
+.heroContent {
+    margin: auto 8%;
+    max-width: 850px;
+    padding-bottom: 60px;
+}
+.heroContent h3 {
+    font-size: 16px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.heroContent h1 {
+    font-size: 52px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.heroContent p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+.hero > :last-child {
+    position: absolute;
+    bottom: -30px;
+    left: 8%;
+    right: 8%;
+}

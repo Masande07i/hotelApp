@@ -11,15 +11,33 @@
   "keywords": [],
   "type": "commonjs",
   "dependencies": {
+<<<<<<< HEAD
     "dotenv": "^18.0.9",
     "express": "^5.3.0",
     "pg": "^8.23.1",
     "save-dev": "^0.0.1-security"
+=======
+    "@types/node": "^26.6.4",
+    "axios": "^1.21.0",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.4.0",
+    "typescript": "^7.0.2"
+>>>>>>> pages
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.6",
+<<<<<<< HEAD
     "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
+=======
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.3.0",
+>>>>>>> pages
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",

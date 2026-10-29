@@ -1,0 +1,220 @@
+.profilePage {
+    padding: 24px;
+    color: rgb(108, 69, 117);
+}
+
+.profilePage h1 {
+    margin-bottom: 20px;
+}
+
+.profileLayout {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 20px;
+    min-height: 600px;
+    border: 1px solid #e5eeee;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.sidebar {
+    background: #f5f9fa;
+    border-right: 1px solid #e0e9eb;
+    padding: 24px 14px;
+}
+
+.userInfo {
+    text-align: center;
+    padding-bottom: 24px;
+    overflow-wrap: anywhere;
+}
+
+.userInfo h2 {
+    font-size: 18px;
+    margin: 10px 0 4px;
+}
+
+.userInfo p {
+    color: rgb(108, 69, 117);
+    font-size: 13px;
+    margin: 0;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #dce9e9;
+    color: rgb(108, 69, 117);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 auto;
+}
+
+
+.bookingCard {
+    padding: 22px;
+    margin-bottom: 20px;
+    border: 1px solid #e5eeee;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(108, 69, 117, 0.08);
+}
+
+.bookingCard h2 {
+    color: rgb(108, 69, 117);
+    font-size: 20px;
+    margin: 0 0 8px;
+}
+
+.bookingCard p {
+    margin: 8px 0;
+    color: #647477;
+    font-size: 14px;
+}
+
+.bookingDetails {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #e5eeee;
+}
+
+.bookingStatus {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-top: 12px;
+    border-radius: 20px;
+    background: #fff2d6;
+    color: #946200;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+
+.profileNav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profileNav button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: rgb(108, 69, 117);
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profileNav button svg {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.profileNav button:hover,
+.profileNav .activeLink {
+    background: #dce9e9;
+}
+
+.profileContent {
+    padding: 28px 24px;
+    min-width: 0;
+}
+.logout{
+    margin-top: 90px;
+}
+
+.profileContent h2 {
+    font-size: 22px;
+    margin: 0 0 18px;
+}
+
+.bookingTabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e5eeee;
+}
+
+.bookingTabs button {
+    padding: 12px 18px;
+    border: 1px solid #e5eeee;
+    border-bottom: 3px solid transparent;
+    border-radius: 9px 9px 0 0;
+    background: #fff;
+    color:rgb(108, 69, 117);
+    cursor: pointer;
+}
+
+.bookingTabs .selectedTab {
+    border-bottom-color:rgb(108, 69, 117);
+    color: #168b83;
+    font-weight: 600;
+}
+
+.emptySection {
+    padding: 24px;
+    margin-bottom: 36px;
+    border: 1px solid #e7eeee;
+    border-radius: 10px;
+    color: #748487;
+    background: #fff;
+}
+
+@media (max-width: 700px) {
+    .profilePage {
+        padding: 14px;
+    }
+
+    .profileLayout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        border-right: none;
+        border-bottom: 1px solid #e0e9eb;
+    }
+
+    .profileNav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profileContent {
+        padding: 22px 14px;
+    }
+
+    .bookingTabs {
+        gap: 4px;
+    }
+
+    .bookingTabs button {
+        flex: 1;
+        padding: 10px 5px;
+        font-size: 12px;
+    }
+  
+    .bookingDetails {
+        grid-template-columns: 1fr;
+    }
+
+    .bookingCard {
+        padding: 16px;
+    }
+
+
+}

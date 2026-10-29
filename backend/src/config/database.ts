@@ -24,3 +24,5 @@ export const testDbConnection = async ()=>{
         
     }
 }
+
+export const getClient = () => pool.connect();

@@ -1,0 +1,114 @@
+.bookingsPage {
+    padding: 30px;
+    color: #29232d;
+}
+
+.pageHeader {
+    margin-bottom: 30px;
+}
+
+.pageHeader h1 {
+    margin-bottom: 8px;
+}
+
+.pageHeader p {
+    color: #77717c;
+}
+
+
+.bookingsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bookingCard {
+    background-color: #ffffff;
+    border: 1px solid #e8e1eb;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 3px 10px rgba(40, 25, 45, 0.05);
+}
+
+.bookingTitle {
+    margin-bottom: 18px;
+    color: rgb(108, 69, 117);
+}
+
+.bookingInfo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+}
+
+.bookingStatus {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eee8f0;
+}
+
+.bookingStatus select {
+    padding: 9px 12px;
+    border: 1px solid #d8cadd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #29232d;
+    cursor: pointer;
+}
+
+
+.statusPending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.statusConfirmed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.statusCancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.adminLayout {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f7f8;
+    color: #263238;
+}
+.mainArea {
+    flex: 1;
+    min-width: 0;
+    padding: 30px;
+}
+
+
+.statusBadge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+
+@media (max-width: 600px) {
+    .bookingInfo {
+        grid-template-columns: 1fr;
+    }
+
+    .bookingCard {
+        padding: 18px;
+    }
+
+    .bookingStatus {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+

@@ -1,0 +1,39 @@
+
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.listings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .page {
+        padding: 20px 14px;
+    }
+
+    .heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
