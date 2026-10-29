@@ -2,6 +2,17 @@
     padding: 30px;
     min-width: 0;
 }
+.adminLayout {
+    display: flex;
+    min-height: 100vh;
+    background: #f4f7f8;
+    color: #263238;
+}
+.mainArea {
+    flex: 1;
+    min-width: 0;
+    padding: 30px;
+}
 
 .pageHeader {
     display: flex;

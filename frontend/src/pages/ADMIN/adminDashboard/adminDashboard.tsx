@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
 import { AccommodationPopup } from "../../../components/Popup/accommodationPopup";
-import { CiHome, CiCalendar, CiUser } from "react-icons/ci";
 import { useSelector , useDispatch} from "react-redux";
 import type { RootState,AppDispatch } from "../../../store/store";
 import style from "./adminDashboard.module.css";
 import { fetchAllBookings } from "../../../features/bookingSlice"
-import { BiBuildingHouse } from "react-icons/bi";
+import { AdminSidebar } from "../../../components/adminSidebar/adminSidebar"
 
 
 export const adminDashboard = () => {
@@ -23,7 +22,7 @@ export const adminDashboard = () => {
     const [totalCustomers, setTotalCustomers] = useState(0);
     const [totalRevenue, setTotalRevenue] = useState(0);
 
-    const location = useLocation();
+    
     const navigate = useNavigate();
     const token = useSelector((state: RootState) => state.auth.token);
 
@@ -81,50 +80,7 @@ export const adminDashboard = () => {
 
     return (
         <div className={style.adminLayout}>
-            <aside className={style.sidebar}>
-                <div className={style.logo}>
-                    <Text variant="h2">Havenly</Text>
-                    <Text variant="p">Admin Panel</Text>
-                </div>
-
-                <nav className={style.navigation}>
-                    <button
-                        type="button"
-                        className={location.pathname === "/admin" ? style.activeLink : ""}
-                        onClick={() => navigate("/admin")}
-                    >
-                        <CiHome />
-                        Dashboard
-                    </button>
-
-                    <button
-                        type="button"
-                        className={location.pathname.startsWith("/admin/accommodations") ? style.activeLink : ""}
-                        onClick={() => navigate("/admin/accommodations")}
-                    >
-                        <BiBuildingHouse />
-                        Accommodations
-                    </button>
-
-                    <button
-                        type="button"
-                        className={location.pathname.startsWith("/admin/reservations") ? style.activeLink : ""}
-                        onClick={() => navigate("/admin/reservations")}
-                    >
-                        <CiCalendar />
-                        Reservations
-                    </button>
-
-                    <button
-                        type="button"
-                        className={location.pathname.startsWith("/admin/customers") ? style.activeLink : ""}
-                        onClick={() => navigate("/admin/customers")}
-                    >
-                        <CiUser />
-                        Customers
-                    </button>
-                </nav>
-            </aside>
+            <AdminSidebar />
 
          <div className={style.mainArea}>
                 <header className={style.header}>
