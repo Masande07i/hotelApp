@@ -12,6 +12,7 @@ import { Button } from "../../../components/button/button";
 import styles from "./adminAccommodations.module.css"
 import { AccommodationCard } from "../../../components/accomodationCard/accomodationCard";
 import { AccommodationPopup } from "../../../components/Popup/accommodationPopup";
+import { AdminSidebar } from "../../../components/adminSidebar/adminSidebar";
 
 export const AdminAccommodations = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -44,47 +45,53 @@ export const AdminAccommodations = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <h1>Accommodations</h1>
+    <div className={styles.adminLayout}>
+        <AdminSidebar />
 
-                <Button
-                    label="+ Add Accommodation"
-                    onClick={handleAddAccommodation}
-                    type="button"
-                    className={styles.addButton}
-                />
-            </div>
+        <div className={styles.mainArea}>
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <h1>Accommodations</h1>
 
-            {showForm && (
-                <AccommodationPopup
-                    onClose={() => dispatch(closeAccommodationForm())}
-                />
-            )}
+                    <Button
+                        label="+ Add Accommodation"
+                        onClick={handleAddAccommodation}
+                        type="button"
+                        className={styles.addButton}
+                    />
+                </div>
 
-            <div className={styles.tableContainer}>
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Accommodation Name</th>
-                            <th>Location</th>
-                            <th>Rating</th>
-                            <th>Rooms</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+                {showForm && (
+                    <AccommodationPopup
+                        onClose={() => dispatch(closeAccommodationForm())}
+                    />
+                )}
 
-                    <tbody>
-                        {accommodations.map((accommodation) => (
-                            <AccommodationCard
-                                key={accommodation.id}
-                                {...accommodation}
-                            />
-                        ))}
-                    </tbody>
-                </table>
+                <div className={styles.tableContainer}>
+                    <table className={styles.table}>
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Accommodation Name</th>
+                                <th>Location</th>
+                                <th>Rating</th>
+                                <th>Rooms</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {accommodations.map((accommodation) => (
+                                <AccommodationCard
+                                    key={accommodation.id}
+                                    {...accommodation}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    );
+    </div>
+);
 };
