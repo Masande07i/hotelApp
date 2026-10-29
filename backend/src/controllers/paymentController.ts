@@ -1,13 +1,10 @@
-
 import { Request, Response } from "express";
+import crypto from "crypto";
 import * as paymentService from "../services/paymentService";
 import {
-    generatePayFastSignature,
-    isValidPayFastIP,
-    verifyPayFastSignature,
-    confirmPayFastNotification
-} from "../utils/payfast";
-import crypto from "crypto";
+    initializePaystackPayment,
+    verifyPaystackPayment
+} from "../utils/paystack"
 
 export const initializePayment = async (
     req: Request,
@@ -39,46 +36,49 @@ export const initializePayment = async (
             });
         }
 
+        const amount = Number(booking.total_price);
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+            return res.status(400).json({
+                message: "Invalid booking amount"
+            });
+        }
+
         const payment_reference = `HAVENLY-${crypto.randomUUID()}`;
 
         const payment = await paymentService.createPayment(
             booking.id,
-            Number(booking.total_price),
+            amount,
             payment_reference
         );
 
-        const nameParts = booking.name.trim().split(/\s+/);
-
-        const paymentData: Record<string, string> = {
-            merchant_id: process.env.PAYFAST_MERCHANT_ID!,
-            merchant_key: process.env.PAYFAST_MERCHANT_KEY!,
-            return_url: `${process.env.FRONTEND_URL}/payment/success`,
-            cancel_url: `${process.env.FRONTEND_URL}/payment/cancel`,
-            notify_url: `${process.env.BACKEND_URL}/api/payments/notify`,
-            name_first: nameParts[0],
-            name_last: nameParts.slice(1).join(" "),
-            email_address: booking.email,
-            m_payment_id: payment_reference,
-            amount: Number(booking.total_price).toFixed(2),
-            item_name: `Havenly Booking ${booking.id}`
-        };
-
-        const signature = generatePayFastSignature(
-            paymentData,
-            process.env.PAYFAST_PASSPHRASE || ""
+        const paystackResponse = await initializePaystackPayment(
+            booking.email,
+            amount,
+            payment_reference,
+            booking.id
         );
 
-        paymentData.signature = signature;
+        if (!paystackResponse.status) {
+            await paymentService.updatePaymentStatus(
+                payment_reference,
+                "failed"
+            );
+
+            return res.status(400).json({
+                message: "Unable to initialize Paystack payment"
+            });
+        }
 
         return res.status(200).json({
             message: "Payment initialized successfully",
             payment,
-            paymentUrl: process.env.PAYFAST_PROCESS_URL,
-            paymentData
+            authorization_url: paystackResponse.data.authorization_url,
+            reference: paystackResponse.data.reference
         });
 
     } catch (error) {
-        console.log(error);
+        console.error("Payment initialization error:", error);
 
         return res.status(500).json({
             message: "Error initializing payment"
@@ -86,98 +86,91 @@ export const initializePayment = async (
     }
 };
 
-export const paymentNotification = async (
+export const verifyPayment = async (
     req: Request,
     res: Response
 ) => {
     try {
-        const notificationData = req.body as Record<string, string>;
-
-        const isValidIP = await isValidPayFastIP(req.ip);
-
-        if (!isValidIP) {
-            return res.status(403).send("Unauthorized notification source");
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Please log in first"
+            });
         }
 
-        const receivedSignature = notificationData.signature;
+        const reference = String(req.query.reference || "");
 
-        if (!receivedSignature) {
-            return res.status(400).send("Missing payment signature");
-        }
-
-        const isValidSignature = verifyPayFastSignature(
-            notificationData,
-            receivedSignature,
-            process.env.PAYFAST_PASSPHRASE || ""
-        );
-
-        if (!isValidSignature) {
-            return res.status(400).send("Invalid payment signature");
-        }
-
-        if (notificationData.merchant_id !== process.env.PAYFAST_MERCHANT_ID) {
-            return res.status(400).send("Invalid merchant ID");
-        }
-
-        if (notificationData.payment_status !== "COMPLETE") {
-            return res.status(400).send("Payment is not complete");
-        }
-
-        const payment_reference = notificationData.m_payment_id;
-
-        if (!payment_reference) {
-            return res.status(400).send("Missing payment reference");
+        if (!reference) {
+            return res.status(400).json({
+                message: "Payment reference is required"
+            });
         }
 
         const payment = await paymentService.getPaymentByReference(
-            payment_reference
+            reference
         );
 
         if (!payment) {
-            return res.status(404).send("Payment not found");
+            return res.status(404).json({
+                message: "Payment not found"
+            });
         }
 
         if (payment.payment_status === "paid") {
-            return res.status(200).send("Payment already processed");
+            return res.status(200).json({
+                message: "Payment already verified",
+                payment
+            });
         }
 
         if (payment.payment_status !== "pending") {
-            return res.status(400).send("Payment cannot be processed");
+            return res.status(400).json({
+                message: "Payment cannot be verified"
+            });
         }
 
-        const amount = Number(notificationData.amount_gross);
+        const verifiedPayment = await verifyPaystackPayment(reference);
 
-        if (!Number.isFinite(amount) || amount <= 0) {
-            return res.status(400).send("Invalid payment amount");
+        if (
+            !verifiedPayment.status ||
+            verifiedPayment.data.status !== "success" ||
+            verifiedPayment.data.reference !== reference ||
+            verifiedPayment.data.currency !== "ZAR"
+        ) {
+            return res.status(400).json({
+                message: "Payment was not successful"
+            });
         }
 
         const isValidAmount = await paymentService.verifyPaymentAmount(
-            payment_reference,
-            amount
+            reference,
+            verifiedPayment.data.amount
         );
 
         if (!isValidAmount) {
-            return res.status(400).send("Payment amount mismatch");
-        }
-
-        const isConfirmed = await confirmPayFastNotification(
-            notificationData
-        );
-
-        if (!isConfirmed) {
-            return res.status(400).send("PayFast notification could not be confirmed");
+            return res.status(400).json({
+                message: "Payment amount does not match booking"
+            });
         }
 
         await paymentService.completePayment(
-            payment_reference,
+            reference,
             payment.booking_id
         );
 
-        return res.status(200).send("Payment successfully processed");
+        const updatedPayment = await paymentService.getPaymentByReference(
+            reference
+        );
+
+        return res.status(200).json({
+            message: "Payment successfully verified",
+            payment: updatedPayment
+        });
 
     } catch (error) {
-        console.log(error);
+        console.error("Payment verification error:", error);
 
-        return res.status(500).send("Notification error");
+        return res.status(500).json({
+            message: "Error verifying payment"
+        });
     }
 };

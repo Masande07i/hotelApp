@@ -11,15 +11,31 @@ export const createAccommodation = async (
         address,
         city,
         country,
-        star_rating
+        star_rating,
+        latitude,
+        longitude
     } = req.body;
+    console.log("Coordinates received:", latitude, longitude);
 
     if (!name || !description || !address || !city || !country) {
         return res.status(400).json({
             message: "Name, description, address, city and country are required"
         });
     }
+      if (
+        !Number.isFinite(Number(latitude)) ||
+        !Number.isFinite(Number(longitude)) ||
+        Number(latitude) < -90 ||
+        Number(latitude) > 90 ||
+        Number(longitude) < -180 ||
+        Number(longitude) > 180
+    ) {
+        return res.status(400).json({
+            message: "Please provide valid latitude and longitude"
+        });
+    }
 
+    
     try {
         const accommodation = await accommodationService.createAccommodation(
             name,
@@ -27,7 +43,9 @@ export const createAccommodation = async (
             address,
             city,
             country,
-            star_rating ?? null
+            star_rating ?? null,
+            latitude ?? null,
+            longitude ?? null
         );
 
         return res.status(201).json({
@@ -93,7 +111,6 @@ export const getAccommodationById = async (
     }
 };
 
-
 export const updateAccommodation = async (
     req: Request,
     res: Response
@@ -105,7 +122,9 @@ export const updateAccommodation = async (
         address,
         city,
         country,
-        star_rating
+        star_rating,
+        latitude,
+        longitude
     } = req.body;
 
     if (!Number.isInteger(id) || id <= 0) {
@@ -119,6 +138,20 @@ export const updateAccommodation = async (
             message: "Name, description, address, city and country are required"
         });
     }
+
+    if (
+    !Number.isFinite(Number(latitude)) ||
+    !Number.isFinite(Number(longitude)) ||
+    Number(latitude) < -90 ||
+    Number(latitude) > 90 ||
+    Number(longitude) < -180 ||
+    Number(longitude) > 180
+    ) {
+        return res.status(400).json({
+            message: "Please provide valid latitude and longitude"
+        });
+    }
+
 
     if (
         star_rating !== undefined &&
@@ -141,7 +174,9 @@ export const updateAccommodation = async (
                 address,
                 city,
                 country,
-                star_rating ?? null
+                star_rating ?? null,
+                latitude ?? null,
+                longitude ?? null
             );
 
         if (!accommodation) {

@@ -7,14 +7,16 @@ export const createAccommodation = async (
     address: string,
     city: string,
     country: string,
-    star_rating: number | null
+    star_rating: number | null,
+    latitude: number | null,
+    longitude: number | null
 ): Promise<Accommodation> => {
     const { rows } = await query(
         `INSERT INTO accommodations
-         (name, description, address, city, country, star_rating)
-         VALUES ($1, $2, $3, $4, $5, $6)
+         (name, description, address, city, country, star_rating, latitude, longitude)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
          RETURNING *`,
-        [name, description, address, city, country, star_rating]
+        [name, description, address, city, country, star_rating, latitude, longitude]
     );
 
     return rows[0];
@@ -48,7 +50,9 @@ export const updateAccommodation = async (
     address: string,
     city: string,
     country: string,
-    star_rating: number | null
+    star_rating: number | null,
+    latitude: number | null,
+    longitude: number | null
 ): Promise<Accommodation | null> => {
     const { rows } = await query(
         `UPDATE accommodations
@@ -58,10 +62,12 @@ export const updateAccommodation = async (
              city = $4,
              country = $5,
              star_rating = $6,
+             latitude = $7,
+             longitude = $8,
              updated_at = CURRENT_TIMESTAMP
-         WHERE id = $7
+         WHERE id = $9
          RETURNING *`,
-        [name, description, address, city, country, star_rating, id]
+        [name, description, address, city, country, star_rating, latitude, longitude, id]
     );
 
     return rows[0] || null;

@@ -1,4 +1,4 @@
-import { query,getClient } from "../config/database";
+import { query, getClient } from "../config/database";
 import { Payment } from "../types/payment.types";
 
 export const createPayment = async (
@@ -21,14 +21,12 @@ export const createPayment = async (
             amount,
             payment_reference,
             "pending",
-            "PayFast"
+            "Paystack"
         ]
     );
 
     return rows[0];
 };
-
-
 
 export const getBookingForPayment = async (
     booking_id: number,
@@ -53,19 +51,18 @@ export const getBookingForPayment = async (
     return rows[0] ?? null;
 };
 
-
 export const getPaymentByReference = async (
     payment_reference: string
 ): Promise<Payment | null> => {
     const { rows } = await query(
-        `SELECT * FROM payments
+        `SELECT *
+         FROM payments
          WHERE payment_reference = $1`,
         [payment_reference]
     );
 
     return rows[0] ?? null;
 };
-
 
 export const updatePaymentStatus = async (
     payment_reference: string,
@@ -83,19 +80,6 @@ export const updatePaymentStatus = async (
     return rows[0] ?? null;
 };
 
-
-export const confirmBookingAfterPayment = async (
-    booking_id: number
-): Promise<void> => {
-    await query(
-        `UPDATE bookings
-         SET status = $1,
-             updated_at = CURRENT_TIMESTAMP
-         WHERE id = $2`,
-        ["confirmed", booking_id]
-    );
-};
-
 export const verifyPaymentAmount = async (
     payment_reference: string,
     amount: number
@@ -111,7 +95,9 @@ export const verifyPaymentAmount = async (
         return false;
     }
 
-    return Math.abs(Number(rows[0].amount) - amount) <= 0.01;
+    return Math.abs(
+        Math.round(Number(rows[0].amount) * 100) - amount
+    ) <= 1;
 };
 
 export const completePayment = async (
@@ -125,26 +111,30 @@ export const completePayment = async (
 
         const paymentResult = await client.query(
             `UPDATE payments
-            SET payment_status = $1,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE payment_reference = $2
-            AND booking_id = $3
-            AND payment_status = 'pending'`,
-            ["paid", payment_reference, booking_id]
+             SET payment_status = 'paid',
+                 updated_at = CURRENT_TIMESTAMP
+             WHERE payment_reference = $1
+             AND booking_id = $2
+             AND payment_status = 'pending'`,
+            [payment_reference, booking_id]
         );
 
         if (paymentResult.rowCount !== 1) {
             throw new Error("Payment could not be updated");
         }
 
-        await client.query(
+        const bookingResult = await client.query(
             `UPDATE bookings
-             SET status = $1,
+             SET status = 'confirmed',
                  updated_at = CURRENT_TIMESTAMP
-             WHERE id = $2
+             WHERE id = $1
              AND status = 'pending'`,
-            ["confirmed", booking_id]
+            [booking_id]
         );
+
+        if (bookingResult.rowCount !== 1) {
+            throw new Error("Booking could not be confirmed");
+        }
 
         await client.query("COMMIT");
 

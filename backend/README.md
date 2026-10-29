@@ -159,6 +159,13 @@ CREATE TABLE payments (
 );
 
 
+ALTER TABLE payments
+ALTER COLUMN payment_method SET DEFAULT 'Paystack';
+
+UPDATE payments
+SET payment_method = 'Paystack'
+WHERE payment_method = 'PayFast';
+
 
 
 
