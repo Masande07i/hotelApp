@@ -9,7 +9,7 @@ import { store } from "./store/store.tsx"
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 
-localStorage.removeItem("auth")
+// localStorage.removeItem("auth")
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

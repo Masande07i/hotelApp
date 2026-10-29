@@ -59,9 +59,9 @@ const initialState: AuthState = {
     confirmPassword: ''
   },
   loginInputs: {
-  email: '',
-  password: ''
-},
+    email: '',
+    password: ''
+  },
   isEditingProfile: false,
   profileInputs: {
     name: '',
@@ -73,7 +73,6 @@ const initialState: AuthState = {
   error: null,
   success: false
 }
-
 export const registerUser = createAsyncThunk<
   RegisterResponse,
   SignupInputs,

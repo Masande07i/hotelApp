@@ -16,6 +16,7 @@ import { Favourites } from "./pages/CUSTOMER/favourites/favourites"
 import { Payment } from './pages/CUSTOMER/payment/payment'
 import { Reviews } from "./pages/review/review"
 import { Routes, Route } from 'react-router-dom'
+import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/reviews" element={<Reviews />} />
+        <Route path="/payment/success" element={<PaymentSuccess />} />
         
 
         <Route element={<ProtectedAdminRoute />}>
