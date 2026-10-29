@@ -3,11 +3,16 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../../store/store";
-import { updateBookingInputs, setSelectedRoom, createBooking } from "../../../features/bookingSlice";
+import {
+    updateBookingInputs,
+    setSelectedRoom,
+    createBooking
+} from "../../../features/bookingSlice";
 import type { Accommodation } from "../../../features/accomodationSlice";
 import type { Room } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import style from "./booking.module.css";
+import { Button } from "../../../components/button/button";
 
 interface BookingPageState {
     accommodation: Accommodation;
@@ -42,16 +47,16 @@ export const Booking = () => {
         return (
             <div className={style.bookingPage}>
                 <Text variant="h2">No room selected</Text>
+
                 <Text variant="p">
                     Please select a room before continuing with your booking.
                 </Text>
-                <button
+
+                <Button
                     type="button"
-                    className={style.backButton}
+                    label="Browse Accommodations"
                     onClick={() => navigate("/accomodations")}
-                >
-                    Browse Hotels
-                </button>
+                />
             </div>
         );
     }
@@ -76,6 +81,7 @@ export const Booking = () => {
             : 0;
 
     const numberOfRooms = Number(inputs.number_of_rooms) || 1;
+
     const totalPrice =
         Number(room.price_per_night) * numberOfRooms * nights;
 
@@ -125,15 +131,14 @@ export const Booking = () => {
     return (
         <div className={style.bookingPage}>
             <div className={style.bookingCard}>
-                <button
+
+                <Button
                     type="button"
-                    className={style.backButton}
+                    label="Back to Accommodation"
                     onClick={() =>
                         navigate(`/accommodations/${accommodation.id}`)
                     }
-                >
-                    ← Back to accommodation
-                </button>
+                />
 
                 <Text variant="h1">Complete Your Booking</Text>
 
@@ -223,12 +228,15 @@ export const Booking = () => {
                                     handleInputChange(
                                         "number_of_guests",
                                         String(
-                                            Math.max(1, Number(inputs.number_of_guests) - 1)
+                                            Math.max(
+                                                1,
+                                                Number(inputs.number_of_guests) - 1
+                                            )
                                         )
                                     )
                                 }
                             >
-                                
+                                −
                             </button>
 
                             <span>{inputs.number_of_guests}</span>
@@ -259,6 +267,7 @@ export const Booking = () => {
                             {nights} nights × R
                             {Number(room.price_per_night).toLocaleString("en-ZA")}
                         </span>
+
                         <strong>R{totalPrice.toLocaleString("en-ZA")}</strong>
                     </div>
 

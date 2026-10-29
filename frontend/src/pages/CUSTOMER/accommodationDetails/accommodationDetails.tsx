@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./accommodationDetails.module.css";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
 import { fetchRoomsByAccommodation } from "../../../features/roomSlice";
@@ -10,10 +9,17 @@ import {
     fetchAccommodationImages
 } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
-import { fetchReviewsByAccommodation,updateReviewInputs,addReview,removeReview,startEditing,updateReview, clearReviewForm } from "../../../features/reviewSlice"
+import {
+    fetchReviewsByAccommodation,
+    updateReviewInputs,
+    addReview,
+    removeReview,
+    startEditing,
+    updateReview,
+    clearReviewForm
+} from "../../../features/reviewSlice";
 import { AccommodationMap } from "../../../components/map/map";
-
-
+import { Button } from "../../../components/button/button";
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -24,9 +30,11 @@ export const AccommodationDetails = () => {
         (state: RootState) => state.room
     );
 
-    const accommodations = useSelector(
-        (state: RootState) => state.accommodation.accommodations
-    );
+    const {
+        accommodations,
+        loading: accommodationLoading,
+        error: accommodationError
+    } = useSelector((state: RootState) => state.accommodation);
 
     const accommodation = accommodations.find(
         (item) => item.id === Number(id)
@@ -36,18 +44,26 @@ export const AccommodationDetails = () => {
         (state: RootState) =>
             state.accommodation.imagesByAccommodation[Number(id)]
     );
-    const { reviews} = useSelector(
-    (state: RootState) => state.review
+
+    const { reviews } = useSelector(
+        (state: RootState) => state.review
     );
+
     const user = useSelector(
-    (state: RootState) => state.auth.user
+        (state: RootState) => state.auth.user
     );
+
     const userReview = reviews.find(
-    (review) => review.user_id === user?.id
+        (review) => review.user_id === user?.id
     );
-    const { inputs: reviewInputs, error: reviewError,loading: reviewLoading, success: reviewSuccess,editing } = useSelector(
-    (state: RootState) => state.review
-    );
+
+    const {
+        inputs: reviewInputs,
+        error: reviewError,
+        loading: reviewLoading,
+        success: reviewSuccess,
+        editing
+    } = useSelector((state: RootState) => state.review);
 
     useEffect(() => {
         if (accommodations.length === 0) {
@@ -63,12 +79,46 @@ export const AccommodationDetails = () => {
         }
     }, [dispatch, id]);
 
+    if (accommodationLoading && !accommodation) {
+        return (
+            <div className={styles.details}>
+                <Button
+                    type="button"
+                    label="Back to Accommodations"
+                    onClick={() => navigate("/accomodations")}
+                />
+                <Text variant="p">Loading accommodation details...</Text>
+            </div>
+        );
+    }
+
+    if (accommodationError || (!accommodation && !accommodationLoading)) {
+        return (
+            <div className={styles.details}>
+                <Button
+                    type="button"
+                    label="Back to Accommodations"
+                    onClick={() => navigate("/accomodations")}
+                />
+                <Text variant="p">
+                    {accommodationError || "Accommodation not found."}
+                </Text>
+            </div>
+        );
+    }
+
     if (!accommodation) {
         return <Text variant="p">Loading accommodation details...</Text>;
     }
 
     return (
         <div className={styles.details}>
+            <Button
+                type="button"
+                label="Back to Accommodations"
+                onClick={() => navigate("/accomodations")}
+            />
+
             <Text variant="h1">{accommodation.name}</Text>
 
             <Text variant="p">
@@ -91,9 +141,7 @@ export const AccommodationDetails = () => {
             </div>
 
             <Text variant="h2">About this accommodation</Text>
-                <Text variant="p">{accommodation.description}</Text>
-
-            
+            <Text variant="p">{accommodation.description}</Text>
 
             <hr />
 
@@ -138,43 +186,42 @@ export const AccommodationDetails = () => {
                             <Text variant="p">per night</Text>
 
                             <button
-                                    type="button"
-                                    className={styles.bookButton}
-                                    onClick={() =>
-                                        navigate("/booking", {
-                                            state: {
-                                                accommodation,
-                                                room } })}>
-                                    Book Now
-                                </button>
-                                
+                                type="button"
+                                className={styles.bookButton}
+                                onClick={() =>
+                                    navigate("/booking", {
+                                        state: { accommodation, room }
+                                    })
+                                }
+                            >
+                                Book Now
+                            </button>
                         </div>
-                        
-                        
                     </div>
-                    
-                    
-                )))}
+                ))
+            )}
+
             <hr />
 
-                <Text variant="h2">Location</Text>
+            <Text variant="h2">Location</Text>
 
-                {accommodation.latitude !== null &&
-                accommodation.longitude !== null ? (
-                    <AccommodationMap
-                        latitude={Number(accommodation.latitude)}
-                        longitude={Number(accommodation.longitude)}
-                        name={accommodation.name}
-                    />
-                ) : (
-                    <Text variant="p">Location map not available.</Text>
-                )}
+            {accommodation.latitude !== null &&
+            accommodation.longitude !== null ? (
+                <AccommodationMap
+                    latitude={Number(accommodation.latitude)}
+                    longitude={Number(accommodation.longitude)}
+                    name={accommodation.name}
+                />
+            ) : (
+                <Text variant="p">Location map not available.</Text>
+            )}
 
-           {user && (!userReview || editing) && (
+            {user && (!userReview || editing) && (
                 <div className={styles.reviewForm}>
                     <Text variant="h2">
                         {editing ? "Edit Your Review" : "Write a Review"}
                     </Text>
+
                     <label>Rating</label>
                     <label>Comment</label>
 
@@ -187,7 +234,6 @@ export const AccommodationDetails = () => {
                         }
                         placeholder="Share your experience..."
                     />
-                 
 
                     <select
                         value={reviewInputs.rating}
@@ -204,57 +250,63 @@ export const AccommodationDetails = () => {
                         <option value={1}>1 - Poor</option>
                     </select>
 
-                       <button
-                            type="button"
-                            disabled={reviewLoading}
-                            onClick={() => {
-                                if (id) {
-                                    if (editing) {
-                                        dispatch(updateReview({
-                                            accommodation_id: Number(id),
-                                            inputs: reviewInputs
-                                        }));
-                                    } else {
-                                        dispatch(addReview({
-                                            accommodation_id: Number(id),
-                                            inputs: reviewInputs
-                                        }));
-                                    }
+                    <button
+                        type="button"
+                        disabled={reviewLoading}
+                        onClick={() => {
+                            if (id) {
+                                if (editing) {
+                                    dispatch(updateReview({
+                                        accommodation_id: Number(id),
+                                        inputs: reviewInputs
+                                    }));
+                                } else {
+                                    dispatch(addReview({
+                                        accommodation_id: Number(id),
+                                        inputs: reviewInputs
+                                    }));
                                 }
-                            }}
-                        >
-                             {reviewLoading ? "Submitting..."
+                            }
+                        }}
+                    >
+                        {reviewLoading
+                            ? "Submitting..."
                             : editing
-                                ? "Update Review"
-                                : "Submit Review"}
-                                            </button>
+                            ? "Update Review"
+                            : "Submit Review"}
+                    </button>
 
                     {reviewError && (
                         <Text variant="p">{reviewError}</Text>
                     )}
-                    {reviewSuccess && (
-                            <Text variant="p">Your review has been submitted successfully!</Text>
-                        )}
-             
-                 </div>
-            )}
-                <Text variant="h1">Customer Reviews</Text>
 
-                {reviewLoading ? (
-                        <Text variant="p">Loading reviews...</Text>
-                    ) : reviews.length === 0 ? (
-                    <Text variant="p">No reviews yet. Be the first to review this accommodation!</Text>
-                ) : (
-                    
-                    reviews.map((review) => (
-                        <div key={review.id} className={styles.review}>
-                            <Text variant="h2">{review.user_name}</Text>
-                            <Text variant="h2">Rating: {review.rating}/5</Text>
-                            <Text variant="p">{review.comment}</Text>
-                            <Text variant="span">
-                                {new Date(review.created_at).toLocaleDateString()}
-                            </Text>
-                            {user && review.user_id === user.id && (
+                    {reviewSuccess && (
+                        <Text variant="p">
+                            Your review has been submitted successfully!
+                        </Text>
+                    )}
+                </div>
+            )}
+
+            <Text variant="h1">Customer Reviews</Text>
+
+            {reviewLoading ? (
+                <Text variant="p">Loading reviews...</Text>
+            ) : reviews.length === 0 ? (
+                <Text variant="p">
+                    No reviews yet. Be the first to review this accommodation!
+                </Text>
+            ) : (
+                reviews.map((review) => (
+                    <div key={review.id} className={styles.review}>
+                        <Text variant="h2">{review.user_name}</Text>
+                        <Text variant="h2">Rating: {review.rating}/5</Text>
+                        <Text variant="p">{review.comment}</Text>
+                        <Text variant="span">
+                            {new Date(review.created_at).toLocaleDateString()}
+                        </Text>
+
+                        {user && review.user_id === user.id && (
                             <button
                                 type="button"
                                 onClick={() => {
@@ -263,23 +315,29 @@ export const AccommodationDetails = () => {
                                         comment: review.comment
                                     }));
                                     dispatch(startEditing());
-                                }} >
+                                }}
+                            >
                                 Edit
                             </button>
                         )}
+
                         {user && review.user_id === user.id && (
                             <button
                                 type="button"
                                 onClick={() => {
-                                if (id && window.confirm("Are you sure you want to delete this review?")) {
-                                    dispatch(removeReview(Number(id)));
-                                }
-                            }}
+                                    if (
+                                        id &&
+                                        window.confirm("Are you sure you want to delete this review?")
+                                    ) {
+                                        dispatch(removeReview(Number(id)));
+                                    }
+                                }}
                             >
                                 Delete
                             </button>
                         )}
-                     {editing && (
+
+                        {editing && (
                             <button
                                 type="button"
                                 onClick={() => dispatch(clearReviewForm())}
@@ -287,9 +345,9 @@ export const AccommodationDetails = () => {
                                 Cancel
                             </button>
                         )}
-                </div>
-                    ))
-                )}
+                    </div>
+                ))
+            )}
         </div>
     );
 };
