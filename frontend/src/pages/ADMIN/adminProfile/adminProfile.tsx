@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../../store/store";
 import { Text } from "../../../components/Text/text";
 import { AdminSidebar } from "../../../components/adminSidebar/adminSidebar";
-import { CiUser } from "react-icons/ci";
+// import { CiUser } from "react-icons/ci";
 import { LuLogOut } from "react-icons/lu";
 import {
     logout,
