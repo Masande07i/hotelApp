@@ -1,3 +1,4 @@
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { Text } from "../Text/text";
 import { CiHome, CiCalendar, CiUser } from "react-icons/ci";
@@ -50,6 +51,15 @@ export const AdminSidebar = () => {
                 >
                     <CiUser />
                     Customers
+                </button>
+
+                <button
+                    type="button"
+                    className={location.pathname === "/admin/profile" ? style.activeLink : ""}
+                    onClick={() => navigate("/admin/profile")}
+                >
+                    <CiUser />
+                    My Profile
                 </button>
             </nav>
         </aside>
