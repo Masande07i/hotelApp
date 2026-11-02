@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from "dotenv";
-import { testDbConnection } from "./config/database";
+import { textDbConnection } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import accommodationRoutes from "./routes/accommodationRoutes";
@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 
 const startServer = async () => {
-  await testDbConnection();
+  await textDbConnection();
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authRoutes )
