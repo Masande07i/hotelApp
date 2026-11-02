@@ -17,6 +17,7 @@ import { Payment } from './pages/CUSTOMER/payment/payment'
 import { Reviews } from "./pages/review/review"
 import { Routes, Route } from 'react-router-dom'
 import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
+import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/admin/accommodations/:id"element={<AdminDetails/>}/>
           <Route path="/admin/customers" element={<AdminCustomers />} />
           <Route path="/admin/reservations"element={<AdminBookings />}/>
+          <Route path="/admin/profile" element={<AdminProfile />} />
         </Route>
       </Routes>
     </div>
