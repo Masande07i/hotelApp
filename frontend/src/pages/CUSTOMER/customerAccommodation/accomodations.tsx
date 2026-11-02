@@ -54,36 +54,39 @@ export const accomodations = () => {
         );
     }
 
-    return (
-        <div className={styles.page}>
-            <div className={styles.heading}>
-                <div>
-                    <Button
-                        type="button"
-                        label="Back to Home"
-                        onClick={() => navigate("/")}
-                    />
-                     <Navbar className={styles.detailsNavbar} />
+   
+return (
+    <div className={styles.page}>
+        <Navbar className={styles.detailsNavbar} />
 
-                    <Text variant="h1">Explore Accommodations</Text>
-                    <Text variant="p">
-                        Find the perfect place for your next stay.
-                    </Text>
-                </div>
+        <div className={styles.heading}>
+            <div>
+                <Button
+                    type="button"
+                    label="Back to Home"
+                    onClick={() => navigate("/")}
+                />
 
+                <Text variant="h1">Explore Accommodations</Text>
                 <Text variant="p">
-                    {accommodations.length} accommodations found
+                    Find the perfect place for your next stay.
                 </Text>
             </div>
 
-            <div className={styles.listings}>
-                {accommodations.map((accommodation) => (
-                    <CustomerAccommodationCard
-                        key={accommodation.id}
-                        {...accommodation}
-                    />
-                ))}
-            </div>
+            <Text variant="p">
+                {accommodations.length} accommodations found
+            </Text>
         </div>
-    );
+
+        <div className={styles.listings}>
+            {accommodations.map((accommodation) => (
+                <CustomerAccommodationCard
+                    key={accommodation.id}
+                    {...accommodation}
+                />
+            ))}
+        </div>
+    </div>
+);
+
 };

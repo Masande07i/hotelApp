@@ -1,13 +1,11 @@
-
 .page {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 25px;
     background: #f8fafc;
     min-height: 100vh;
+    width: 100%;
 }
-
 .heading {
     display: flex;
     justify-content: space-between;
@@ -20,7 +18,7 @@
 }
 .detailsNavbar {
     width: 100%;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     background-color: white;
     border-bottom: 1px solid #eee;
 }
