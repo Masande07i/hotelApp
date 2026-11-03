@@ -13,7 +13,7 @@ import { Booking } from "./pages/CUSTOMER/booking/booking";
 import { AdminCustomers } from "./pages/ADMIN/adminCustomer/adminCustomers"
 import { AdminBookings } from "./pages/ADMIN/adminBookings/adminBookings";
 import { Favourites } from "./pages/CUSTOMER/favourites/favourites"
-import { Payment } from './pages/CUSTOMER/payment/payment'
+// import { Payment } from './pages/CUSTOMER/payment/payment'
 import { Reviews } from "./pages/review/review"
 import { Routes, Route } from 'react-router-dom'
 import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
@@ -34,7 +34,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/write-review/:accommodation_id" element={<WriteReview />}/>
-        <Route path="/payment" element={<Payment />} />
+        {/* <Route path="/payment" element={<Payment />} /> */}
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/payment/success" element={<PaymentSuccess />} />

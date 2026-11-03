@@ -28,6 +28,7 @@ export const Booking = () => {
     const booking = location.state as BookingPageState | null;
     const accommodation = booking?.accommodation;
     const room = booking?.room;
+    const token = useSelector((state: RootState) => state.auth.token);
 
     const { inputs, loading, error } = useSelector(
         (state: RootState) => state.booking
@@ -94,45 +95,70 @@ export const Booking = () => {
     const serviceFee = 0;
     const grandTotal = totalPrice + serviceFee;
 
-    const handleContinue = async () => {
-        if (
-            !inputs.check_in ||
-            !inputs.check_out ||
-            inputs.check_in >= inputs.check_out
-        ) {
-            return;
-        }
+   
+const handleContinue = async () => {
+    if (
+        !inputs.check_in ||
+        !inputs.check_out ||
+        inputs.check_in >= inputs.check_out
+    ) {
+        return;
+    }
 
-        if (
-            numberOfRooms < 1 ||
-            numberOfRooms > room.total_rooms ||
-            Number(inputs.number_of_guests) < 1 ||
-            Number(inputs.number_of_guests) >
-                room.capacity * numberOfRooms
-        ) {
-            return;
-        }
+    if (
+        numberOfRooms < 1 ||
+        numberOfRooms > room.total_rooms ||
+        Number(inputs.number_of_guests) < 1 ||
+        Number(inputs.number_of_guests) >
+            room.capacity * numberOfRooms
+    ) {
+        return;
+    }
 
-        const result = await dispatch(
-            createBooking({
-                check_in: inputs.check_in,
-                check_out: inputs.check_out,
-                room_id: room.id,
-                number_of_rooms: numberOfRooms,
-                number_of_guests: Number(inputs.number_of_guests)
-            })
-        );
+    const result = await dispatch(
+        createBooking({
+            check_in: inputs.check_in,
+            check_out: inputs.check_out,
+            room_id: room.id,
+            number_of_rooms: numberOfRooms,
+            number_of_guests: Number(inputs.number_of_guests)
+        })
+    );
 
-        if (createBooking.fulfilled.match(result)) {
-            navigate("/payment", {
-                state: {
-                    accommodation,
-                    room,
-                    booking: result.payload
-                }
+    if (createBooking.fulfilled.match(result)) {
+        try {
+            const response = await fetch("/api/payments/initialize", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    booking_id: result.payload.id
+                })
             });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || "Unable to initialize payment");
+                return;
+            }
+
+            if (!data.authorization_url) {
+                alert("Paystack payment link was not returned");
+                return;
+            }
+
+            window.location.href = data.authorization_url;
+
+        } catch (error) {
+            console.error("Payment error:", error);
+            alert("Unable to connect to the payment server");
         }
-    };
+    }
+};
+
 
     return (
         <div className={style.bookingPage}>
