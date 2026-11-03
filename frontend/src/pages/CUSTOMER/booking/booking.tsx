@@ -275,7 +275,7 @@ const handleContinue = async () => {
                                     )
                                 }
                             >
-                                
+                                −
                             </button>
 
                             <span>{inputs.number_of_guests}</span>
