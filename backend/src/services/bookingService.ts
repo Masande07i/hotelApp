@@ -224,6 +224,7 @@ export const getMyBookings = async (user_id: number) => {
     const { rows } = await query(
         `SELECT 
             bookings.*,
+            rooms.accommodation_id,
             accommodations.name AS accommodation_name,
             accommodations.address AS accommodation_address,
             rooms.room_type,
