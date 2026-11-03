@@ -48,16 +48,12 @@ export const AccommodationDetails = () => {
         (state: RootState) => state.auth.user
     );
 
-    const userReview = reviews.find(
-        (review) => review.user_id === user?.id
-    );
+   
 
     const {
-        inputs: reviewInputs,
-        error: reviewError,
+        
         loading: reviewLoading,
-        success: reviewSuccess,
-        editing
+       
     } = useSelector((state: RootState) => state.review);
 
     useEffect(() => {
