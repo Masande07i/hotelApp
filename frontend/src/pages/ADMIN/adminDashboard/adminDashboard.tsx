@@ -144,22 +144,24 @@ export const adminDashboard = () => {
 
             <div className={style.reservations}>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Accommodation</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Guests</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
+                  <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Customer</th>
+                        <th>Accommodation</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Guests</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
 
                     <tbody>
                         {adminBookings.slice(0, 4).map((booking) => (
                             <tr key={booking.id}>
                                 <td>#{booking.id}</td>
+                                <td>{booking.customer_name}</td>
                                 <td>{booking.accommodation_name}</td>
                                 <td>
                                     {new Date(booking.check_in).toLocaleDateString("en-ZA")}
@@ -181,7 +183,7 @@ export const adminDashboard = () => {
 
                                 {adminBookings.length === 0 && (
                                     <tr>
-                                        <td colSpan={7}>No reservations available.</td>
+                                        <td colSpan={8}>No reservations available.</td>
                                     </tr>
                                 )}
                             </tbody>
