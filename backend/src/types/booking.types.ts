@@ -5,6 +5,8 @@ export interface Booking {
     check_out: string;
     number_of_rooms: number;
     number_of_guests: number;
+    customer_name?: string;
+    customer_email?: string;
     total_price: number;
     status: 'pending' | 'confirmed' | 'cancelled';
     created_at: Date;
