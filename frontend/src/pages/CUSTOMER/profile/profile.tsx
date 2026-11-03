@@ -220,6 +220,16 @@ const handleLogout = () => {
                                 Total: R{Number(booking.total_price).toFixed(2)}
                             </Text>
                             <Text variant="p">Status: {booking.status}</Text>
+                          {booking.status === "confirmed" &&
+                            new Date(booking.check_out) < new Date() && (
+                                <button
+                                    type="button"
+                                    onClick={() => navigate(`/write-review/${booking.accommodation_id}`)}
+                                >
+                                    Write a Review
+                                </button>
+                            )}
+                           
                         </div>
                     ))}
                 </div>

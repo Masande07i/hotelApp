@@ -13,6 +13,7 @@ export interface Booking {
     updated_at: string;
     customer_name?: string;
     customer_email?: string;
+    accommodation_id: number;
     accommodation_name: string;
     accommodation_address: string;
     room_type: string;

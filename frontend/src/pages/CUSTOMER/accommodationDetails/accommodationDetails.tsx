@@ -10,17 +10,11 @@ import {
 } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
 import {
-    fetchReviewsByAccommodation,
-    updateReviewInputs,
-    addReview,
-    removeReview,
-    startEditing,
-    updateReview,
-    clearReviewForm
-} from "../../../features/reviewSlice";
+    fetchReviewsByAccommodation,} from "../../../features/reviewSlice";
 import { AccommodationMap } from "../../../components/map/map";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
+import { IoArrowBack } from "react-icons/io5";
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -116,11 +110,10 @@ export const AccommodationDetails = () => {
         <div className={styles.details}>
 
             
-            <Button
+            <button
                 type="button"
-                label="Back to Accommodations"
-                onClick={() => navigate("/accomodations")}
-            />
+                className={styles.back}
+                onClick={() => navigate("/accomodations")}><IoArrowBack /></button>
             <Navbar className={styles.detailsNavbar} />
 
             <Text variant="h1">{accommodation.name}</Text>
@@ -229,77 +222,7 @@ export const AccommodationDetails = () => {
                 <Text variant="p">Location map not available.</Text>
             )}
 
-            {user && (!userReview || editing) && (
-                <div className={styles.reviewForm}>
-                    <Text variant="h2">
-                        {editing ? "Edit Your Review" : "Write a Review"}
-                    </Text>
-
-                    <label>Rating</label>
-                    <label>Comment</label>
-
-                    <textarea
-                        value={reviewInputs.comment}
-                        onChange={(e) =>
-                            dispatch(updateReviewInputs({
-                                comment: e.target.value
-                            }))
-                        }
-                        placeholder="Share your experience..."
-                    />
-
-                    <select
-                        value={reviewInputs.rating}
-                        onChange={(e) =>
-                            dispatch(updateReviewInputs({
-                                rating: Number(e.target.value)
-                            }))
-                        }
-                    >
-                        <option value={5}>5 - Excellent</option>
-                        <option value={4}>4 - Very Good</option>
-                        <option value={3}>3 - Good</option>
-                        <option value={2}>2 - Fair</option>
-                        <option value={1}>1 - Poor</option>
-                    </select>
-
-                    <button
-                        type="button"
-                        disabled={reviewLoading}
-                        onClick={() => {
-                            if (id) {
-                                if (editing) {
-                                    dispatch(updateReview({
-                                        accommodation_id: Number(id),
-                                        inputs: reviewInputs
-                                    }));
-                                } else {
-                                    dispatch(addReview({
-                                        accommodation_id: Number(id),
-                                        inputs: reviewInputs
-                                    }));
-                                }
-                            }
-                        }}
-                    >
-                        {reviewLoading
-                            ? "Submitting..."
-                            : editing
-                            ? "Update Review"
-                            : "Submit Review"}
-                    </button>
-
-                    {reviewError && (
-                        <Text variant="p">{reviewError}</Text>
-                    )}
-
-                    {reviewSuccess && (
-                        <Text variant="p">
-                            Your review has been submitted successfully!
-                        </Text>
-                    )}
-                </div>
-            )}
+           
 
             <Text variant="h1">Customer Reviews</Text>
 
@@ -318,46 +241,7 @@ export const AccommodationDetails = () => {
                         <Text variant="span">
                             {new Date(review.created_at).toLocaleDateString()}
                         </Text>
-
-                        {user && review.user_id === user.id && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    dispatch(updateReviewInputs({
-                                        rating: review.rating,
-                                        comment: review.comment
-                                    }));
-                                    dispatch(startEditing());
-                                }}
-                            >
-                                Edit
-                            </button>
-                        )}
-
-                        {user && review.user_id === user.id && (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    if (
-                                        id &&
-                                        window.confirm("Are you sure you want to delete this review?")
-                                    ) {
-                                        dispatch(removeReview(Number(id)));
-                                    }
-                                }}
-                            >
-                                Delete
-                            </button>
-                        )}
-
-                        {editing && (
-                            <button
-                                type="button"
-                                onClick={() => dispatch(clearReviewForm())}
-                            >
-                                Cancel
-                            </button>
-                        )}
+            
                     </div>
                 ))
             )}

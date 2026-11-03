@@ -40,12 +40,7 @@ export const accomodations = () => {
     if (accommodations.length === 0) {
         return (
             <div className={styles.page}>
-                <Button
-                    type="button"
-                    label="Back to Home"
-                    onClick={() => navigate("/")}
-                />
-
+               
                 <Text variant="h2">No accommodations available</Text>
                 <Text variant="p">
                     Please check back later for available stays.

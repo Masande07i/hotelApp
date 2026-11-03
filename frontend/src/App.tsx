@@ -18,6 +18,8 @@ import { Reviews } from "./pages/review/review"
 import { Routes, Route } from 'react-router-dom'
 import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
 import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
+import { WriteReview } from "./pages/CUSTOMER/writeReview/writeReview"
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route path="/accommodations/:id"element={<AccommodationDetails />}/>
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/write-review/:accommodation_id" element={<WriteReview />}/>
         <Route path="/payment" element={<Payment />} />
         <Route path="/favourites" element={<Favourites />} />
         <Route path="/reviews" element={<Reviews />} />
