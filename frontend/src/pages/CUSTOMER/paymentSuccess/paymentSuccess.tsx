@@ -1,4 +1,4 @@
-
+import styles from "./paymentSuccess.module.css";
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -63,18 +63,26 @@ export const PaymentSuccess = () => {
         verifyPayment();
     }, [location.search, token]);
 
-    return (
-        <div>
-            <Text variant="h1">Payment Status</Text>
-
+   return (
+    <div className={styles.container}>
+        <div className={styles.card}>
             {status === "loading" && (
-                <Text variant="p">{message}</Text>
+                <>
+                    <div className={styles.icon}>⌛</div>
+                    <Text variant="h2">Verifying Payment</Text>
+                    <Text variant="p" className={styles.message}>
+                        {message}
+                    </Text>
+                </>
             )}
 
             {status === "success" && (
                 <>
-                    <Text variant="h2">Payment Successful!</Text>
-                    <Text variant="p">{message}</Text>
+                    <div className={styles.icon}>✓</div>
+                    <Text variant="h1">Payment Successful!</Text>
+                    <Text variant="p" className={styles.message}>
+                        {message}
+                    </Text>
                     <Link to="/profile">
                         <Button label="Go to Profile" onClick={() => {}} />
                     </Link>
@@ -83,13 +91,22 @@ export const PaymentSuccess = () => {
 
             {status === "failed" && (
                 <>
+                    <div className={`${styles.icon} ${styles.errorIcon}`}>
+                        ✕
+                    </div>
                     <Text variant="h2">Payment Not Verified</Text>
-                    <Text variant="p">{message}</Text>
+                    <Text variant="p" className={styles.message}>
+                        {message}
+                    </Text>
                     <Link to="/accomodations">
-                        <Button label="Back to Accommodations" onClick={() => {}} />
+                        <Button
+                            label="Back to Accommodations"
+                            onClick={() => {}}
+                        />
                     </Link>
                 </>
             )}
         </div>
-    );
+    </div>
+);
 };
