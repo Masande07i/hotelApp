@@ -91,3 +91,18 @@ export const deleteReview = async (
 
     return rows[0] || null;
 };
+export const getReviewByUserAndAccommodation = async (
+    user_id: number,
+    accommodation_id: number
+): Promise<Review | null> => {
+    const { rows } = await query(
+        `SELECT *
+         FROM reviews
+         WHERE user_id = $1
+         AND accommodation_id = $2
+         LIMIT 1`,
+        [user_id, accommodation_id]
+    );
+
+    return rows[0] || null;
+};

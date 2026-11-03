@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {getReviewsByAccommodation,hasCompletedBooking,createReview,
     updateReview,
-    deleteReview
+    deleteReview,getReviewByUserAndAccommodation
 } from "../services/reviewService";
 
 
@@ -55,6 +55,17 @@ export const addReview = async (
         if (!eligible) {
             res.status(403).json({
                 message: "You can only review an accommodation after completing a confirmed booking."
+            });
+            return;
+        }
+        const existingReview = await getReviewByUserAndAccommodation(
+            user_id,
+            accommodation_id
+        );
+
+        if (existingReview) {
+            res.status(409).json({
+                message: "You have already reviewed this accommodation."
             });
             return;
         }
