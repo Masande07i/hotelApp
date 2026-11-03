@@ -49,11 +49,11 @@ export const CustomerAccommodationCard = ({
         setCurrentImageIndex(0);
     }, [id]);
 
+   
     const showNextImage = () => {
-        setCurrentImageIndex(
-            (currentImageIndex + 1) % accommodationImages.length
-        );
+        setCurrentImageIndex((currentImageIndex + 1) % accommodationImages.length);
     };
+
 
     const handleFavourite = () => {
     if (isFavourite) {
