@@ -11,6 +11,8 @@ export interface Booking {
     status: "pending" | "confirmed" | "cancelled";
     created_at: string;
     updated_at: string;
+    customer_name?: string;
+    customer_email?: string;
     accommodation_name: string;
     accommodation_address: string;
     room_type: string;

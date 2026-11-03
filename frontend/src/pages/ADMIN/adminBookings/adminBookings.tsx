@@ -55,6 +55,13 @@ return (
 
                                 <div className={style.bookingInfo}>
                                     <Text variant="p">
+                                        Customer: {booking.customer_name}
+                                    </Text>
+
+                                    <Text variant="p">
+                                        Email: {booking.customer_email}
+                                    </Text>
+                                    <Text variant="p">
                                         Accommodation: {booking.accommodation_name}
                                     </Text>
 
