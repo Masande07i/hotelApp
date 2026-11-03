@@ -37,6 +37,7 @@ interface AccommodationState {
     inputs: AccommodationInputs
     showForm: boolean
     imagesByAccommodation: Record<number, AccommodationImage[]>;
+    currentImageIndexes: Record<number, number>;
     loading: boolean;
     error: string | null;
     selectedImages: File[];
@@ -62,6 +63,7 @@ const initialState: AccommodationState = {
         showForm: false,
         selectedImages: [],
         imagesByAccommodation: {},
+        currentImageIndexes: {},
         loading: false,
         error: null
        
@@ -345,6 +347,12 @@ const accommodationSlice = createSlice({
     ) => {
         state.selectedImages = action.payload;
     },
+    setCurrentImageIndex: (
+        state,
+        action: PayloadAction<{ accommodationId: number; index: number }>
+    ) => {
+        state.currentImageIndexes[action.payload.accommodationId] = action.payload.index;
+    },
 },
 
 extraReducers: (builder) => {
@@ -471,7 +479,7 @@ extraReducers: (builder) => {
 }
 
 });
-export const {updateAccommodationInputs,openAccommodationForm,closeAccommodationForm,setSelectedImages
+export const {updateAccommodationInputs,openAccommodationForm,setCurrentImageIndex,closeAccommodationForm,setSelectedImages
 
 } = accommodationSlice.actions;
 

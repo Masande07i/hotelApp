@@ -1,9 +1,9 @@
 import {addFavourite,removeFavourite} from "../../features/favouriteSlice";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../store/store";
-import { fetchAccommodationImages } from "../../features/accomodationSlice";
+import { fetchAccommodationImages,setCurrentImageIndex } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
@@ -27,17 +27,21 @@ export const CustomerAccommodationCard = ({
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    
     const isFavourite = useSelector((state: RootState) =>state.favourite.favourites.some(
-            (accommodation) => accommodation.id === id
-        )
-);
+            (accommodation) => accommodation.id === id));
+
     const images = useSelector(
         (state: RootState) =>
             state.accommodation.imagesByAccommodation[id]
     );
+    const currentImageIndex = useSelector(
+    (state: RootState) => state.accommodation.currentImageIndexes[id] ?? 0
+);
 
     const accommodationImages = images ?? [];
+
+    
 
     useEffect(() => {
         if (images === undefined) {
@@ -45,15 +49,14 @@ export const CustomerAccommodationCard = ({
         }
     }, [dispatch, id, images]);
 
-    useEffect(() => {
-        setCurrentImageIndex(0);
-    }, [id]);
-
-   
     const showNextImage = () => {
-        setCurrentImageIndex((currentImageIndex + 1) % accommodationImages.length);
-    };
-
+    dispatch(
+        setCurrentImageIndex({
+            accommodationId: id,
+            index: (currentImageIndex + 1) % accommodationImages.length
+        })
+    );
+};
 
     const handleFavourite = () => {
     if (isFavourite) {
