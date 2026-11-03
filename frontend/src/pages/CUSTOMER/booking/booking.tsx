@@ -1,3 +1,4 @@
+
 import { IoArrowBack } from "react-icons/io5";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +10,6 @@ import {
     createBooking
 } from "../../../features/bookingSlice";
 import type { Accommodation } from "../../../features/accomodationSlice";
-import { fetchAccommodationImages } from "../../../features/accomodationSlice";
 import type { Room } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import style from "./booking.module.css";
@@ -25,17 +25,18 @@ export const Booking = () => {
     const location = useLocation();
     const dispatch = useDispatch<AppDispatch>();
 
-    const { inputs, loading, error } = useSelector(
-        (state: RootState) => state.booking
-    );
-    const accommodationImages = useSelector(
-    (state: RootState) =>
-        state.accommodation.imagesByAccommodation[accommodation?.id ?? 0] ?? []
-   );
-
     const booking = location.state as BookingPageState | null;
     const accommodation = booking?.accommodation;
     const room = booking?.room;
+
+    const { inputs, loading, error } = useSelector(
+        (state: RootState) => state.booking
+    );
+
+    const accommodationImages = useSelector(
+        (state: RootState) =>
+            state.accommodation.imagesByAccommodation[accommodation?.id ?? 0] ?? []
+    );
 
     useEffect(() => {
         if (room) {
@@ -47,12 +48,6 @@ export const Booking = () => {
             );
         }
     }, [dispatch, room]);
-
-    useEffect(() => {
-    if (accommodation) {
-        dispatch(fetchAccommodationImages(accommodation.id));
-    }
-}, [dispatch, accommodation?.id]);
 
     if (!accommodation || !room) {
         return (
@@ -142,28 +137,29 @@ export const Booking = () => {
     return (
         <div className={style.bookingPage}>
             <div className={style.bookingCard}>
-
                 <button
                     type="button"
-                    
                     onClick={() =>
                         navigate(`/accommodations/${accommodation.id}`)
                     }
-                ><IoArrowBack /></button>
+                >
+                    <IoArrowBack />
+                </button>
 
                 <Text variant="h1">Complete Your Booking</Text>
 
                 <div className={style.hotelInfo}>
                     <div className={style.hotelPlaceholder}>
-                            {accommodationImages.length > 0 ? (
-                                <img
-                                    src={accommodationImages[0].image_url}
-                                    alt={accommodation.name}
-                                />
-                            ) : (
-                                <span>Havenly</span>
-                            )}
-                        </div>
+                        {accommodationImages.length > 0 ? (
+                            <img
+                                src={accommodationImages[0].image_url}
+                                alt={accommodation.name}
+                            />
+                        ) : (
+                            <span>Havenly</span>
+                        )}
+                    </div>
+
                     <div className={style.hotelDetails}>
                         <Text variant="h2">{accommodation.name}</Text>
                         <Text variant="p">{room.room_type}</Text>
@@ -281,7 +277,7 @@ export const Booking = () => {
                 <div className={style.priceDetails}>
                     <div className={style.priceRow}>
                         <span>
-                            {nights} nights × R
+                            {nights} nights * R
                             {Number(room.price_per_night).toLocaleString("en-ZA")}
                         </span>
 
@@ -299,9 +295,7 @@ export const Booking = () => {
                     </div>
                 </div>
 
-                {error && (
-                    <Text variant="p">{error}</Text>
-                )}
+                {error && <Text variant="p">{error}</Text>}
 
                 <button
                     type="button"
