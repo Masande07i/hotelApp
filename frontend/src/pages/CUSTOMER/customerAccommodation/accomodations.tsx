@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import type { AppDispatch, RootState } from "../../../store/store";
 import { fetchAccommodations } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
-import { Button } from "../../../components/button/button";
+
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard";
 import styles from "./accomodations.module.css";
 import { fetchFavourites } from "../../../features/favouriteSlice";
@@ -13,7 +13,7 @@ import { navbar as Navbar } from "../../../components/navbar/navbar";
 
 export const accomodations = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+  
 
     const { accommodations, loading, error } = useSelector(
         (state: RootState) => state.accommodation
@@ -56,12 +56,6 @@ return (
 
         <div className={styles.heading}>
             <div>
-                <Button
-                    type="button"
-                    label="Back to Home"
-                    onClick={() => navigate("/")}
-                />
-
                 <Text variant="h1">Explore Accommodations</Text>
                 <Text variant="p">
                     Find the perfect place for your next stay.

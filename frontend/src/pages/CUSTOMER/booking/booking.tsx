@@ -1,4 +1,4 @@
-
+import { IoArrowBack } from "react-icons/io5";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import {
     createBooking
 } from "../../../features/bookingSlice";
 import type { Accommodation } from "../../../features/accomodationSlice";
+import { fetchAccommodationImages } from "../../../features/accomodationSlice";
 import type { Room } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import style from "./booking.module.css";
@@ -27,6 +28,10 @@ export const Booking = () => {
     const { inputs, loading, error } = useSelector(
         (state: RootState) => state.booking
     );
+    const accommodationImages = useSelector(
+    (state: RootState) =>
+        state.accommodation.imagesByAccommodation[accommodation?.id ?? 0] ?? []
+   );
 
     const booking = location.state as BookingPageState | null;
     const accommodation = booking?.accommodation;
@@ -42,6 +47,12 @@ export const Booking = () => {
             );
         }
     }, [dispatch, room]);
+
+    useEffect(() => {
+    if (accommodation) {
+        dispatch(fetchAccommodationImages(accommodation.id));
+    }
+}, [dispatch, accommodation?.id]);
 
     if (!accommodation || !room) {
         return (
@@ -132,21 +143,27 @@ export const Booking = () => {
         <div className={style.bookingPage}>
             <div className={style.bookingCard}>
 
-                <Button
+                <button
                     type="button"
-                    label="Back to Accommodation"
+                    
                     onClick={() =>
                         navigate(`/accommodations/${accommodation.id}`)
                     }
-                />
+                ><IoArrowBack /></button>
 
                 <Text variant="h1">Complete Your Booking</Text>
 
                 <div className={style.hotelInfo}>
                     <div className={style.hotelPlaceholder}>
-                        <span>Havenly</span>
-                    </div>
-
+                            {accommodationImages.length > 0 ? (
+                                <img
+                                    src={accommodationImages[0].image_url}
+                                    alt={accommodation.name}
+                                />
+                            ) : (
+                                <span>Havenly</span>
+                            )}
+                        </div>
                     <div className={style.hotelDetails}>
                         <Text variant="h2">{accommodation.name}</Text>
                         <Text variant="p">{room.room_type}</Text>
@@ -236,7 +253,7 @@ export const Booking = () => {
                                     )
                                 }
                             >
-                                −
+                                
                             </button>
 
                             <span>{inputs.number_of_guests}</span>

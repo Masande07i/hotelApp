@@ -123,6 +123,12 @@
     padding: 12px 0;
     font-size: 14px;
 }
+.hotelPlaceholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
 .priceRow {
     color: #68767c;
