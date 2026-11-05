@@ -2,42 +2,62 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #E6D9ED;
+    background-color: #F6F1F8;
     min-height: 100vh;
     width: 100%;
+    padding-bottom: 40px;
 }
+
 .heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
-    padding: 15px;
-    background-color: #E6D9ED;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    padding: 20px 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #E6D9ED;
+    border-radius: 12px;
 }
+
 .detailsNavbar {
     width: 100%;
     margin-bottom: 10px;
-    border-bottom: 1px ;
+    border-bottom: 1px solid #E6D9ED;
 }
-
 
 .listings {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 0 30px;
+}
+
+@media (max-width: 1000px) {
+    .listings {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+    .listings {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 600px) {
     .page {
-        padding: 20px 14px;
+        padding-bottom: 20px;
     }
 
     .heading {
         align-items: flex-start;
         flex-direction: column;
         gap: 10px;
+        margin: 0 14px;
+    }
+
+    .listings {
+        grid-template-columns: 1fr;
+        padding: 0 14px;
     }
 }
