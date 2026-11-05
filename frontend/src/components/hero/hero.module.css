@@ -8,6 +8,7 @@
     flex-direction: column;
     color: white;
     position: relative;
+    width: 100%;
 }
 
 .heroContent {
