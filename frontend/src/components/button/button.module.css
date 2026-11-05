@@ -1,5 +1,5 @@
 button {
-    background-color: #075b53;
+    background-color: #49345E;
     color: white;
     font-weight: 600;
     padding: 10px;
@@ -9,5 +9,5 @@ button {
 }
 
 button:hover {
-    background-color: #064840;
+    background-color: #B69ACB;
 }
