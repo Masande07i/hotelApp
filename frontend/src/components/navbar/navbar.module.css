@@ -1,44 +1,44 @@
 .navbar {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 16px 36px;
-width: 100%;
-box-sizing: border-box;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 36px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #49345E;
 }
 
 .logo {
-display: flex;
-align-items: center;
-gap: 10px;
-color:#075b53;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #E6D9ED;
 }
 
 .logoIcon {
-font-size: 36px;
-color:#EADDFF;
+    font-size: 36px;
+    color: #B69ACB;
 }
 
 .links {
-display: flex;
-align-items: center;
-gap: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 
 .links a {
-text-decoration: none;
-color:#075b53;
-font-size: 14px;
-transition: color 0.2s ease;
+    text-decoration: none;
+    color: #E6D9ED;
+    font-size: 14px;
+    transition: color 0.2s ease;
 }
 
 .links a:hover {
-color:white
+    color: #B69ACB;
 }
 
 .actions {
-display: flex;
-align-items: center;
-gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

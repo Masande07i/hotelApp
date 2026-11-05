@@ -1,4 +1,3 @@
-
 import style from './navbar.module.css';
 import { Text } from '../Text/text';
 import { Button } from '../button/button';

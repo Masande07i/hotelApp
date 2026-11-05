@@ -1,12 +1,12 @@
 import styles from "./hero.module.css"
-import { navbar as Navbar } from "../navbar/navbar"
+
 import { accommodationSearch as AccommodationSearch } from "../accommodationSearch/accommodationSearch";
 
 
 export const hero = () => {
     return (
         <div className={styles.hero}>
-            <Navbar />
+           
 
             <div className={styles.heroContent}>
                 <h3>YOUR NEXT GATEAWAY AWAITS</h3>
