@@ -4,7 +4,7 @@ import { popularAccommodations as PopularAccommodations } from "../../components
 
 export const landing = () => {
   return (
-    <div>
+    <div className="body">
         <Navbar/>
         <Hero/>
         <PopularAccommodations/>
