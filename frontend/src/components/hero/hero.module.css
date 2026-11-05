@@ -21,24 +21,28 @@
     font-size: 16px;
     letter-spacing: 3px;
     margin-bottom: 15px;
-    color: #E6D9ED;
+    color: #35243F;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
 }
 
 .heroContent h1 {
     font-size: 52px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.2;
     margin-bottom: 20px;
-    color: white;
+    color: #35243F;
+    text-shadow: 0 2px 5px rgba(255, 255, 255, 0.4);
 }
 
 .heroContent p {
     font-size: 18px;
+    font-weight: 600;
     line-height: 1.6;
     margin-bottom: 30px;
-    color: #F6F1F8;
+    color: #35243F;
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
 }
-
 .hero > :last-child {
     position: absolute;
     bottom: -30px;
