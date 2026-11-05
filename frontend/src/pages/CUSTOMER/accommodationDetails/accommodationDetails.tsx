@@ -14,7 +14,7 @@ import {
 import { AccommodationMap } from "../../../components/map/map";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
-import { IoArrowBack } from "react-icons/io5";
+
 
 export const AccommodationDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -105,11 +105,6 @@ export const AccommodationDetails = () => {
     return (
         <div className={styles.details}>
 
-            
-            <button
-                type="button"
-                className={styles.back}
-                onClick={() => navigate("/accomodations")}><IoArrowBack /></button>
             <Navbar className={styles.detailsNavbar} />
 
             <Text variant="h1">{accommodation.name}</Text>
