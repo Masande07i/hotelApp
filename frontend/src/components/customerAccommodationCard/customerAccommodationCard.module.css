@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     background-color: #FFFFFF;
     border: 1px solid #E6D9ED;
     border-radius: 12px;
@@ -19,7 +20,8 @@
 .gallery {
     position: relative;
     width: 100%;
-    height: 190px;
+    height: 230px;
+    flex-shrink: 0;
     overflow: hidden;
     background: #E6D9ED;
 }
@@ -47,11 +49,45 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
 }
 
 .info h2 {
     color: #49345E;
     margin: 0;
+}
+.descriptionPreview {
+    color: #5F5365;
+    line-height: 1.5;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+}
+
+.description {
+    color: #5F5365;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.descriptionDetails {
+    color: #49345E;
+    font-size: 13px;
+}
+
+.descriptionDetails summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #49345E;
+    margin-top: 3px;
+}
+
+.descriptionDetails p {
+    color: #5F5365;
+    line-height: 1.5;
 }
 
 .location,
@@ -83,6 +119,7 @@
 .actions {
     display: flex;
     padding: 8px 18px 18px;
+    margin-top: auto;
 }
 
 .nextImage,

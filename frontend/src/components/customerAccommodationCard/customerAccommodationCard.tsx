@@ -65,6 +65,7 @@ export const CustomerAccommodationCard = ({
         dispatch(addFavourite(id));
     }
 };
+   const cardDescription = description || "Discover this accommodation on Havenly.";
 
   return (
     <article className={styles.card}>
@@ -117,9 +118,22 @@ export const CustomerAccommodationCard = ({
                 <Text variant="p">{city}, {country}</Text>
             </div>
 
-            <Text variant="p">
-                {description || "Discover this accommodation on Havenly."}
-            </Text>
+           {cardDescription.length > 120 ? (
+                    <>
+                        <p className={styles.descriptionPreview}>
+                            {cardDescription}
+                        </p>
+
+                        <details className={styles.descriptionDetails}>
+                            <summary>Read more</summary>
+                            <p>{cardDescription}</p>
+                        </details>
+                    </>
+                ) : (
+                    <p className={styles.description}>
+                        {cardDescription}
+                    </p>
+                )}
 
             <div className={styles.location}>
                 <MdOutlineLocationCity />
