@@ -5,14 +5,14 @@
     padding: 16px 36px;
     width: 100%;
     box-sizing: border-box;
-    background-color: #49345E;
+    background-color: #E6D9ED;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #E6D9ED;
+    color: #49345E;
 }
 
 .logoIcon {
@@ -28,7 +28,7 @@
 
 .links a {
     text-decoration: none;
-    color: #E6D9ED;
+    color: #49345E;
     font-size: 14px;
     transition: color 0.2s ease;
 }
