@@ -21,9 +21,9 @@
     font-size: 16px;
     letter-spacing: 3px;
     margin-bottom: 15px;
-    color: #35243F;
+    color: #FFFFFF;
     font-weight: 800;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.65);
 }
 
 .heroContent h1 {
@@ -31,8 +31,8 @@
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 20px;
-    color: #35243F;
-    text-shadow: 0 2px 5px rgba(255, 255, 255, 0.4);
+    color: #FFFFFF;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.65);
 }
 
 .heroContent p {
@@ -40,8 +40,8 @@
     font-weight: 600;
     line-height: 1.6;
     margin-bottom: 30px;
-    color: #35243F;
-    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+    color: #FFFFFF;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.65);
 }
 .hero > :last-child {
     position: absolute;
