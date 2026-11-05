@@ -37,3 +37,23 @@
 .name {
     padding: 12px 15px;
 }
+.location,
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.location {
+    color: #75647F;
+}
+
+.rating {
+    color: #D69B35;
+}
+
+.location p,
+.rating p {
+    margin: 0;
+}
