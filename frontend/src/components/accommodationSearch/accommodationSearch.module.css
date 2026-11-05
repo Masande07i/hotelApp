@@ -11,6 +11,7 @@
 
 .field {
     display: flex;
+     background-color: #E6D9ED;
     flex-direction: column;
     flex: 1;
     gap: 8px;
