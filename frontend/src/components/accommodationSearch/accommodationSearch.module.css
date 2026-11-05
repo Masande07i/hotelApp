@@ -21,6 +21,7 @@
 .field input {
     width: 100%;
     padding: 12px;
+     background-color: #E6D9ED;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
