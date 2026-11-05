@@ -1,5 +1,7 @@
+
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 import type { AppDispatch, RootState } from "../../../store/store";
 import { fetchAccommodations } from "../../../features/accomodationSlice";
@@ -10,10 +12,11 @@ import styles from "./accomodations.module.css";
 import { fetchFavourites } from "../../../features/favouriteSlice";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
 
-
 export const accomodations = () => {
     const dispatch = useDispatch<AppDispatch>();
-  
+    const [searchParams] = useSearchParams();
+
+    const destination = searchParams.get("destination");
 
     const { accommodations, loading, error } = useSelector(
         (state: RootState) => state.accommodation
@@ -29,6 +32,13 @@ export const accomodations = () => {
         }
     }, [dispatch, token]);
 
+    const filteredAccommodations = destination
+        ? accommodations.filter(
+            (accommodation) =>
+                accommodation.city.toLowerCase().trim() === destination.toLowerCase().trim()
+        )
+        : accommodations;
+
     if (loading) {
         return <Text variant="p">Loading accommodations...</Text>;
     }
@@ -37,45 +47,47 @@ export const accomodations = () => {
         return <Text variant="p">{error}</Text>;
     }
 
-    if (accommodations.length === 0) {
+    if (filteredAccommodations.length === 0) {
         return (
             <div className={styles.page}>
-               
-                <Text variant="h2">No accommodations available</Text>
+                <Navbar className={styles.detailsNavbar} />
+                <Text variant="h2">
+                    No accommodations found in {destination}
+                </Text>
                 <Text variant="p">
-                    Please check back later for available stays.
+                    Please try searching for another city.
                 </Text>
             </div>
         );
     }
 
-   
-return (
-    <div className={styles.page}>
-        <Navbar className={styles.detailsNavbar} />
+    return (
+        <div className={styles.page}>
+            <Navbar className={styles.detailsNavbar} />
 
-        <div className={styles.heading}>
-            <div>
-                <Text variant="h1">Explore Accommodations</Text>
+            <div className={styles.heading}>
+                <div>
+                    <Text variant="h1">Explore Accommodations</Text>
+                    <Text variant="p">
+                        {destination
+                            ? `Available accommodations in ${destination}.`
+                            : "Find the perfect place for your next stay."}
+                    </Text>
+                </div>
+
                 <Text variant="p">
-                    Find the perfect place for your next stay.
+                    {filteredAccommodations.length} accommodations found
                 </Text>
             </div>
 
-            <Text variant="p">
-                {accommodations.length} accommodations found
-            </Text>
+            <div className={styles.listings}>
+                {filteredAccommodations.map((accommodation) => (
+                    <CustomerAccommodationCard
+                        key={accommodation.id}
+                        {...accommodation}
+                    />
+                ))}
+            </div>
         </div>
-
-        <div className={styles.listings}>
-            {accommodations.map((accommodation) => (
-                <CustomerAccommodationCard
-                    key={accommodation.id}
-                    {...accommodation}
-                />
-            ))}
-        </div>
-    </div>
-);
-
+    );
 };
