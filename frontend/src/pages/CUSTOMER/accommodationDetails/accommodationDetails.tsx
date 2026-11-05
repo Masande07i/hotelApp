@@ -109,14 +109,6 @@ export const AccommodationDetails = () => {
 
             <Text variant="h1">{accommodation.name}</Text>
 
-            <Text variant="p">
-                {accommodation.address}, {accommodation.city},{" "}
-                {accommodation.country}
-            </Text>
-
-            <Text variant="p">
-                Rating: {accommodation.star_rating ?? "Not rated"}
-            </Text>
 
             <div className={styles.gallery}>
                 {images?.map((image) => (
@@ -127,6 +119,16 @@ export const AccommodationDetails = () => {
                     />
                 ))}
             </div>
+
+            
+            <Text variant="p">
+                {accommodation.address}, {accommodation.city},{" "}
+                {accommodation.country}
+            </Text>
+
+            <Text variant="p">
+                 {accommodation.star_rating ?? "Not rated"}
+            </Text>
 
             <Text variant="h2">About this accommodation</Text>
             <Text variant="p">{accommodation.description}</Text>
