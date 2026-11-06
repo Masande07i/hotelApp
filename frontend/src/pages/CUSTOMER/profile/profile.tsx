@@ -80,11 +80,11 @@ const handleLogout = () => {
        <div className={style.profilePage}>
             <button
                 type="button"
-                className={style.backButton}
+                
                 onClick={() => navigate("/")}
             >
                 <IoArrowBackCircle />
-                Back to Home
+                
             </button>
 
             <Text variant="h1">User Profile</Text>
@@ -155,9 +155,6 @@ const handleLogout = () => {
                         </button>
                         <button onClick={() => navigate('/favourites')}>
                             <CiHeart /> Favourites
-                        </button>
-                        <button onClick={() => navigate('/reviews')}>
-                            <CiStar /> Reviews
                         </button>
                         <button onClick={() => navigate('/notifications')}>
                             <CiBellOn/>Notifications

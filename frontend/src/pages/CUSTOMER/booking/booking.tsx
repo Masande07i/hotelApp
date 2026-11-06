@@ -14,7 +14,7 @@ import type { Room } from "../../../features/roomSlice";
 import { Text } from "../../../components/Text/text";
 import style from "./booking.module.css";
 import { Button } from "../../../components/button/button";
-import { Footer } from "../../../components/footer/footer";
+
 
 interface BookingPageState {
     accommodation: Accommodation;
@@ -333,7 +333,7 @@ const handleContinue = async () => {
                     {loading ? "Processing..." : "Continue to Payment"}
                 </button>
             </div>
-            <Footer />
+         
         </div>
     );
 };
