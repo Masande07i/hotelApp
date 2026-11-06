@@ -64,50 +64,53 @@ export const PaymentSuccess = () => {
         verifyPayment();
     }, [location.search, token]);
 
-   return (
-    <div className={styles.container}>
-        <div className={styles.card}>
-            {status === "loading" && (
-                <>
-                    <div className={styles.icon}>⌛</div>
-                    <Text variant="h2">Verifying Payment</Text>
-                    <Text variant="p" className={styles.message}>
-                        {message}
-                    </Text>
-                </>
-            )}
+  return (
+    <div className={styles.page}>
+        <div className={styles.container}>
+            <div className={styles.card}>
+                {status === "loading" && (
+                    <>
+                        <div className={styles.icon}>⌛</div>
+                        <Text variant="h2">Verifying Payment</Text>
+                        <Text variant="p" className={styles.message}>
+                            {message}
+                        </Text>
+                    </>
+                )}
 
-            {status === "success" && (
-                <>
-                    <div className={styles.icon}>✓</div>
-                    <Text variant="h1">Payment Successful!</Text>
-                    <Text variant="p" className={styles.message}>
-                        {message}
-                    </Text>
-                    <Link to="/profile">
-                        <Button label="Go to Profile" onClick={() => {}} />
-                    </Link>
-                </>
-            )}
+                {status === "success" && (
+                    <>
+                        <div className={styles.icon}>✓</div>
+                        <Text variant="h1">Payment Successful!</Text>
+                        <Text variant="p" className={styles.message}>
+                            {message}
+                        </Text>
+                        <Link to="/profile">
+                            <Button label="Go to Profile" onClick={() => {}} />
+                        </Link>
+                    </>
+                )}
 
-            {status === "failed" && (
-                <>
-                    <div className={`${styles.icon} ${styles.errorIcon}`}>
-                        ✕
-                    </div>
-                    <Text variant="h2">Payment Not Verified</Text>
-                    <Text variant="p" className={styles.message}>
-                        {message}
-                    </Text>
-                    <Link to="/accomodations">
-                        <Button
-                            label="Back to Accommodations"
-                            onClick={() => {}}
-                        />
-                    </Link>
-                </>
-            )}
+                {status === "failed" && (
+                    <>
+                        <div className={`${styles.icon} ${styles.errorIcon}`}>
+                            ✕
+                        </div>
+                        <Text variant="h2">Payment Not Verified</Text>
+                        <Text variant="p" className={styles.message}>
+                            {message}
+                        </Text>
+                        <Link to="/accomodations">
+                            <Button
+                                label="Back to Accommodations"
+                                onClick={() => {}}
+                            />
+                        </Link>
+                    </>
+                )}
+            </div>
         </div>
+
         <Footer />
     </div>
 );

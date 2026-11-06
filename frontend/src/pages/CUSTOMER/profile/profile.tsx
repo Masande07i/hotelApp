@@ -12,6 +12,7 @@ import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,upd
 import { fetchMyBookings,setSelectedTab  } from "../../../features/bookingSlice"
 import { fetchFavourites } from "../../../features/favouriteSlice"
 import { Footer } from "../../../components/footer/footer"
+import { IoArrowBackCircle } from "react-icons/io5";
 
 export const Profile = () => {
     const navigate = useNavigate()
@@ -76,7 +77,16 @@ const handleLogout = () => {
 }
 
     return (
-        <div className={style.profilePage}>
+       <div className={style.profilePage}>
+            <button
+                type="button"
+                className={style.backButton}
+                onClick={() => navigate("/")}
+            >
+                <IoArrowBackCircle />
+                Back to Home
+            </button>
+
             <Text variant="h1">User Profile</Text>
 
             <div className={style.profileLayout}>

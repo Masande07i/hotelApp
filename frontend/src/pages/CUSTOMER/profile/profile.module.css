@@ -17,6 +17,27 @@
     overflow: hidden;
     background: #fff;
 }
+.backButton {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    background: transparent;
+    color: #49345E;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.backButton svg {
+    font-size: 24px;
+}
+
+.backButton:hover {
+    color: #B99ACB;
+}
 
 .sidebar {
     background: #f5f9fa;

@@ -1,50 +1,63 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #F6F1F8;
+}
+
 .container {
-    min-height: 80vh;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 20px;
+    padding: 50px 20px;
 }
 
 .card {
     width: 100%;
     max-width: 500px;
-    padding: 40px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 45px 35px;
+    background-color: #FFFFFF;
+    border: 1px solid #E6D9ED;
+    border-radius: 16px;
     text-align: center;
+    box-shadow: 0 8px 25px rgba(73, 52, 94, 0.08);
 }
 
 .icon {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     margin: 0 auto 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    background: #e6f7ed;
-    color: #16a34a;
+    background-color: #B99ACB;
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
 }
 
 .errorIcon {
-    background: #feecec;
-    color: #dc2626;
-}
-
-.card h1,
-.card h2 {
-    margin-bottom: 15px;
+    background-color: #75647F;
 }
 
 .message {
-    color: #666;
+    margin: 15px 0 25px;
+    color: #75647F;
     line-height: 1.6;
-    margin-bottom: 25px;
 }
 
-.button {
-    width: 100%;
+.card a {
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 30px 15px;
+    }
+
+    .card {
+        padding: 35px 20px;
+    }
 }
