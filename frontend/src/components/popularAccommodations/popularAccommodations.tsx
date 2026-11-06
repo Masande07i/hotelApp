@@ -61,13 +61,7 @@ export const popularAccommodations = () => {
                                 <Text variant="h2">{accommodation.name}</Text>
                             </div>
 
-                            <div className={styles.location}>
-                                <FaMapMarkerAlt />
-                                <Text variant="p">
-                                    {accommodation.city}, {accommodation.country}
-                                </Text>
-                            </div>
-
+                        
                             <div className={styles.rating}>
                                 <FaStar />
                                 <Text variant="p">
@@ -76,6 +70,13 @@ export const popularAccommodations = () => {
                                         : "Not rated"}
                                 </Text>
                             </div>
+                                <div className={styles.location}>
+                                <FaMapMarkerAlt />
+                                <Text variant="p">
+                                    {accommodation.city}, {accommodation.country}
+                                </Text>
+                            </div>
+
                     </div>
                     );
                 })}

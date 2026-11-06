@@ -12,6 +12,7 @@ import { FaHeart, FaStar  } from "react-icons/fa";
 import styles from "./customerAccommodationCard.module.css";
 import { CiLocationOn } from "react-icons/ci";
 import { MdOutlineLocationCity } from "react-icons/md";
+import { FaShareAlt } from "react-icons/fa";
 
 interface CustomerAccommodationCardProps extends Accommodation {}
 
@@ -63,6 +64,34 @@ export const CustomerAccommodationCard = ({
         dispatch(removeFavourite(id));
     } else {
         dispatch(addFavourite(id));
+    }
+};
+
+   const handleShare = async () => {
+    const accommodationUrl = `${window.location.origin}/accommodations/${id}`;
+
+    const shareData = {
+        title: name,
+        text: description || `Discover ${name} on Havenly.`,
+        url: accommodationUrl
+    };
+
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (error) {
+            if (error instanceof Error && error.name !== "AbortError") {
+                console.error("Sharing failed:", error);
+            }
+        }
+    } else {
+        try {
+            await navigator.clipboard.writeText(accommodationUrl);
+            alert("Accommodation link copied!");
+        } catch (error) {
+            console.error("Unable to copy link:", error);
+            alert("Unable to share this accommodation.");
+        }
     }
 };
    const cardDescription = description || "Discover this accommodation on Havenly.";
@@ -142,12 +171,22 @@ export const CustomerAccommodationCard = ({
         </div>
 
         <div className={styles.actions}>
-            <Button
-                label="View Details"
-                onClick={() => navigate(`/accommodations/${id}`)}
-                type="button"
-            />
-        </div>
+                <Button
+                    label="View Details"
+                    onClick={() => navigate(`/accommodations/${id}`)}
+                    type="button"
+                />
+
+                <button
+                    type="button"
+                    className={styles.shareButton}
+                    onClick={handleShare}
+                    aria-label="Share accommodation"
+                    title="Share accommodation"
+                >
+                    <FaShareAlt />
+                </button>
+            </div>
     </article>
 );
 }
