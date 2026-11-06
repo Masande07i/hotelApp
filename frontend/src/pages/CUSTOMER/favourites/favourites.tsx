@@ -5,6 +5,7 @@ import type { AppDispatch, RootState } from "../../../store/store";
 import { fetchFavourites } from "../../../features/favouriteSlice";
 import { Text } from "../../../components/Text/text";
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard";
+import { Footer } from "../../../components/footer/footer";
 
 export const Favourites = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -33,6 +34,7 @@ export const Favourites = () => {
             ))}
         </div>
     )}
+    <Footer />
 </div>
     );
 };

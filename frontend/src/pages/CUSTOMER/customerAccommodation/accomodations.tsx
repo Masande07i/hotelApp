@@ -11,6 +11,7 @@ import { CustomerAccommodationCard } from "../../../components/customerAccommoda
 import styles from "./accomodations.module.css";
 import { fetchFavourites } from "../../../features/favouriteSlice";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
+import { Footer } from "../../../components/footer/footer";
 
 export const accomodations = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -88,6 +89,7 @@ export const accomodations = () => {
                     />
                 ))}
             </div>
+            <Footer />
         </div>
     );
 };

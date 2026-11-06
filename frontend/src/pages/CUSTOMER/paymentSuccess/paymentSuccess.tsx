@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../store/store";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
+import { Footer } from "../../../components/footer/footer";
 
 export const PaymentSuccess = () => {
     const location = useLocation();
@@ -107,6 +108,7 @@ export const PaymentSuccess = () => {
                 </>
             )}
         </div>
+        <Footer />
     </div>
 );
 };

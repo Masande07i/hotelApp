@@ -33,7 +33,7 @@ export const Footer = () => {
                     <Text variant="h2">Quick Links</Text>
 
                     <a href="/">Home</a>
-                    <a href="/accommodations">Accommodations</a>
+                    <a href="/accommodations">Accomodations</a>
                     <a href="/bookings">My Bookings</a>
                     <a href="/favourites">Favourites</a>
                 </div>

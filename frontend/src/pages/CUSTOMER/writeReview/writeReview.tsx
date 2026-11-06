@@ -9,6 +9,7 @@ import {
 } from "../../../features/reviewSlice";
 import { useEffect } from "react";
 import { Text } from "../../../components/Text/text";
+import { Footer } from "../../../components/footer/footer";
 
 export const WriteReview = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -92,6 +93,7 @@ export const WriteReview = () => {
                     Cancel
                 </button>
             </form>
+            <Footer />
         </div>
     );
 };

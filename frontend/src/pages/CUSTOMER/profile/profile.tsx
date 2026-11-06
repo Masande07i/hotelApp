@@ -11,6 +11,7 @@ import type { AppDispatch } from "../../../store/store"
 import { logout,startEditingProfile,updateProfileInputs,cancelEditingProfile,updateUserProfile } from "../../../features/authSlice"
 import { fetchMyBookings,setSelectedTab  } from "../../../features/bookingSlice"
 import { fetchFavourites } from "../../../features/favouriteSlice"
+import { Footer } from "../../../components/footer/footer"
 
 export const Profile = () => {
     const navigate = useNavigate()
@@ -260,6 +261,7 @@ const handleLogout = () => {
                     </div>
                  </main>
             </div>
+            <Footer />
         </div>
     )
 }

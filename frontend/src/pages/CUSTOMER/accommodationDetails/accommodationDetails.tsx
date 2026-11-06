@@ -14,6 +14,7 @@ import {
 import { AccommodationMap } from "../../../components/map/map";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
+import { Footer } from "../../../components/footer/footer";
 
 
 export const AccommodationDetails = () => {
@@ -238,6 +239,7 @@ export const AccommodationDetails = () => {
                     </div>
                 ))
             )}
+            <Footer />
         </div>
     );
 };

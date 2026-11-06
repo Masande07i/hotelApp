@@ -7,6 +7,7 @@ import { Button } from "../../../components/button/button";
 import type { Accommodation } from "../../../features/accomodationSlice";
 import type { Room } from "../../../features/roomSlice";
 import type { Booking } from "../../../features/bookingSlice";
+import { Footer } from "../../../components/footer/footer";
 
 interface PaymentPageState {
     accommodation: Accommodation;
@@ -91,6 +92,7 @@ export const Payment = () => {
                 label="Pay Now"
                 onClick={handlePayNow}
             />
+            <Footer />
         </div>
     );
 };

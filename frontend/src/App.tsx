@@ -19,7 +19,7 @@ import { Routes, Route } from 'react-router-dom'
 import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
 import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
 import { WriteReview } from "./pages/CUSTOMER/writeReview/writeReview"
-import { Footer } from "./components/footer/footer";
+
 
 function App() {
   return (
@@ -50,7 +50,7 @@ function App() {
         </Route>
       </Routes>
 
-       <Footer />
+     
     </div>
   )
 }
