@@ -160,10 +160,6 @@
     transition: background 0.2s ease;
 }
 
-.continueButton:hover {
-    background: #064840;
-}
-
 .continueButton:disabled {
     opacity: 0.6;
     cursor: not-allowed;
