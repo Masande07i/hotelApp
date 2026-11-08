@@ -70,13 +70,12 @@
 .bookButton {
     padding: 12px 24px;
     margin-top: 12px;
-    background: #0b806e;
+   
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
-    cursor: pointer;
     transition: background 0.2s ease;
 }
 
