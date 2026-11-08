@@ -152,11 +152,11 @@
     margin-top: 24px;
     border: none;
     border-radius: 7px;
-    background: #075b53;
-    color: #ffffff;
+    
+   
     font-size: 15px;
     font-weight: 500;
-    cursor: pointer;
+    
     transition: background 0.2s ease;
 }
 
