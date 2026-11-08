@@ -63,15 +63,13 @@
 }
 
 .roomPrice h2 {
-    color: #0b806e;
+    color: #49345E;
     font-size: 24px;
 }
 
 .bookButton {
     padding: 12px 24px;
     margin-top: 12px;
-   
-    color: white;
     border: none;
     border-radius: 8px;
     font-size: 15px;
@@ -79,9 +77,7 @@
     transition: background 0.2s ease;
 }
 
-.bookButton:hover {
-    background: #086657;
-}
+
 
 .reviewForm {
     display: flex;
