@@ -145,9 +145,7 @@
     background-color: #f1f5f9;
 }
 
-.submitButton:hover {
-    background-color: #066653;
-}
+
 
 @media (max-width: 500px) {
     .formCard {

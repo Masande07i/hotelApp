@@ -11,8 +11,9 @@ export interface Accommodation {
     latitude: number | null;
     longitude: number | null;
     star_rating: number | null;
-    created_at: string;
-    updated_at: string;
+    total_rooms?: number;
+    created_at: Date;
+    updated_at: Date;
 }
 export interface AccommodationImage {
     id: number;

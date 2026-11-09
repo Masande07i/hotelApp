@@ -25,6 +25,7 @@ export const AccommodationCard = ({
     star_rating,
     latitude,
     longitude,
+    total_rooms,
     created_at,
     updated_at
 }: AccommodationCardProps) => {
@@ -69,6 +70,7 @@ export const AccommodationCard = ({
     country,
     star_rating,
     latitude,
+    total_rooms,
     longitude,
     created_at,
     updated_at
