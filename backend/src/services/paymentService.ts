@@ -1,3 +1,4 @@
+
 import { query, getClient } from "../config/database";
 import { Payment } from "../types/payment.types";
 
@@ -59,6 +60,22 @@ export const getPaymentByReference = async (
          FROM payments
          WHERE payment_reference = $1`,
         [payment_reference]
+    );
+
+    return rows[0] ?? null;
+};
+
+export const getPaymentByReferenceForUser = async (
+    payment_reference: string,
+    user_id: number
+): Promise<Payment | null> => {
+    const { rows } = await query(
+        `SELECT p.*
+         FROM payments p
+         JOIN bookings b ON p.booking_id = b.id
+         WHERE p.payment_reference = $1
+         AND b.user_id = $2`,
+        [payment_reference, user_id]
     );
 
     return rows[0] ?? null;
@@ -146,7 +163,6 @@ export const completePayment = async (
         client.release();
     }
 };
-
 
 export const getTotalRevenue = async (): Promise<number> => {
     const { rows } = await query(

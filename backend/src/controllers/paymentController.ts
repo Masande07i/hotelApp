@@ -1,10 +1,12 @@
+
 import { Request, Response } from "express";
 import crypto from "crypto";
 import * as paymentService from "../services/paymentService";
+import * as notificationService from "../services/notificationService";
 import {
     initializePaystackPayment,
     verifyPaystackPayment
-} from "../utils/paystack"
+} from "../utils/paystack";
 
 export const initializePayment = async (
     req: Request,
@@ -105,8 +107,9 @@ export const verifyPayment = async (
             });
         }
 
-        const payment = await paymentService.getPaymentByReference(
-            reference
+        const payment = await paymentService.getPaymentByReferenceForUser(
+            reference,
+            req.user.id
         );
 
         if (!payment) {
@@ -156,6 +159,21 @@ export const verifyPayment = async (
             reference,
             payment.booking_id
         );
+
+        try {
+            await notificationService.createNotification(
+                req.user.id,
+                "Payment successful",
+                `Your payment for booking #${payment.booking_id} was successful.`,
+                "payment_success",
+                payment.booking_id
+            );
+        } catch (notificationError) {
+            console.log(
+                "Error creating payment notification:",
+                notificationError
+            );
+        }
 
         const updatedPayment = await paymentService.getPaymentByReference(
             reference

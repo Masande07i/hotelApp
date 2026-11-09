@@ -1,6 +1,7 @@
 
 import { Request, Response } from "express";
 import * as bookingService from "../services/bookingService";
+import * as notificationService from "../services/notificationService";
 
 export const getRoomForBooking = async (req: Request, res: Response) => {
     try {
@@ -208,6 +209,18 @@ export const createBooking = async (req: Request, res: Response) => {
             guests
         );
 
+        try {
+            await notificationService.createNotification(
+                user_id,
+                "Booking received",
+                `Your booking request for ${check_in} to ${check_out} has been received. We will notify you when its status changes.`,
+                "booking_created",
+                booking.id
+            );
+        } catch (notificationError) {
+            console.log("Error creating booking notification:", notificationError);
+        }
+
         return res.status(201).json({
             message: "Booking created successfully",
             booking
@@ -314,6 +327,7 @@ export const getAllBookings = async (req: Request, res: Response) => {
     }
 };
 
+
 export const updateBookingStatus = async (
     req: Request,
     res: Response
@@ -347,6 +361,29 @@ export const updateBookingStatus = async (
             });
         }
 
+        if (status === "confirmed" || status === "cancelled") {
+            try {
+                await notificationService.createNotification(
+                    booking.user_id,
+                    status === "confirmed"
+                        ? "Booking confirmed"
+                        : "Booking cancelled",
+                    status === "confirmed"
+                        ? `Your booking from ${booking.check_in} to ${booking.check_out} has been confirmed.`
+                        : `Your booking from ${booking.check_in} to ${booking.check_out} has been cancelled.`,
+                    status === "confirmed"
+                        ? "booking_confirmed"
+                        : "booking_cancelled",
+                    booking.id
+                );
+            } catch (notificationError) {
+                console.log(
+                    "Error creating booking status notification:",
+                    notificationError
+                );
+            }
+        }
+
         return res.status(200).json({
             message: "Booking status updated successfully",
             booking
@@ -358,3 +395,4 @@ export const updateBookingStatus = async (
         });
     }
 };
+
