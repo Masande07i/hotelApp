@@ -16,12 +16,13 @@
 .header h1 {
     font-size: 25px;
     font-weight: 600;
-    color: #183b3a;
+    color: #49345E;
     margin: 0;
+    
+
 }
 
 .addButton {
-    background-color: #087f68;
     color: white;
     border: none;
     padding: 11px 18px;

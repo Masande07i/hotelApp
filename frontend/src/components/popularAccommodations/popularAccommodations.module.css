@@ -6,7 +6,9 @@
     cursor: pointer;
     transition: 0.2s;
 }
-
+.section{
+    margin-top: 30px;
+}
 .card:hover {
     border-color: #B99ACB;
     box-shadow: 0 6px 20px rgba(73, 52, 94, 0.08);
@@ -78,6 +80,22 @@
     padding: 0 24px;
     box-sizing: border-box;
 }
+.viewAll {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.viewAll button {
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    
+    transition: 0.2s;
+}
+
 
 @media (max-width: 1000px) {
     .listings {

@@ -33,6 +33,8 @@ export const popularAccommodations = () => {
         });
     }, [dispatch, accommodations, imagesByAccommodation]);
 
+    const popularAccommodations = accommodations.slice(0, 4);
+
     return (
         <section className={styles.section}>
             <div className={styles.heading}>
@@ -40,7 +42,7 @@ export const popularAccommodations = () => {
             </div>
 
             <div className={styles.listings}>
-                {accommodations.map((accommodation) => {
+                {popularAccommodations.map((accommodation) => {
                     const images = imagesByAccommodation[accommodation.id] ?? [];
 
                     return (
@@ -61,7 +63,6 @@ export const popularAccommodations = () => {
                                 <Text variant="h2">{accommodation.name}</Text>
                             </div>
 
-                        
                             <div className={styles.rating}>
                                 <FaStar />
                                 <Text variant="p">
@@ -70,16 +71,22 @@ export const popularAccommodations = () => {
                                         : "Not rated"}
                                 </Text>
                             </div>
-                                <div className={styles.location}>
+
+                            <div className={styles.location}>
                                 <FaMapMarkerAlt />
                                 <Text variant="p">
                                     {accommodation.city}, {accommodation.country}
                                 </Text>
                             </div>
-
-                    </div>
+                        </div>
                     );
                 })}
+            </div>
+
+            <div className={styles.viewAll}>
+                <button onClick={() => navigate("/accomodations")}>
+                    View All
+                </button>
             </div>
         </section>
     );
