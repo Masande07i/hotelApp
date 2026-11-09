@@ -1,5 +1,5 @@
 
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store/store";
 
 export interface Notification {
@@ -19,12 +19,21 @@ export interface Notification {
     created_at: Date;
 }
 
+interface PromotionInputs {
+    title: string;
+    message: string;
+}
+
 interface NotificationState {
     notifications: Notification[];
     unreadCount: number;
     loading: boolean;
     error: string | null;
     showNotifications: boolean;
+    promotionInputs: PromotionInputs;
+    sendingPromotion: boolean;
+    promotionFeedback: string | null;
+    showPromotionForm: boolean;
 }
 
 const initialState: NotificationState = {
@@ -32,7 +41,14 @@ const initialState: NotificationState = {
     unreadCount: 0,
     loading: false,
     error: null,
-    showNotifications: false
+    showNotifications: false,
+    promotionInputs: {
+        title: "",
+        message: ""
+    },
+    sendingPromotion: false,
+    promotionFeedback: null,
+    showPromotionForm: false
 };
 
 export const fetchNotifications = createAsyncThunk<
@@ -146,7 +162,7 @@ export const markAllNotificationsAsRead = createAsyncThunk<
             const data = await response.json();
 
             if (!response.ok) {
-                return rejectWithValue(data.message || "Failed to mark notifications as read");
+                return rejectWithValue(data.message || "Failed to mark all notifications as read");
             }
         } catch {
             return rejectWithValue("Error marking all notifications as read");
@@ -187,6 +203,48 @@ export const deleteNotification = createAsyncThunk<
     }
 );
 
+export const sendPromotion = createAsyncThunk<
+    { totalSent: number },
+    void,
+    { state: RootState; rejectValue: string }
+>(
+    "notification/sendPromotion",
+    async (_, { getState, rejectWithValue }) => {
+        try {
+            const { promotionInputs } = getState().notification;
+            const token = getState().auth.token;
+
+            if (!token) {
+                return rejectWithValue("Please log in first");
+            }
+
+            const response = await fetch("/api/notifications/promotion", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    title: promotionInputs.title,
+                    message: promotionInputs.message
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return rejectWithValue(data.message || "Failed to send promotion");
+            }
+
+            return {
+                totalSent: data.totalSent
+            };
+        } catch {
+            return rejectWithValue("Error sending promotion");
+        }
+    }
+);
+
 const notificationSlice = createSlice({
     name: "notification",
     initialState,
@@ -202,6 +260,25 @@ const notificationSlice = createSlice({
         },
         closeNotifications: (state) => {
             state.showNotifications = false;
+        },
+        updatePromotionInputs: (
+            state,
+            action: PayloadAction<Partial<PromotionInputs>>
+        ) => {
+            state.promotionInputs = {
+                ...state.promotionInputs,
+                ...action.payload
+            };
+        },
+        clearPromotionFeedback: (state) => {
+            state.promotionFeedback = null;
+        },
+        openPromotionForm: (state) => {
+            state.showPromotionForm = true;
+        },
+        closePromotionForm: (state) => {
+            state.showPromotionForm = false;
+            state.promotionFeedback = null;
         }
     },
     extraReducers: (builder) => {
@@ -250,6 +327,25 @@ const notificationSlice = createSlice({
                 state.notifications = state.notifications.filter(
                     (item) => item.id !== action.payload
                 );
+            })
+            .addCase(sendPromotion.pending, (state) => {
+                state.sendingPromotion = true;
+                state.promotionFeedback = null;
+            })
+            .addCase(sendPromotion.fulfilled, (state, action) => {
+                state.sendingPromotion = false;
+                state.promotionFeedback =
+                    `Promotion sent successfully to ${action.payload.totalSent} customers.`;
+
+                state.promotionInputs = {
+                    title: "",
+                    message: ""
+                };
+            })
+            .addCase(sendPromotion.rejected, (state, action) => {
+                state.sendingPromotion = false;
+                state.promotionFeedback =
+                    action.payload || "Failed to send promotion";
             });
     }
 });
@@ -257,7 +353,11 @@ const notificationSlice = createSlice({
 export const {
     clearNotifications,
     toggleNotifications,
-    closeNotifications
+    closeNotifications,
+    updatePromotionInputs,
+    clearPromotionFeedback,
+    openPromotionForm,
+    closePromotionForm
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;
