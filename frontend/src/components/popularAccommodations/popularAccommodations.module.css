@@ -80,20 +80,28 @@
     padding: 0 24px;
     box-sizing: border-box;
 }
-.viewAll {
+.heading {
     display: flex;
-    justify-content: center;
-    margin-top: 30px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
-.viewAll button {
+.heading button {
+    background-color: #B99ACB;
+    color: #49345E;
     border: none;
-    padding: 12px 28px;
+    padding: 10px 22px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    
+    cursor: pointer;
     transition: 0.2s;
+}
+
+.heading button:hover {
+    background-color: #75647F;
+    color: #FFFFFF;
 }
 
 

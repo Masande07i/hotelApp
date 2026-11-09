@@ -10,7 +10,7 @@ import {
 import type { Accommodation } from "../../features/accomodationSlice";
 import { AccommodationPopup } from "../Popup/accommodationPopup";
 import { Button } from "../button/button";
-import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
+// import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import styles from "./accomodationCard.module.css";
 
 interface AccommodationCardProps extends Accommodation {}
@@ -99,7 +99,7 @@ export const AccommodationCard = ({
                                         )
                                     }
                                 >
-                                    <CiCircleChevLeft />
+                                 
                                 </button>
 
                                 <button
@@ -111,7 +111,7 @@ export const AccommodationCard = ({
                                         )
                                     }
                                 >
-                                    <CiCircleChevRight />
+                                 
                                 </button>
                             </>
                         )}

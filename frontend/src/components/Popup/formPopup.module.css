@@ -139,11 +139,7 @@
     border: 1px solid #dce4e9;
 }
 
-.submitButton {
-    background-color: #087f68;
-    color: white;
-    border: 1px solid #087f68;
-}
+
 
 .cancelButton:hover {
     background-color: #f1f5f9;

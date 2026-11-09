@@ -37,8 +37,12 @@ export const popularAccommodations = () => {
 
     return (
         <section className={styles.section}>
-            <div className={styles.heading}>
+           <div className={styles.heading}>
                 <Text variant="h2">Popular Accommodations</Text>
+
+                <button onClick={() => navigate("/accommodations")}>
+                    View All
+                </button>
             </div>
 
             <div className={styles.listings}>
@@ -83,11 +87,7 @@ export const popularAccommodations = () => {
                 })}
             </div>
 
-            <div className={styles.viewAll}>
-                <button onClick={() => navigate("/accomodations")}>
-                    View All
-                </button>
-            </div>
+           
         </section>
     );
 };
