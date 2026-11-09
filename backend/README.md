@@ -134,6 +134,29 @@ CREATE TABLE reviews (
 );
 
 
+CREATE TABLE IF NOT EXISTS notifications (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    booking_id INTEGER,
+    title VARCHAR(150) NOT NULL,
+    message TEXT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_notification_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_notification_booking
+        FOREIGN KEY (booking_id)
+        REFERENCES bookings(id)
+        ON DELETE SET NULL
+);
+
+
+
 CREATE TABLE payments (
     id SERIAL PRIMARY KEY,
     booking_id INTEGER NOT NULL,

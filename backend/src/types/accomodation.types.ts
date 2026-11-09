@@ -8,6 +8,7 @@ export interface Accommodation {
     latitude: number | null;
     longitude: number | null;
     star_rating: number | null;
+    total_rooms?: number;
     created_at: Date;
     updated_at: Date;
 }

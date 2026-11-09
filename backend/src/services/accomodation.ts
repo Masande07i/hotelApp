@@ -22,10 +22,19 @@ export const createAccommodation = async (
     return rows[0];
 };
 
-export const getAllAccommodations = async (): Promise<Accommodation[]> => {
+export const getAllAccommodations = async () => {
     const { rows } = await query(
-        `SELECT * FROM accommodations
-         ORDER BY created_at DESC`
+        `SELECT
+            a.*,
+            COALESCE(
+                (
+                    SELECT SUM(r.total_rooms)
+                    FROM rooms r
+                    WHERE r.accommodation_id = a.id
+                ), 0
+            )::int AS total_rooms
+         FROM accommodations a
+         ORDER BY a.created_at DESC`
     );
 
     return rows;
