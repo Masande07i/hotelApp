@@ -40,7 +40,7 @@ export const popularAccommodations = () => {
            <div className={styles.heading}>
                 <Text variant="h2">Popular Accommodations</Text>
 
-                <button onClick={() => navigate("/accommodations")}>
+                <button onClick={() => navigate("/accomodations")}>
                     View All
                 </button>
             </div>

@@ -104,142 +104,299 @@ export const AccommodationDetails = () => {
     }
 
     return (
-        <div className={styles.details}>
+    <div className={styles.details}>
+        <Navbar className={styles.detailsNavbar} />
 
-            <Navbar className={styles.detailsNavbar} />
+        <main className={styles.content}>
 
-            <Text variant="h1">{accommodation.name}</Text>
+            <div className={styles.topSection}>
+                <div className={styles.titleArea}>
+                    <div>
+                        <Text variant="h1">{accommodation.name}</Text>
 
+                        <div className={styles.location}>
+                            <span>📍</span>
+                            <Text variant="p">
+                                {accommodation.city}, {accommodation.country}
+                            </Text>
+                        </div>
+                    </div>
 
-            <div className={styles.gallery}>
-                {images?.map((image) => (
-                    <img
-                        key={image.id}
-                        src={image.image_url}
-                        alt={accommodation.name}
-                    />
-                ))}
+                    <div className={styles.rating}>
+                        <span>★</span>
+                        <Text variant="p">
+                            {accommodation.star_rating
+                                ? `${accommodation.star_rating} Star Hotel`
+                                : "Not rated"}
+                        </Text>
+                    </div>
+                </div>
+
+                <div className={styles.gallery}>
+                    {images && images.length > 0 ? (
+                        <>
+                            <div className={styles.mainImage}>
+                                <img
+                                    src={images[0].image_url}
+                                    alt={accommodation.name}
+                                />
+                            </div>
+
+                            {images.slice(1, 5).map((image, index) => (
+                                <div
+                                    className={styles.galleryImage}
+                                    key={image.id}
+                                >
+                                    <img
+                                        src={image.image_url}
+                                        alt={`${accommodation.name} ${index + 2}`}
+                                    />
+                                </div>
+                            ))}
+
+                            {images.length > 5 && (
+                                <div className={styles.moreImages}>
+                                    <img
+                                        src={images[5].image_url}
+                                        alt={`${accommodation.name} view`}
+                                    />
+
+                                    <span>
+                                        +{images.length - 5} more photos
+                                    </span>
+                                </div>
+                            )}
+                        </>
+                    ) : (
+                        <div className={styles.noImages}>
+                            <Text variant="p">
+                                No images available
+                            </Text>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            
-            <Text variant="p">
-                {accommodation.address}, {accommodation.city},{" "}
-                {accommodation.country}
-            </Text>
+            <div className={styles.mainGrid}>
 
-            <Text variant="p">
-                 {accommodation.star_rating ?? "Not rated"}
-            </Text>
+                <div className={styles.leftColumn}>
 
-            <Text variant="h2">About this accommodation</Text>
-            <Text variant="p">{accommodation.description}</Text>
+                    <section className={styles.about}>
+                        <Text variant="h2">About this accommodation</Text>
 
-            <hr />
-
-            <Text variant="h1">Select your room</Text>
-
-            {loading ? (
-                <Text variant="p">Loading rooms...</Text>
-            ) : error ? (
-                <Text variant="p">{error}</Text>
-            ) : rooms.length === 0 ? (
-                <Text variant="p">
-                    No rooms available for this accommodation.
-                </Text>
-            ) : (
-                rooms.map((room) => (
-                    <div key={room.id} className={styles.room}>
-                        <div>
-                            <Text variant="h2">{room.room_type}</Text>
-
-                            <Text variant="p">
-                                {room.description ?? "No description available"}
-                            </Text>
-
-                            <Text variant="p">
-                                Bed type: {room.bed_type ?? "Not specified"}
-                            </Text>
-
-                            <Text variant="p">
-                                Sleeps {room.capacity} guests
-                            </Text>
-
-                            <Text variant="p">
-                                Amenities: {room.amenities?.join(", ") || "None listed"}
-                            </Text>
-                        </div>
-
-                        <div className={styles.roomPrice}>
-                            <Text variant="h2">
-                                R{room.price_per_night}
-                            </Text>
-
-                            <Text variant="p">per night</Text>
-
-                           <button
-                                type="button"
-                                className={styles.bookButton}
-                                onClick={() => {
-                                    if (!user) {
-                                        navigate("/login", {
-                                            state: {
-                                                from: `/accommodations/${accommodation.id}`
-                                            }
-                                        });
-                                        return;
-                                    }
-
-                                    navigate("/booking", {
-                                        state: { accommodation, room }
-                                    });
-                                }}
-                            >
-                                Book Now
-                            </button>
-                        </div>
-                    </div>
-                ))
-            )}
-
-            <hr />
-
-            <Text variant="h2">Location</Text>
-
-            {accommodation.latitude !== null &&
-            accommodation.longitude !== null ? (
-                <AccommodationMap
-                    latitude={Number(accommodation.latitude)}
-                    longitude={Number(accommodation.longitude)}
-                    name={accommodation.name}
-                />
-            ) : (
-                <Text variant="p">Location map not available.</Text>
-            )}
-
-           
-
-            <Text variant="h1">Customer Reviews</Text>
-
-            {reviewLoading ? (
-                <Text variant="p">Loading reviews...</Text>
-            ) : reviews.length === 0 ? (
-                <Text variant="p">
-                    No reviews yet. Be the first to review this accommodation!
-                </Text>
-            ) : (
-                reviews.map((review) => (
-                    <div key={review.id} className={styles.review}>
-                        <Text variant="h2">{review.user_name}</Text>
-                        <Text variant="h2">Rating: {review.rating}/5</Text>
-                        <Text variant="p">{review.comment}</Text>
-                        <Text variant="span">
-                            {new Date(review.created_at).toLocaleDateString()}
+                        <Text variant="p">
+                            {accommodation.description}
                         </Text>
-            
-                    </div>
-                ))
-            )}
-            <Footer />
-        </div>
-    );
+                    </section>
+
+                    <section className={styles.infoCards}>
+                        <div className={styles.infoCard}>
+                            <span>📍</span>
+                            <div>
+                                <Text variant="h2">Location</Text>
+                                <Text variant="p">
+                                    {accommodation.address}, {accommodation.city}
+                                </Text>
+                            </div>
+                        </div>
+
+                        <div className={styles.infoCard}>
+                            <span>⭐</span>
+                            <div>
+                                <Text variant="h2">Rating</Text>
+                                <Text variant="p">
+                                    {accommodation.star_rating
+                                        ? `${accommodation.star_rating} out of 5`
+                                        : "Not rated"}
+                                </Text>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className={styles.roomsSection}>
+                        <div className={styles.sectionHeading}>
+                            <div>
+                                <Text variant="h1">Choose your room</Text>
+                                <Text variant="p">
+                                    Select a room that suits your stay.
+                                </Text>
+                            </div>
+                        </div>
+
+                        {loading ? (
+                            <div className={styles.message}>
+                                <Text variant="p">Loading rooms...</Text>
+                            </div>
+                        ) : error ? (
+                            <div className={styles.message}>
+                                <Text variant="p">{error}</Text>
+                            </div>
+                        ) : rooms.length === 0 ? (
+                            <div className={styles.message}>
+                                <Text variant="p">
+                                    No rooms available for this accommodation.
+                                </Text>
+                            </div>
+                        ) : (
+                            <div className={styles.rooms}>
+                                {rooms.map((room) => (
+                                    <div
+                                        key={room.id}
+                                        className={styles.room}
+                                    >
+                                        <div className={styles.roomInfo}>
+                                            <Text variant="h2">
+                                                {room.room_type}
+                                            </Text>
+
+                                            <Text variant="p">
+                                                {room.description ??
+                                                    "No description available"}
+                                            </Text>
+
+                                            <div className={styles.roomDetails}>
+                                                <span>
+                                                    🛏️{" "}
+                                                    {room.bed_type ??
+                                                        "Not specified"}
+                                                </span>
+
+                                                <span>
+                                                    👤 Sleeps {room.capacity}
+                                                </span>
+
+                                                <span>
+                                                    🏷️{" "}
+                                                    {room.amenities?.join(", ") ||
+                                                        "No amenities listed"}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.roomBooking}>
+                                            <div>
+                                                <Text variant="p">
+                                                    From
+                                                </Text>
+
+                                                <Text variant="h2">
+                                                    R{room.price_per_night}
+                                                </Text>
+
+                                                <Text variant="p">
+                                                    per night
+                                                </Text>
+                                            </div>
+
+                                            <button
+                                                type="button"
+                                                className={styles.bookButton}
+                                                onClick={() => {
+                                                    if (!user) {
+                                                        navigate("/login", {
+                                                            state: {
+                                                                from: `/accommodations/${accommodation.id}`
+                                                            }
+                                                        });
+
+                                                        return;
+                                                    }
+
+                                                    navigate("/booking", {
+                                                        state: {
+                                                            accommodation,
+                                                            room
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                Book Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                    <section className={styles.locationSection}>
+                        <Text variant="h2">Where you'll stay</Text>
+
+                        {accommodation.latitude !== null &&
+                        accommodation.longitude !== null ? (
+                            <AccommodationMap
+                                latitude={Number(accommodation.latitude)}
+                                longitude={Number(accommodation.longitude)}
+                                name={accommodation.name}
+                            />
+                        ) : (
+                            <Text variant="p">
+                                Location map not available.
+                            </Text>
+                        )}
+                    </section>
+
+                    <section className={styles.reviewsSection}>
+                        <div className={styles.sectionHeading}>
+                            <div>
+                                <Text variant="h2">Guest reviews</Text>
+
+                                <Text variant="p">
+                                    What previous guests have said.
+                                </Text>
+                            </div>
+                        </div>
+
+                        {reviewLoading ? (
+                            <Text variant="p">Loading reviews...</Text>
+                        ) : reviews.length === 0 ? (
+                            <div className={styles.noReviews}>
+                                <Text variant="p">
+                                    No reviews yet. Be the first to review
+                                    this accommodation!
+                                </Text>
+                            </div>
+                        ) : (
+                            <div className={styles.reviews}>
+                                {reviews.map((review) => (
+                                    <div
+                                        key={review.id}
+                                        className={styles.review}
+                                    >
+                                        <div className={styles.reviewTop}>
+                                            <div>
+                                                <Text variant="h2">
+                                                    {review.user_name}
+                                                </Text>
+
+                                                <Text variant="span">
+                                                    {new Date(
+                                                        review.created_at
+                                                    ).toLocaleDateString()}
+                                                </Text>
+                                            </div>
+
+                                            <div className={styles.reviewRating}>
+                                                ★ {review.rating}/5
+                                            </div>
+                                        </div>
+
+                                        <Text variant="p">
+                                            {review.comment}
+                                        </Text>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <Footer />
+    </div>
+);
 };

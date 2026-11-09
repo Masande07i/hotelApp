@@ -1,39 +1,93 @@
+.login {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #F6F1F8;
+}
+
 .form {
-display: flex;
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 430px;
+    padding: 40px;
+    background-color: #FFFFFF;
+    border: 1px solid #E6D9ED;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(73, 52, 94, 0.08);
 }
 
 .form label {
-margin-bottom: 7px;
-color: #302b27;
-font-size: 14px;
-font-weight: 500;
+    margin-bottom: 7px;
+    color: #49345E;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .form input {
-padding: 12px;
-margin-bottom: 18px;
-border: 1px solid #e5ddd5;
-border-radius: 8px;
-outline: none;
-font-size: 14px;
+    padding: 13px 14px;
+    margin-bottom: 20px;
+    border: 1px solid #D9C9E2;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    color: #49345E;
+    background-color: #FFFFFF;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form input:focus {
+    border-color: #B99ACB;
+    box-shadow: 0 0 0 3px rgba(185, 154, 203, 0.2);
+}
+
+.form input::placeholder {
+    color: #A99BAF;
 }
 
 .form h1 {
-margin: 0 0 10px;
-color: #302b27;
-text-align: center;
+    margin: 0 0 10px;
+    color: #49345E;
+    text-align: center;
 }
 
 .form p {
-margin: 0 0 22px;
+    margin: 0 0 22px;
+    color: #75647F;
+    text-align: center;
+}
 
-text-align: center;
+.form button {
+    width: 100%;
 }
 
 .googleButton {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 15px;
+    margin-top: 18px;
+}
+
+.signup {
+    margin-top: 22px !important;
+    font-size: 14px;
+}
+
+.signup a {
+    color: #75647F;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signup a:hover {
+    color: #49345E;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .form {
+        padding: 28px 22px;
+    }
 }
