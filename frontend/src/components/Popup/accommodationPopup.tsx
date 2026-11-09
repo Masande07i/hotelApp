@@ -41,6 +41,7 @@ export const AccommodationPopup = ({
 
     useEffect(() => {
         if (accommodation) {
+            console.log("Accommodation being edited:", accommodation)
             dispatch(updateAccommodationInputs({
                 name: accommodation.name,
                 description: accommodation.description,
