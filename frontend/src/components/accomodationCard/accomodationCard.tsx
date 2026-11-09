@@ -23,6 +23,8 @@ export const AccommodationCard = ({
     city,
     country,
     star_rating,
+    latitude,
+    longitude,
     created_at,
     updated_at
 }: AccommodationCardProps) => {
@@ -58,19 +60,19 @@ export const AccommodationCard = ({
         await dispatch(deleteAccommodation(id));
     };
 
-    const accommodation: Accommodation = {
-        id,
-        name,
-        description,
-        address,
-        city,
-        country,
-        star_rating,
-        created_at,
-        updated_at,
-        latitude: null,
-        longitude: null
-    };
+   const accommodation: Accommodation = {
+    id,
+    name,
+    description,
+    address,
+    city,
+    country,
+    star_rating,
+    latitude,
+    longitude,
+    created_at,
+    updated_at
+};
 
     return (
         <>
