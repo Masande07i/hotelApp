@@ -10,11 +10,19 @@ import {
 } from "../../../features/accomodationSlice";
 import { Text } from "../../../components/Text/text";
 import {
-    fetchReviewsByAccommodation,} from "../../../features/reviewSlice";
+    fetchReviewsByAccommodation,
+} from "../../../features/reviewSlice";
 import { AccommodationMap } from "../../../components/map/map";
 import { navbar as Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
 import { Footer } from "../../../components/footer/footer";
+import {
+    FaMapMarkerAlt,
+    FaStar,
+    FaBed,
+    FaUser,
+    FaTags
+} from "react-icons/fa";
 
 
 export const AccommodationDetails = () => {
@@ -49,12 +57,9 @@ export const AccommodationDetails = () => {
         (state: RootState) => state.auth.user
     );
 
-   
 
     const {
-        
         loading: reviewLoading,
-       
     } = useSelector((state: RootState) => state.review);
 
     useEffect(() => {
@@ -104,299 +109,299 @@ export const AccommodationDetails = () => {
     }
 
     return (
-    <div className={styles.details}>
-        <Navbar className={styles.detailsNavbar} />
+        <div className={styles.details}>
+            <Navbar className={styles.detailsNavbar} />
 
-        <main className={styles.content}>
+            <main className={styles.content}>
 
-            <div className={styles.topSection}>
-                <div className={styles.titleArea}>
-                    <div>
-                        <Text variant="h1">{accommodation.name}</Text>
+                <div className={styles.topSection}>
+                    <div className={styles.titleArea}>
+                        <div>
+                            <Text variant="h1">{accommodation.name}</Text>
 
-                        <div className={styles.location}>
-                            <span>📍</span>
+                            <div className={styles.location}>
+                                <FaMapMarkerAlt />
+                                <Text variant="p">
+                                    {accommodation.city}, {accommodation.country}
+                                </Text>
+                            </div>
+                        </div>
+
+                        <div className={styles.rating}>
+                            <FaStar />
                             <Text variant="p">
-                                {accommodation.city}, {accommodation.country}
+                                {accommodation.star_rating
+                                    ? `${accommodation.star_rating} Star Hotel`
+                                    : "Not rated"}
                             </Text>
                         </div>
                     </div>
 
-                    <div className={styles.rating}>
-                        <span>★</span>
-                        <Text variant="p">
-                            {accommodation.star_rating
-                                ? `${accommodation.star_rating} Star Hotel`
-                                : "Not rated"}
-                        </Text>
-                    </div>
-                </div>
-
-                <div className={styles.gallery}>
-                    {images && images.length > 0 ? (
-                        <>
-                            <div className={styles.mainImage}>
-                                <img
-                                    src={images[0].image_url}
-                                    alt={accommodation.name}
-                                />
-                            </div>
-
-                            {images.slice(1, 5).map((image, index) => (
-                                <div
-                                    className={styles.galleryImage}
-                                    key={image.id}
-                                >
+                    <div className={styles.gallery}>
+                        {images && images.length > 0 ? (
+                            <>
+                                <div className={styles.mainImage}>
                                     <img
-                                        src={image.image_url}
-                                        alt={`${accommodation.name} ${index + 2}`}
+                                        src={images[0].image_url}
+                                        alt={accommodation.name}
                                     />
                                 </div>
-                            ))}
 
-                            {images.length > 5 && (
-                                <div className={styles.moreImages}>
-                                    <img
-                                        src={images[5].image_url}
-                                        alt={`${accommodation.name} view`}
-                                    />
-
-                                    <span>
-                                        +{images.length - 5} more photos
-                                    </span>
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className={styles.noImages}>
-                            <Text variant="p">
-                                No images available
-                            </Text>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <div className={styles.mainGrid}>
-
-                <div className={styles.leftColumn}>
-
-                    <section className={styles.about}>
-                        <Text variant="h2">About this accommodation</Text>
-
-                        <Text variant="p">
-                            {accommodation.description}
-                        </Text>
-                    </section>
-
-                    <section className={styles.infoCards}>
-                        <div className={styles.infoCard}>
-                            <span>📍</span>
-                            <div>
-                                <Text variant="h2">Location</Text>
-                                <Text variant="p">
-                                    {accommodation.address}, {accommodation.city}
-                                </Text>
-                            </div>
-                        </div>
-
-                        <div className={styles.infoCard}>
-                            <span>⭐</span>
-                            <div>
-                                <Text variant="h2">Rating</Text>
-                                <Text variant="p">
-                                    {accommodation.star_rating
-                                        ? `${accommodation.star_rating} out of 5`
-                                        : "Not rated"}
-                                </Text>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className={styles.roomsSection}>
-                        <div className={styles.sectionHeading}>
-                            <div>
-                                <Text variant="h1">Choose your room</Text>
-                                <Text variant="p">
-                                    Select a room that suits your stay.
-                                </Text>
-                            </div>
-                        </div>
-
-                        {loading ? (
-                            <div className={styles.message}>
-                                <Text variant="p">Loading rooms...</Text>
-                            </div>
-                        ) : error ? (
-                            <div className={styles.message}>
-                                <Text variant="p">{error}</Text>
-                            </div>
-                        ) : rooms.length === 0 ? (
-                            <div className={styles.message}>
-                                <Text variant="p">
-                                    No rooms available for this accommodation.
-                                </Text>
-                            </div>
-                        ) : (
-                            <div className={styles.rooms}>
-                                {rooms.map((room) => (
+                                {images.slice(1, 5).map((image, index) => (
                                     <div
-                                        key={room.id}
-                                        className={styles.room}
+                                        className={styles.galleryImage}
+                                        key={image.id}
                                     >
-                                        <div className={styles.roomInfo}>
-                                            <Text variant="h2">
-                                                {room.room_type}
-                                            </Text>
+                                        <img
+                                            src={image.image_url}
+                                            alt={`${accommodation.name} ${index + 2}`}
+                                        />
+                                    </div>
+                                ))}
 
-                                            <Text variant="p">
-                                                {room.description ??
-                                                    "No description available"}
-                                            </Text>
+                                {images.length > 5 && (
+                                    <div className={styles.moreImages}>
+                                        <img
+                                            src={images[5].image_url}
+                                            alt={`${accommodation.name} view`}
+                                        />
 
-                                            <div className={styles.roomDetails}>
-                                                <span>
-                                                    🛏️{" "}
-                                                    {room.bed_type ??
-                                                        "Not specified"}
-                                                </span>
+                                        <span>
+                                            +{images.length - 5} more photos
+                                        </span>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className={styles.noImages}>
+                                <Text variant="p">
+                                    No images available
+                                </Text>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
-                                                <span>
-                                                    👤 Sleeps {room.capacity}
-                                                </span>
+                <div className={styles.mainGrid}>
 
-                                                <span>
-                                                    🏷️{" "}
-                                                    {room.amenities?.join(", ") ||
-                                                        "No amenities listed"}
-                                                </span>
-                                            </div>
-                                        </div>
+                    <div className={styles.leftColumn}>
 
-                                        <div className={styles.roomBooking}>
-                                            <div>
-                                                <Text variant="p">
-                                                    From
-                                                </Text>
+                        <section className={styles.about}>
+                            <Text variant="h2">About this accommodation</Text>
 
+                            <Text variant="p">
+                                {accommodation.description}
+                            </Text>
+                        </section>
+
+                        <section className={styles.infoCards}>
+                            <div className={styles.infoCard}>
+                                <FaMapMarkerAlt />
+                                <div>
+                                    <Text variant="h2">Location</Text>
+                                    <Text variant="p">
+                                        {accommodation.address}, {accommodation.city}
+                                    </Text>
+                                </div>
+                            </div>
+
+                            <div className={styles.infoCard}>
+                                <FaStar />
+                                <div>
+                                    <Text variant="h2">Rating</Text>
+                                    <Text variant="p">
+                                        {accommodation.star_rating
+                                            ? `${accommodation.star_rating} out of 5`
+                                            : "Not rated"}
+                                    </Text>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className={styles.roomsSection}>
+                            <div className={styles.sectionHeading}>
+                                <div>
+                                    <Text variant="h1">Choose your room</Text>
+                                    <Text variant="p">
+                                        Select a room that suits your stay.
+                                    </Text>
+                                </div>
+                            </div>
+
+                            {loading ? (
+                                <div className={styles.message}>
+                                    <Text variant="p">Loading rooms...</Text>
+                                </div>
+                            ) : error ? (
+                                <div className={styles.message}>
+                                    <Text variant="p">{error}</Text>
+                                </div>
+                            ) : rooms.length === 0 ? (
+                                <div className={styles.message}>
+                                    <Text variant="p">
+                                        No rooms available for this accommodation.
+                                    </Text>
+                                </div>
+                            ) : (
+                                <div className={styles.rooms}>
+                                    {rooms.map((room) => (
+                                        <div
+                                            key={room.id}
+                                            className={styles.room}
+                                        >
+                                            <div className={styles.roomInfo}>
                                                 <Text variant="h2">
-                                                    R{room.price_per_night}
+                                                    {room.room_type}
                                                 </Text>
 
                                                 <Text variant="p">
-                                                    per night
+                                                    {room.description ??
+                                                        "No description available"}
                                                 </Text>
+
+                                                <div className={styles.roomDetails}>
+                                                    <span>
+                                                        <FaBed />{" "}
+                                                        {room.bed_type ??
+                                                            "Not specified"}
+                                                    </span>
+
+                                                    <span>
+                                                        <FaUser /> Sleeps {room.capacity}
+                                                    </span>
+
+                                                    <span>
+                                                        <FaTags />{" "}
+                                                        {room.amenities?.join(", ") ||
+                                                            "No amenities listed"}
+                                                    </span>
+                                                </div>
                                             </div>
 
-                                            <button
-                                                type="button"
-                                                className={styles.bookButton}
-                                                onClick={() => {
-                                                    if (!user) {
-                                                        navigate("/login", {
+                                            <div className={styles.roomBooking}>
+                                                <div>
+                                                    <Text variant="p">
+                                                        From
+                                                    </Text>
+
+                                                    <Text variant="h2">
+                                                        R{room.price_per_night}
+                                                    </Text>
+
+                                                    <Text variant="p">
+                                                        per night
+                                                    </Text>
+                                                </div>
+
+                                                <button
+                                                    type="button"
+                                                    className={styles.bookButton}
+                                                    onClick={() => {
+                                                        if (!user) {
+                                                            navigate("/login", {
+                                                                state: {
+                                                                    from: `/accommodations/${accommodation.id}`
+                                                                }
+                                                            });
+
+                                                            return;
+                                                        }
+
+                                                        navigate("/booking", {
                                                             state: {
-                                                                from: `/accommodations/${accommodation.id}`
+                                                                accommodation,
+                                                                room
                                                             }
                                                         });
-
-                                                        return;
-                                                    }
-
-                                                    navigate("/booking", {
-                                                        state: {
-                                                            accommodation,
-                                                            room
-                                                        }
-                                                    });
-                                                }}
-                                            >
-                                                Book Now
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </section>
-
-                    <section className={styles.locationSection}>
-                        <Text variant="h2">Where you'll stay</Text>
-
-                        {accommodation.latitude !== null &&
-                        accommodation.longitude !== null ? (
-                            <AccommodationMap
-                                latitude={Number(accommodation.latitude)}
-                                longitude={Number(accommodation.longitude)}
-                                name={accommodation.name}
-                            />
-                        ) : (
-                            <Text variant="p">
-                                Location map not available.
-                            </Text>
-                        )}
-                    </section>
-
-                    <section className={styles.reviewsSection}>
-                        <div className={styles.sectionHeading}>
-                            <div>
-                                <Text variant="h2">Guest reviews</Text>
-
-                                <Text variant="p">
-                                    What previous guests have said.
-                                </Text>
-                            </div>
-                        </div>
-
-                        {reviewLoading ? (
-                            <Text variant="p">Loading reviews...</Text>
-                        ) : reviews.length === 0 ? (
-                            <div className={styles.noReviews}>
-                                <Text variant="p">
-                                    No reviews yet. Be the first to review
-                                    this accommodation!
-                                </Text>
-                            </div>
-                        ) : (
-                            <div className={styles.reviews}>
-                                {reviews.map((review) => (
-                                    <div
-                                        key={review.id}
-                                        className={styles.review}
-                                    >
-                                        <div className={styles.reviewTop}>
-                                            <div>
-                                                <Text variant="h2">
-                                                    {review.user_name}
-                                                </Text>
-
-                                                <Text variant="span">
-                                                    {new Date(
-                                                        review.created_at
-                                                    ).toLocaleDateString()}
-                                                </Text>
-                                            </div>
-
-                                            <div className={styles.reviewRating}>
-                                                ★ {review.rating}/5
+                                                    }}
+                                                >
+                                                    Book Now
+                                                </button>
                                             </div>
                                         </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
 
-                                        <Text variant="p">
-                                            {review.comment}
-                                        </Text>
-                                    </div>
-                                ))}
+                        <section className={styles.locationSection}>
+                            <Text variant="h2">Where you'll stay</Text>
+
+                            {accommodation.latitude !== null &&
+                            accommodation.longitude !== null ? (
+                                <AccommodationMap
+                                    latitude={Number(accommodation.latitude)}
+                                    longitude={Number(accommodation.longitude)}
+                                    name={accommodation.name}
+                                />
+                            ) : (
+                                <Text variant="p">
+                                    Location map not available.
+                                </Text>
+                            )}
+                        </section>
+
+                        <section className={styles.reviewsSection}>
+                            <div className={styles.sectionHeading}>
+                                <div>
+                                    <Text variant="h2">Guest reviews</Text>
+
+                                    <Text variant="p">
+                                        What previous guests have said.
+                                    </Text>
+                                </div>
                             </div>
-                        )}
-                    </section>
+
+                            {reviewLoading ? (
+                                <Text variant="p">Loading reviews...</Text>
+                            ) : reviews.length === 0 ? (
+                                <div className={styles.noReviews}>
+                                    <Text variant="p">
+                                        No reviews yet. Be the first to review
+                                        this accommodation!
+                                    </Text>
+                                </div>
+                            ) : (
+                                <div className={styles.reviews}>
+                                    {reviews.map((review) => (
+                                        <div
+                                            key={review.id}
+                                            className={styles.review}
+                                        >
+                                            <div className={styles.reviewTop}>
+                                                <div>
+                                                    <Text variant="h2">
+                                                        {review.user_name}
+                                                    </Text>
+
+                                                    <Text variant="span">
+                                                        {new Date(
+                                                            review.created_at
+                                                        ).toLocaleDateString()}
+                                                    </Text>
+                                                </div>
+
+                                                <div className={styles.reviewRating}>
+                                                    <FaStar /> {review.rating}/5
+                                                </div>
+                                            </div>
+
+                                            <Text variant="p">
+                                                {review.comment}
+                                            </Text>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+
+                    </div>
 
                 </div>
 
-            </div>
+            </main>
 
-        </main>
-
-        <Footer />
-    </div>
-);
+            <Footer />
+        </div>
+    );
 };

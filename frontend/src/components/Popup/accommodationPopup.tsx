@@ -41,7 +41,6 @@ export const AccommodationPopup = ({
 
     useEffect(() => {
         if (accommodation) {
-            
             dispatch(updateAccommodationInputs({
                 name: accommodation.name,
                 description: accommodation.description,
@@ -188,36 +187,36 @@ export const AccommodationPopup = ({
                     </div>
 
                     <label htmlFor="latitude">Latitude *</label>
-                        <input
-                            id="latitude"
-                            name="latitude"
-                            type="number"
-                            step="any"
-                            placeholder="e.g. -29.8587"
-                            value={inputs.latitude}
-                            onChange={(event) =>
-                                dispatch(updateAccommodationInputs({
-                                    latitude: event.target.value
-                                }))
-                            }
-                            required
-                        />
+                    <input
+                        id="latitude"
+                        name="latitude"
+                        type="number"
+                        step="any"
+                        placeholder="e.g. -29.8587"
+                        value={inputs.latitude}
+                        onChange={(event) =>
+                            dispatch(updateAccommodationInputs({
+                                latitude: event.target.value
+                            }))
+                        }
+                        required
+                    />
 
-                        <label htmlFor="longitude">Longitude *</label>
-                        <input
-                            id="longitude"
-                            name="longitude"
-                            type="number"
-                            step="any"
-                            placeholder="e.g. 31.0218"
-                            value={inputs.longitude}
-                            onChange={(event) =>
-                                dispatch(updateAccommodationInputs({
-                                    longitude: event.target.value
-                                }))
-                            }
-                            required
-                        />
+                    <label htmlFor="longitude">Longitude *</label>
+                    <input
+                        id="longitude"
+                        name="longitude"
+                        type="number"
+                        step="any"
+                        placeholder="e.g. 31.0218"
+                        value={inputs.longitude}
+                        onChange={(event) =>
+                            dispatch(updateAccommodationInputs({
+                                longitude: event.target.value
+                            }))
+                        }
+                        required
+                    />
 
                     <label htmlFor="star_rating">Star Rating</label>
                     <select
@@ -231,11 +230,11 @@ export const AccommodationPopup = ({
                         }
                     >
                         <option value="">No rating</option>
-                        <option value="1">★ 1 Star</option>
-                        <option value="2">★★ 2 Stars</option>
-                        <option value="3">★★★ 3 Stars</option>
-                        <option value="4">★★★★ 4 Stars</option>
-                        <option value="5">★★★★★ 5 Stars</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
                     </select>
 
                     <label htmlFor="accommodationImages">Images</label>

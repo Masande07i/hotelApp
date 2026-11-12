@@ -1,8 +1,8 @@
 import styles from "./hero.module.css"
 import { Text } from "../Text/text";
-import { accommodationSearch as AccommodationSearch } from "../accommodationSearch/accommodationSearch";
+import {  AccommodationSearch } from "../accommodationSearch/accommodationSearch";
 
-export const hero = () => {
+export const Hero = () => {
     return (
         <div className={styles.hero}>
             <div className={styles.heroContent}>

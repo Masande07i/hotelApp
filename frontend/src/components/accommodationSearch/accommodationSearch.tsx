@@ -1,10 +1,9 @@
-
 import { Text } from "../Text/text";
 import { Button } from "../button/button";
 import styles from "./accommodationSearch.module.css";
 import { useNavigate } from "react-router-dom";
 
-export const accommodationSearch = () => {
+export const AccommodationSearch = () => {
     const navigate = useNavigate();
 
     const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {

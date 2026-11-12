@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import style from "./adminDetails.module.css";
 import { useParams } from "react-router-dom";

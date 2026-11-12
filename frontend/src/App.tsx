@@ -1,6 +1,6 @@
 import './App.css'
 import { landing as Landing } from './pages/landing/landing'
-import { login as Login } from './pages/login/login'
+import {  Login } from './pages/login/login'
 import { signup as Signup } from './pages/signup/signup'
 import { accomodations as Accomodations } from "./pages/CUSTOMER/customerAccommodation/accomodations"
 import { adminDashboard as AdminDashboard } from "./pages/ADMIN/adminDashboard/adminDashboard"
@@ -19,7 +19,7 @@ import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
 import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
 import { WriteReview } from "./pages/CUSTOMER/writeReview/writeReview"
 import { about  as About} from './pages/About/about'
-import { contact as Contact } from './pages/Contacts/contact'
+import {Contact } from './pages/Contacts/contact'
 import { AccommodationShare } from "./pages/CUSTOMER/accommodationShare/accommodationShare";
 
 function App() {

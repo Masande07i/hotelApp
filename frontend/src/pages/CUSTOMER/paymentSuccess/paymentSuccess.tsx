@@ -6,6 +6,11 @@ import type { RootState } from "../../../store/store";
 import { Text } from "../../../components/Text/text";
 import { Button } from "../../../components/button/button";
 import { Footer } from "../../../components/footer/footer";
+import {
+    FaHourglassHalf,
+    FaCheckCircle,
+    FaTimesCircle
+} from "react-icons/fa";
 
 export const PaymentSuccess = () => {
     const location = useLocation();
@@ -52,66 +57,102 @@ export const PaymentSuccess = () => {
                 }
 
                 setStatus("success");
-                setMessage("Your payment was successful. Your booking is confirmed.");
+                setMessage(
+                    "Your payment was successful. Your booking is confirmed."
+                );
 
             } catch (error) {
                 console.error("Payment verification error:", error);
                 setStatus("failed");
-                setMessage("Unable to verify your payment. Please try again.");
+                setMessage(
+                    "Unable to verify your payment. Please try again."
+                );
             }
         };
 
         verifyPayment();
     }, [location.search, token]);
 
-  return (
-    <div className={styles.page}>
-        <div className={styles.container}>
-            <div className={styles.card}>
-                {status === "loading" && (
-                    <>
-                        <div className={styles.icon}>⌛</div>
-                        <Text variant="h2">Verifying Payment</Text>
-                        <Text variant="p" className={styles.message}>
-                            {message}
-                        </Text>
-                    </>
-                )}
+    return (
+        <div className={styles.page}>
+            <div className={styles.container}>
+                <div className={styles.card}>
+                    {status === "loading" && (
+                        <>
+                            <div className={styles.icon}>
+                                <FaHourglassHalf />
+                            </div>
 
-                {status === "success" && (
-                    <>
-                        <div className={styles.icon}>✓</div>
-                        <Text variant="h1">Payment Successful!</Text>
-                        <Text variant="p" className={styles.message}>
-                            {message}
-                        </Text>
-                        <Link to="/profile">
-                            <Button label="Go to Profile" onClick={() => {}} />
-                        </Link>
-                    </>
-                )}
+                            <Text variant="h2">
+                                Verifying Payment
+                            </Text>
 
-                {status === "failed" && (
-                    <>
-                        <div className={`${styles.icon} ${styles.errorIcon}`}>
-                            ✕
-                        </div>
-                        <Text variant="h2">Payment Not Verified</Text>
-                        <Text variant="p" className={styles.message}>
-                            {message}
-                        </Text>
-                        <Link to="/accomodations">
-                            <Button
-                                label="Back to Accommodations"
-                                onClick={() => {}}
-                            />
-                        </Link>
-                    </>
-                )}
+                            <Text
+                                variant="p"
+                                className={styles.message}
+                            >
+                                {message}
+                            </Text>
+                        </>
+                    )}
+
+                    {status === "success" && (
+                        <>
+                            <div className={styles.icon}>
+                                <FaCheckCircle />
+                            </div>
+
+                            <Text variant="h1">
+                                Payment Successful!
+                            </Text>
+
+                            <Text
+                                variant="p"
+                                className={styles.message}
+                            >
+                                {message}
+                            </Text>
+
+                            <Link to="/profile">
+                                <Button
+                                    label="Go to Profile"
+                                    onClick={() => {}}
+                                />
+                            </Link>
+                        </>
+                    )}
+
+                    {status === "failed" && (
+                        <>
+                            <div
+                                className={`${styles.icon} ${styles.errorIcon}`}
+                            >
+                                <FaTimesCircle />
+                            </div>
+
+                            <Text variant="h2">
+                                Payment Not Verified
+                            </Text>
+
+                            <Text
+                                variant="p"
+                                className={styles.message}
+                            >
+                                {message}
+                            </Text>
+
+                            <Link to="/accomodations">
+                                <Button
+                                    label="Back to Accommodations"
+                                    onClick={() => {}}
+                                />
+                            </Link>
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
 
-        <Footer />
-    </div>
-);
+            <Footer />
+        </div>
+    );
 };

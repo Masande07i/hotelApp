@@ -1,4 +1,3 @@
-
 import { useLocation, useNavigate } from "react-router-dom";
 import { Text } from "../Text/text";
 import { CiHome, CiCalendar, CiUser } from "react-icons/ci";

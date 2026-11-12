@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from '../../store/store'
 import { loginUser, updateLogin, googleLoginUser } from '../../features/authSlice'
@@ -8,7 +7,7 @@ import { Button } from '../../components/button/button'
 import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { GoogleLogin } from '@react-oauth/google'
 
-export const login = () => {
+export const Login = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const location = useLocation()
