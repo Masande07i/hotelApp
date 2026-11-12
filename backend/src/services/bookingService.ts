@@ -253,7 +253,8 @@ export const cancelBooking = async (
              updated_at = CURRENT_TIMESTAMP
          WHERE id = $1
          AND user_id = $2
-         AND status != 'cancelled'
+         AND status IN ('pending', 'confirmed')
+         AND check_out > CURRENT_DATE
          RETURNING *`,
         [booking_id, user_id]
     );
