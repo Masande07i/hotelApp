@@ -19,6 +19,7 @@ import { PaymentSuccess } from './pages/CUSTOMER/paymentSuccess/paymentSuccess'
 import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
 import { WriteReview } from "./pages/CUSTOMER/writeReview/writeReview"
 import { about  as About} from './pages/About/about'
+import { MyBookings } from './pages/CUSTOMER/myBookings/myBookings'
 import {Contact } from './pages/Contacts/contact'
 import { AccommodationShare } from "./pages/CUSTOMER/accommodationShare/accommodationShare";
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path= "/about" element ={<About/>} />
         <Route path= "/contact" element ={<Contact/>} />
+        <Route path="/my-bookings" element={<MyBookings />} />
 
  
         <Route path="/accomodations" element={<Accomodations />} />

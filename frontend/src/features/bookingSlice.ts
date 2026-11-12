@@ -1,4 +1,5 @@
-import { createSlice,createAsyncThunk,type PayloadAction } from "@reduxjs/toolkit";
+
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 
 export interface Booking {
     id: number;
@@ -43,6 +44,7 @@ interface BookingState {
     loading: boolean;
     error: string | null;
     selectedTab: "upcoming" | "past" | "cancelled";
+    cancellingBookingId: number | null;
 }
 
 const initialState: BookingState = {
@@ -57,9 +59,9 @@ const initialState: BookingState = {
     },
     selectedTab: "upcoming",
     loading: false,
-    error: null
+    error: null,
+    cancellingBookingId: null
 };
-
 
 export const createBooking = createAsyncThunk<
     Booking,
@@ -130,7 +132,6 @@ export const fetchMyBookings = createAsyncThunk<
     }
 );
 
-
 export const fetchAllBookings = createAsyncThunk<
     Booking[],
     void,
@@ -200,32 +201,68 @@ export const updateBookingStatus = createAsyncThunk<
     }
 );
 
+export const cancelBooking = createAsyncThunk<
+    Booking,
+    number,
+    { state: { auth: { token: string | null } }; rejectValue: string }
+>(
+    "booking/cancelBooking",
+    async (bookingId, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.token;
 
+            const response = await fetch(
+                `/api/bookings/${bookingId}/cancel`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                return thunkAPI.rejectWithValue(
+                    data.message || "Failed to cancel booking"
+                );
+            }
+
+            return data.booking as Booking;
+        } catch {
+            return thunkAPI.rejectWithValue(
+                "Unable to connect to the server"
+            );
+        }
+    }
+);
 
 const bookingSlice = createSlice({
     name: "booking",
     initialState,
     reducers: {
-    updateBookingInputs: (
-        state,
-        action: PayloadAction<Partial<BookingInputs>>
-    ) => {
-        state.inputs = {
-            ...state.inputs,
-            ...action.payload
-        };
-    },
-     setSelectedRoom: (state, action: PayloadAction<number>) => {
-        state.inputs.room_id = String(action.payload);
-    },
-    setSelectedTab: (
-        state,
-        action: PayloadAction<"upcoming" | "past" | "cancelled">
-    ) => {
-        state.selectedTab = action.payload;
-    },
+        updateBookingInputs: (
+            state,
+            action: PayloadAction<Partial<BookingInputs>>
+        ) => {
+            state.inputs = {
+                ...state.inputs,
+                ...action.payload
+            };
+        },
 
-},
+        setSelectedRoom: (state, action: PayloadAction<number>) => {
+            state.inputs.room_id = String(action.payload);
+        },
+
+        setSelectedTab: (
+            state,
+            action: PayloadAction<"upcoming" | "past" | "cancelled">
+        ) => {
+            state.selectedTab = action.payload;
+        }
+    },
 
     extraReducers: (builder) => {
         builder
@@ -255,7 +292,6 @@ const bookingSlice = createSlice({
                 state.error = action.payload || "Failed to retrieve bookings";
             })
 
-            
             .addCase(fetchAllBookings.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -268,6 +304,7 @@ const bookingSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload || "Failed to retrieve all bookings";
             })
+
             .addCase(updateBookingStatus.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -284,11 +321,38 @@ const bookingSlice = createSlice({
             .addCase(updateBookingStatus.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || "Failed to update booking status";
-            });
+            })
 
+            .addCase(cancelBooking.pending, (state, action) => {
+                state.cancellingBookingId = action.meta.arg;
+                state.error = null;
+            })
+            .addCase(cancelBooking.fulfilled, (state, action) => {
+                state.cancellingBookingId = null;
+
+                state.bookings = state.bookings.map((booking) =>
+                    booking.id === action.payload.id
+                        ? { ...booking, ...action.payload }
+                        : booking
+                );
+
+                state.adminBookings = state.adminBookings.map((booking) =>
+                    booking.id === action.payload.id
+                        ? { ...booking, ...action.payload }
+                        : booking
+                );
+            })
+            .addCase(cancelBooking.rejected, (state, action) => {
+                state.cancellingBookingId = null;
+                state.error = action.payload || "Failed to cancel booking";
+            });
     }
 });
 
-export const { updateBookingInputs , setSelectedRoom,setSelectedTab} = bookingSlice.actions;
+export const {
+    updateBookingInputs,
+    setSelectedRoom,
+    setSelectedTab
+} = bookingSlice.actions;
 
 export default bookingSlice.reducer;
