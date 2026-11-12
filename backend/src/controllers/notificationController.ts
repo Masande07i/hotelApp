@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import * as notificationService from "../services/notificationService";
 
@@ -163,6 +162,48 @@ export const deleteNotification = async (
         console.log(error);
         return res.status(500).json({
             message: "Error deleting notification"
+        });
+    }
+};
+
+export const createPromotionNotification = async (
+    req: Request,
+    res: Response
+) => {
+    try {
+        const { title, message } = req.body;
+
+        if (
+            typeof title !== "string" ||
+            typeof message !== "string" ||
+            !title.trim() ||
+            !message.trim()
+        ) {
+            return res.status(400).json({
+                message: "Title and message are required"
+            });
+        }
+
+        if (title.trim().length > 150) {
+            return res.status(400).json({
+                message: "Title cannot be longer than 150 characters"
+            });
+        }
+
+        const totalSent =
+            await notificationService.createPromotionNotification(
+                title.trim(),
+                message.trim()
+            );
+
+        return res.status(201).json({
+            message: "Promotion notification sent successfully",
+            totalSent
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Error sending promotion notification"
         });
     }
 };

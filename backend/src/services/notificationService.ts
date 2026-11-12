@@ -95,3 +95,26 @@ export const deleteNotification = async (
 
     return rows[0] ?? null;
 };
+
+
+export const createPromotionNotification = async (
+    title: string,
+    message: string
+): Promise<number> => {
+    const { rowCount } = await query(
+        `INSERT INTO notifications (
+            user_id,
+            title,
+            message,
+            type
+        )
+        SELECT id, $1, $2, 'promotion'
+        FROM users
+        WHERE role = 'customer'`,
+        [title, message]
+    );
+
+    return rowCount ?? 0;
+};
+
+

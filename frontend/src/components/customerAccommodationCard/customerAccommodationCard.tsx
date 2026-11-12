@@ -68,7 +68,7 @@ export const CustomerAccommodationCard = ({
 };
 
    const handleShare = async () => {
-    const accommodationUrl = `${window.location.origin}/accommodations/${id}`;
+    const accommodationUrl = `${window.location.origin}/share/accommodation/${id}`;
 
     const shareData = {
         title: name,

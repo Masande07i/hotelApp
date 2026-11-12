@@ -20,6 +20,7 @@ import { AdminProfile } from "./pages/ADMIN/adminProfile/adminProfile"
 import { WriteReview } from "./pages/CUSTOMER/writeReview/writeReview"
 import { about  as About} from './pages/About/about'
 import { contact as Contact } from './pages/Contacts/contact'
+import { AccommodationShare } from "./pages/CUSTOMER/accommodationShare/accommodationShare";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
  
         <Route path="/accomodations" element={<Accomodations />} />
         <Route path="/accommodations/:id"element={<AccommodationDetails />}/>
+        <Route path="/share/accommodation/:id" element={<AccommodationShare />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/booking" element={<Booking />} />
         <Route path="/write-review/:accommodation_id" element={<WriteReview />}/>

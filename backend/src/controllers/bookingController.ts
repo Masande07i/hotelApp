@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import * as bookingService from "../services/bookingService";
 import * as notificationService from "../services/notificationService";
@@ -302,6 +301,21 @@ export const cancelBooking = async (req: Request, res: Response) => {
             });
         }
 
+        try {
+            await notificationService.createNotification(
+                user_id,
+                "Booking cancelled",
+                `Your booking from ${booking.check_in} to ${booking.check_out} has been cancelled successfully.`,
+                "booking_cancelled",
+                booking.id
+            );
+        } catch (notificationError) {
+            console.log(
+                "Error creating cancellation notification:",
+                notificationError
+            );
+        }
+
         return res.status(200).json({
             message: "Booking cancelled successfully",
             booking
@@ -326,7 +340,6 @@ export const getAllBookings = async (req: Request, res: Response) => {
         });
     }
 };
-
 
 export const updateBookingStatus = async (
     req: Request,
@@ -395,4 +408,3 @@ export const updateBookingStatus = async (
         });
     }
 };
-

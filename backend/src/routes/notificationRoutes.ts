@@ -4,9 +4,10 @@ import {
     getUnreadNotificationCount,
     markNotificationAsRead,
     markAllNotificationsAsRead,
-    deleteNotification
+    deleteNotification,
+    createPromotionNotification
 } from "../controllers/notificationController";
-import { protect } from "../middleware/authMiddleware";
+import { adminOnly, protect } from "../middleware/authMiddleware";
 
 const router = Router();
 
@@ -14,6 +15,8 @@ router.get("/", protect, getUserNotifications);
 router.get("/unread-count", protect, getUnreadNotificationCount);
 router.patch("/read-all", protect, markAllNotificationsAsRead);
 router.patch("/:notification_id/read", protect, markNotificationAsRead);
-router.delete("/:notification_id", protect, deleteNotification);
+router.delete("/:notification_id", protect, deleteNotification)
+
+router.post("/promotion", protect,adminOnly,createPromotionNotification);
 
 export default router;
