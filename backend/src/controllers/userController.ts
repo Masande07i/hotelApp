@@ -14,7 +14,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getUserById = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
@@ -45,8 +44,6 @@ export const getUserById = async (req: Request, res: Response) => {
         });
     }
 };
-
-
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
@@ -83,6 +80,8 @@ export const updateUser = async (req: Request, res: Response) => {
             });
         }
 
+        const normalizedEmail = email.trim().toLowerCase();
+
         const existingUser = await userService.findUserById(id);
 
         if (!existingUser) {
@@ -91,9 +90,17 @@ export const updateUser = async (req: Request, res: Response) => {
             });
         }
 
+        const emailUser = await userService.findUserByEmail(normalizedEmail);
+
+        if (emailUser && emailUser.id !== id) {
+            return res.status(409).json({
+                message: "This email is already registered"
+            });
+        }
+
         const user = await userService.updateUser(
             id,
-            email.trim(),
+            normalizedEmail,
             name.trim(),
             profile_image === undefined
                 ? existingUser.profile_image
@@ -181,8 +188,10 @@ export const createUser = async (req: Request, res: Response) => {
         });
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     try {
-        const existingUser = await userService.findUserByEmail(email);
+        const existingUser = await userService.findUserByEmail(normalizedEmail);
 
         if (existingUser) {
             return res.status(409).json({
@@ -191,18 +200,29 @@ export const createUser = async (req: Request, res: Response) => {
         }
 
         const newUser = await userService.createUser(
-            email,
+            normalizedEmail,
             password,
             name,
             role
         );
 
+        const { password_hash, ...safeUser } = newUser;
+
         return res.status(201).json({
             message: "User created successfully",
-            user: newUser
+            user: safeUser
         });
     } catch (error) {
         console.log(error);
+
+        const dbError = error as { code?: string };
+
+        if (dbError.code === "23505") {
+            return res.status(409).json({
+                message: "Email is already in use"
+            });
+        }
+
         return res.status(500).json({
             message: "Error creating user"
         });

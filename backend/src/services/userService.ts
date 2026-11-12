@@ -7,9 +7,11 @@ type PublicUser = Omit<User, "password_hash">;
 export const findUserByEmail = async (
     email: string
 ): Promise<User | null> => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     const { rows } = await query(
-        "SELECT * FROM users WHERE email = $1",
-        [email]
+        "SELECT * FROM users WHERE LOWER(email) = $1",
+        [normalizedEmail]
     );
 
     return rows[0] || null;
@@ -32,11 +34,13 @@ export const createGoogleUser = async (
     google_id: string,
     profile_image: string | null
 ): Promise<User> => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     const { rows } = await query(
         `INSERT INTO users (email, name, google_id, profile_image, role)
          VALUES ($1, $2, $3, $4, 'customer')
          RETURNING *`,
-        [email, name, google_id, profile_image]
+        [normalizedEmail, name, google_id, profile_image]
     );
 
     return rows[0];
@@ -66,6 +70,8 @@ export const createUser = async (
     name: string,
     role: "customer" | "admin" = "customer"
 ): Promise<User> => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     const salt = await bcrypt.genSalt(10);
     const password_hash = await bcrypt.hash(password, salt);
 
@@ -73,7 +79,7 @@ export const createUser = async (
         `INSERT INTO users (email, password_hash, name, role)
          VALUES ($1, $2, $3, $4)
          RETURNING *`,
-        [email, password_hash, name, role]
+        [normalizedEmail, password_hash, name, role]
     );
 
     return rows[0];
@@ -108,6 +114,8 @@ export const updateUser = async (
     name: string,
     profile_image: string | null
 ): Promise<PublicUser | null> => {
+    const normalizedEmail = email.trim().toLowerCase();
+
     const { rows } = await query(
         `UPDATE users
          SET email = $1,
@@ -116,7 +124,7 @@ export const updateUser = async (
              updated_at = CURRENT_TIMESTAMP
          WHERE id = $4
          RETURNING id, name, email, profile_image, role, created_at, updated_at`,
-        [email, name, profile_image, id]
+        [normalizedEmail, name, profile_image, id]
     );
 
     return rows[0] || null;
@@ -128,8 +136,9 @@ export const deleteUserById = async (
     const { rows } = await query(
         `DELETE FROM users
          WHERE id = $1
-         RETURNING id, name, email, profile_image, role, created_at, updated_at`
-    , [id]);
+         RETURNING id, name, email, profile_image, role, created_at, updated_at`,
+        [id]
+    );
 
     return rows[0] || null;
 };
