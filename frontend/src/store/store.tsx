@@ -7,6 +7,7 @@ import bookingReducer from "../features/bookingSlice";
 import favouriteReducer from "../features/favouriteSlice";
 import reviewReducer from "../features/reviewSlice";
 import notificationReducer from "../features/notificationSlice";
+import paymentReducer from "../features/paymentSlice";
 
 const savedAuth = localStorage.getItem("auth")
 
@@ -29,6 +30,7 @@ export const store = configureStore({
         favourite: favouriteReducer,
         review: reviewReducer,
         notification: notificationReducer,
+        payment: paymentReducer,
     },
     preloadedState: preloadedAuth
 })
