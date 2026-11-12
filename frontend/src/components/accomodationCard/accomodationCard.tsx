@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../store/store";
 import {
     fetchAccommodationImages,
-    deleteAccommodation
+    deleteAccommodation,
+    setCurrentImageIndex,
+    openEditAccommodationForm,
+    closeEditAccommodationForm
 } from "../../features/accomodationSlice";
 import type { Accommodation } from "../../features/accomodationSlice";
 import { AccommodationPopup } from "../Popup/accommodationPopup";
 import { Button } from "../button/button";
-// import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import styles from "./accomodationCard.module.css";
 
 interface AccommodationCardProps extends Accommodation {}
@@ -31,11 +33,18 @@ export const AccommodationCard = ({
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
-    const [showEditForm, setShowEditForm] = useState(false);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
     const images = useSelector(
         (state: RootState) => state.accommodation.imagesByAccommodation[id]
+    );
+
+    const currentImageIndex = useSelector(
+        (state: RootState) =>
+            state.accommodation.currentImageIndexes[id] ?? 0
+    );
+
+    const showEditForm = useSelector(
+        (state: RootState) =>
+            state.accommodation.showEditForms[id] ?? false
     );
 
     const accommodationImages = images ?? [];
@@ -45,10 +54,6 @@ export const AccommodationCard = ({
             dispatch(fetchAccommodationImages(id));
         }
     }, [dispatch, id, images]);
-
-    useEffect(() => {
-        setCurrentImageIndex(0);
-    }, [id]);
 
     const handleDelete = async () => {
         const confirmed = window.confirm(
@@ -60,20 +65,20 @@ export const AccommodationCard = ({
         await dispatch(deleteAccommodation(id));
     };
 
-   const accommodation: Accommodation = {
-    id,
-    name,
-    description,
-    address,
-    city,
-    country,
-    star_rating,
-    latitude,
-    total_rooms,
-    longitude,
-    created_at,
-    updated_at
-};
+    const accommodation: Accommodation = {
+        id,
+        name,
+        description,
+        address,
+        city,
+        country,
+        star_rating,
+        latitude,
+        longitude,
+        total_rooms,
+        created_at,
+        updated_at
+    };
 
     return (
         <>
@@ -96,26 +101,31 @@ export const AccommodationCard = ({
                                     type="button"
                                     className={styles.previousImage}
                                     onClick={() =>
-                                        setCurrentImageIndex(
-                                            (currentImageIndex - 1 + accommodationImages.length) %
-                                            accommodationImages.length
+                                        dispatch(
+                                            setCurrentImageIndex({
+                                                accommodationId: id,
+                                                index:
+                                                    (currentImageIndex - 1 + accommodationImages.length) %
+                                                    accommodationImages.length
+                                            })
                                         )
                                     }
-                                >
-                                 
-                                </button>
+                                />
 
                                 <button
                                     type="button"
                                     className={styles.nextImage}
                                     onClick={() =>
-                                        setCurrentImageIndex(
-                                            (currentImageIndex + 1) % accommodationImages.length
+                                        dispatch(
+                                            setCurrentImageIndex({
+                                                accommodationId: id,
+                                                index:
+                                                    (currentImageIndex + 1) %
+                                                    accommodationImages.length
+                                            })
                                         )
                                     }
-                                >
-                                 
-                                </button>
+                                />
                             </>
                         )}
                     </div>
@@ -130,7 +140,9 @@ export const AccommodationCard = ({
 
                 <td>
                     <span className={styles.rating}>
-                        {"★".repeat(Math.max(0, Math.min(5, Number(star_rating) || 0)))}
+                        {"★".repeat(
+                            Math.max(0, Math.min(5, Number(star_rating) || 0))
+                        )}
                     </span>
                     <span className={styles.ratingNumber}>
                         {star_rating ?? "N/A"}
@@ -143,7 +155,9 @@ export const AccommodationCard = ({
                     <div className={styles.actions}>
                         <Button
                             label="Edit"
-                            onClick={() => setShowEditForm(true)}
+                            onClick={() =>
+                                dispatch(openEditAccommodationForm(id))
+                            }
                             type="button"
                             className={styles.editButton}
                         />
@@ -157,7 +171,9 @@ export const AccommodationCard = ({
 
                         <Button
                             label="View"
-                            onClick={() => navigate(`/admin/accommodations/${id}`)}
+                            onClick={() =>
+                                navigate(`/admin/accommodations/${id}`)
+                            }
                             type="button"
                             className={styles.viewButton}
                         />
@@ -168,7 +184,9 @@ export const AccommodationCard = ({
             {showEditForm && (
                 <AccommodationPopup
                     accommodation={accommodation}
-                    onClose={() => setShowEditForm(false)}
+                    onClose={() =>
+                        dispatch(closeEditAccommodationForm(id))
+                    }
                 />
             )}
         </>

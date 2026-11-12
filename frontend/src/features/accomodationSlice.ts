@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice,type PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store/store";
 
 export interface Accommodation {
@@ -15,6 +15,7 @@ export interface Accommodation {
     created_at: Date;
     updated_at: Date;
 }
+
 export interface AccommodationImage {
     id: number;
     accommodation_id: number;
@@ -22,59 +23,61 @@ export interface AccommodationImage {
     public_id: string;
     created_at: string;
 }
+
 interface AccommodationInputs {
-    name: string
-    description: string
-    address: string
-    city: string
-    country: string
-    star_rating: string
-    latitude: string
-    longitude: string
+    name: string;
+    description: string;
+    address: string;
+    city: string;
+    country: string;
+    star_rating: string;
+    latitude: string;
+    longitude: string;
 }
 
 interface AccommodationState {
     accommodations: Accommodation[];
-    inputs: AccommodationInputs
-    showForm: boolean
+    inputs: AccommodationInputs;
+    showForm: boolean;
+    showEditForms: Record<number, boolean>;
     imagesByAccommodation: Record<number, AccommodationImage[]>;
     currentImageIndexes: Record<number, number>;
     loading: boolean;
     error: string | null;
     selectedImages: File[];
 }
+
 interface CreateAccommodationResponse {
     message: string;
     accommodation: Accommodation;
 }
 
-
 const initialState: AccommodationState = {
     accommodations: [],
-        inputs: {
-        name: '',
-        description: '',
-        address: '',
-        city: '',
-        country: '',
-        star_rating: '',
+    inputs: {
+        name: "",
+        description: "",
+        address: "",
+        city: "",
+        country: "",
+        star_rating: "",
         latitude: "",
         longitude: ""
     },
-        showForm: false,
-        selectedImages: [],
-        imagesByAccommodation: {},
-        currentImageIndexes: {},
-        loading: false,
-        error: null
-       
+    showForm: false,
+    showEditForms: {},
+    selectedImages: [],
+    imagesByAccommodation: {},
+    currentImageIndexes: {},
+    loading: false,
+    error: null
 };
 
-
-export const fetchAccommodations = createAsyncThunk("accommodation/fetchAll",async (_, thunkAPI) => {
+export const fetchAccommodations = createAsyncThunk(
+    "accommodation/fetchAll",
+    async (_, thunkAPI) => {
         try {
             const response = await fetch("/api/accommodations");
-
             const data = await response.json();
 
             if (!response.ok) {
@@ -91,7 +94,6 @@ export const fetchAccommodations = createAsyncThunk("accommodation/fetchAll",asy
         }
     }
 );
-
 
 export const createAccommodation = createAsyncThunk<
     CreateAccommodationResponse,
@@ -121,7 +123,7 @@ export const createAccommodation = createAsyncThunk<
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
                 },
-               body: JSON.stringify({
+                body: JSON.stringify({
                     ...inputs,
                     star_rating: inputs.star_rating
                         ? Number(inputs.star_rating)
@@ -202,8 +204,6 @@ export const updateAccommodation = createAsyncThunk<
     }
 );
 
-
-
 export const deleteAccommodation = createAsyncThunk<
     number,
     number,
@@ -247,12 +247,12 @@ export const deleteAccommodation = createAsyncThunk<
     }
 );
 
-
-
-
-export const fetchAccommodationImages = createAsyncThunk("accommodation/fetchImages",async (accommodationId: number, thunkAPI) => {
+export const fetchAccommodationImages = createAsyncThunk(
+    "accommodation/fetchImages",
+    async (accommodationId: number, thunkAPI) => {
         try {
-            const response = await fetch(`/api/accommodations/${accommodationId}/images`
+            const response = await fetch(
+                `/api/accommodations/${accommodationId}/images`
             );
 
             const data = await response.json();
@@ -319,133 +319,143 @@ export const uploadAccommodationImage = createAsyncThunk<
     }
 );
 
-
-
 const accommodationSlice = createSlice({
     name: "accommodation",
     initialState,
-   reducers: {
-    updateAccommodationInputs: (
-        state,
-        action: PayloadAction<Partial<AccommodationInputs>>
-    ) => {
-        state.inputs = {
-            ...state.inputs,
-            ...action.payload
-        };
-    },
-
-    openAccommodationForm: (state) => {
-        state.showForm = true;
-    },
-
-    closeAccommodationForm: (state) => {
-        state.showForm = false;
-    },
-    setSelectedImages: (
-        state,
-        action: PayloadAction<File[]>
-    ) => {
-        state.selectedImages = action.payload;
-    },
-    setCurrentImageIndex: (
-        state,
-        action: PayloadAction<{ accommodationId: number; index: number }>
-    ) => {
-        state.currentImageIndexes[action.payload.accommodationId] = action.payload.index;
-    },
-},
-
-extraReducers: (builder) => {
-    builder
-        .addCase(fetchAccommodations.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(fetchAccommodations.fulfilled, (state, action) => {
-            state.loading = false;
-            state.accommodations = action.payload;
-        })
-        .addCase(fetchAccommodations.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
-
-        .addCase(fetchAccommodationImages.pending, () => {
-        })
-        .addCase(fetchAccommodationImages.fulfilled, (state, action) => {
-            state.imagesByAccommodation[action.meta.arg] = action.payload;
-        })
-        .addCase(fetchAccommodationImages.rejected, () => {
-        })
-     
-
-
-        .addCase(createAccommodation.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(createAccommodation.fulfilled, (state, action) => {
-            state.loading = false;
-            state.accommodations.push(action.payload.accommodation);
+    reducers: {
+        updateAccommodationInputs: (
+            state,
+            action: PayloadAction<Partial<AccommodationInputs>>
+        ) => {
             state.inputs = {
-                name: "",
-                description: "",
-                address: "",
-                city: "",
-                country: "",
-                star_rating: "",
-                latitude: "",
-                longitude: ""
+                ...state.inputs,
+                ...action.payload
             };
+        },
+
+        openAccommodationForm: (state) => {
+            state.showForm = true;
+        },
+
+        closeAccommodationForm: (state) => {
             state.showForm = false;
-        })
-       
-        
-        .addCase(createAccommodation.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload || "Failed to create accommodation";
-        })
+        },
 
-        
-        .addCase(updateAccommodation.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(updateAccommodation.fulfilled, (state, action) => {
-            state.loading = false;
+        openEditAccommodationForm: (
+            state,
+            action: PayloadAction<number>
+        ) => {
+            state.showEditForms[action.payload] = true;
+        },
 
-            state.accommodations = state.accommodations.map(
-                (accommodation) =>
-                    accommodation.id === action.payload.id
-                        ? action.payload
-                        : accommodation
-            );
+        closeEditAccommodationForm: (
+            state,
+            action: PayloadAction<number>
+        ) => {
+            state.showEditForms[action.payload] = false;
+        },
 
-            state.inputs = {
-                name: "",
-                description: "",
-                address: "",
-                city: "",
-                country: "",
-                star_rating: "",
-                latitude: "",
-                longitude: ""
-            };
+        setSelectedImages: (
+            state,
+            action: PayloadAction<File[]>
+        ) => {
+            state.selectedImages = action.payload;
+        },
 
-            state.showForm = false;
-        })
-        .addCase(updateAccommodation.rejected, (state, action) => {
-            state.loading = false;
-            state.error =
-                action.payload || "Failed to update accommodation";
-        })
+        setCurrentImageIndex: (
+            state,
+            action: PayloadAction<{
+                accommodationId: number;
+                index: number;
+            }>
+        ) => {
+            state.currentImageIndexes[action.payload.accommodationId] =
+                action.payload.index;
+        }
+    },
 
-        .addCase(deleteAccommodation.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-                    })
-        .addCase(deleteAccommodation.fulfilled, (state, action) => {
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchAccommodations.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchAccommodations.fulfilled, (state, action) => {
+                state.loading = false;
+                state.accommodations = action.payload;
+            })
+            .addCase(fetchAccommodations.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string;
+            })
+
+            .addCase(fetchAccommodationImages.fulfilled, (state, action) => {
+                state.imagesByAccommodation[action.meta.arg] = action.payload;
+            })
+
+            .addCase(createAccommodation.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(createAccommodation.fulfilled, (state, action) => {
+                state.loading = false;
+                state.accommodations.push(action.payload.accommodation);
+                state.inputs = {
+                    name: "",
+                    description: "",
+                    address: "",
+                    city: "",
+                    country: "",
+                    star_rating: "",
+                    latitude: "",
+                    longitude: ""
+                };
+                state.showForm = false;
+            })
+            .addCase(createAccommodation.rejected, (state, action) => {
+                state.loading = false;
+                state.error =
+                    action.payload || "Failed to create accommodation";
+            })
+
+            .addCase(updateAccommodation.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateAccommodation.fulfilled, (state, action) => {
+                state.loading = false;
+
+                state.accommodations = state.accommodations.map(
+                    (accommodation) =>
+                        accommodation.id === action.payload.id
+                            ? action.payload
+                            : accommodation
+                );
+
+                state.inputs = {
+                    name: "",
+                    description: "",
+                    address: "",
+                    city: "",
+                    country: "",
+                    star_rating: "",
+                    latitude: "",
+                    longitude: ""
+                };
+
+                state.showForm = false;
+            })
+            .addCase(updateAccommodation.rejected, (state, action) => {
+                state.loading = false;
+                state.error =
+                    action.payload || "Failed to update accommodation";
+            })
+
+            .addCase(deleteAccommodation.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteAccommodation.fulfilled, (state, action) => {
                 state.loading = false;
 
                 state.accommodations = state.accommodations.filter(
@@ -453,35 +463,44 @@ extraReducers: (builder) => {
                 );
 
                 delete state.imagesByAccommodation[action.payload];
+                delete state.currentImageIndexes[action.payload];
+                delete state.showEditForms[action.payload];
             })
-        .addCase(deleteAccommodation.rejected, (state, action) => {
+            .addCase(deleteAccommodation.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload || "Failed to delete accommodation";
+                state.error =
+                    action.payload || "Failed to delete accommodation";
             })
 
+            .addCase(uploadAccommodationImage.pending, (state) => {
+                state.error = null;
+            })
+            .addCase(uploadAccommodationImage.fulfilled, (state, action) => {
+                const accommodationId = action.meta.arg.accommodationId;
 
-        .addCase(uploadAccommodationImage.pending, (state) => {
-            state.error = null;
-        })
-        .addCase(uploadAccommodationImage.fulfilled, (state, action) => {
-            const accommodationId = action.meta.arg.accommodationId;
+                if (!state.imagesByAccommodation[accommodationId]) {
+                    state.imagesByAccommodation[accommodationId] = [];
+                }
 
-            if (!state.imagesByAccommodation[accommodationId]) {
-                state.imagesByAccommodation[accommodationId] = [];
-            }
-
-            state.imagesByAccommodation[accommodationId].push(action.payload);
-        })
-        .addCase(uploadAccommodationImage.rejected, (state, action) => {
-            state.error = action.payload || "Failed to upload image";
-        });
-
-
-}
-
+                state.imagesByAccommodation[accommodationId].push(
+                    action.payload
+                );
+            })
+            .addCase(uploadAccommodationImage.rejected, (state, action) => {
+                state.error =
+                    action.payload || "Failed to upload image";
+            });
+    }
 });
-export const {updateAccommodationInputs,openAccommodationForm,setCurrentImageIndex,closeAccommodationForm,setSelectedImages
 
+export const {
+    updateAccommodationInputs,
+    openAccommodationForm,
+    closeAccommodationForm,
+    openEditAccommodationForm,
+    closeEditAccommodationForm,
+    setCurrentImageIndex,
+    setSelectedImages
 } = accommodationSlice.actions;
 
 export default accommodationSlice.reducer;
