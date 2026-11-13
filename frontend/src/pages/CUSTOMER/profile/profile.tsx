@@ -150,7 +150,7 @@ const handleLogout = () => {
                         <button className={style.activeLink} onClick={() => navigate('/profile')}>
                             <CiUser /> My Profile
                         </button>
-                        <button onClick={() => navigate('/my-bookings')}>
+                        <button onClick={() => navigate('/MyBookings')}>
                             <CiCalendar /> My Bookings
                         </button>
                         <button onClick={() => navigate('/favourites')}>
