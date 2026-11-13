@@ -1,23 +1,4 @@
-.backButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    margin: 20px 0;
-    border: none;
-    border-radius: 50%;
-    background-color: #49345E;
-    color: white;
-    cursor: pointer;
-    font-size: 28px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
 
-.backButton:hover {
-    background-color: #75647F;
-    transform: translateX(-3px);
-}
 
 .markAllButton {
     border: none;
@@ -40,14 +21,14 @@
     border-radius: 6px;
     padding: 8px 14px;
     background-color: transparent;
-    color: #49345E;
+    background-color: #49345E;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .deleteButton:hover {
-    background-color: #49345E;
+    background-color: #9684a8;
     color: white;
 }
 
@@ -125,13 +106,197 @@
 
 .logout {
     margin-top: 90px;
+
 }
-.notificationsLayout{ 
-     display: grid;
+
+.notificationsPage {
+    min-height: 100vh;
+    background-color: #F6F1F8;
+    padding: 20px 40px 0;
+    box-sizing: border-box;
+}
+
+.backButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 50%;
+    background-color: #49345E;
+    color: white;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.backButton:hover {
+    background-color: #75647F;
+    transform: translateX(-3px);
+}
+
+.notificationsPage > h1 {
+    color: #49345E;
+    margin-bottom: 25px;
+}
+
+.notificationsLayout {
+    display: grid;
     grid-template-columns: 250px minmax(0, 1fr);
-    gap: 20px;
+    gap: 25px;
     align-items: start;
-    border: 1px solid #e5eeee;
+    margin-bottom: 50px;
+}
+
+.notificationsContent {
+    min-width: 0;
+    padding: 25px;
+    border: 1px solid #E6D9ED;
     border-radius: 12px;
-    background: #fff;
+    background-color: #FFFFFF;
+    min-height: 400px;
+}
+
+.notificationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #EDE5F1;
+}
+
+.notificationHeader h2 {
+    color: #49345E;
+}
+
+.markAllButton {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    background-color: #49345E;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.markAllButton:hover {
+    background-color: #75647F;
+}
+
+.notificationList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notificationItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #EDE5F1;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.notificationItem:hover {
+    border-color: #B99ACB;
+    background-color: #FAF7FC;
+}
+
+.notificationItem.unread {
+    background-color: #F6F1F8;
+    border-left: 4px solid #49345E;
+}
+
+.notificationContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.notificationContent h2 {
+    color: #49345E;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.notificationContent p {
+    color: #75647F;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.notificationContent span {
+    display: block;
+    margin-top: 12px;
+    color: #9684A8;
+    font-size: 12px;
+}
+
+.deleteButton {
+    border: none;
+    border-radius: 6px;
+    padding: 9px 15px;
+    background-color: #49345E;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.deleteButton:hover {
+    background-color: #75647F;
+}
+
+.emptySection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+    color: #75647F;
+    text-align: center;
+}
+
+.error {
+    margin: 20px 0;
+    color: #B42318;
+}
+
+@media (max-width: 850px) {
+    .notificationsPage {
+        padding: 20px;
+    }
+
+    .notificationsLayout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .notificationsContent {
+        padding: 15px;
+    }
+
+    .notificationHeader {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .notificationItem {
+        flex-direction: column;
+    }
+
+    .deleteButton {
+        align-self: flex-end;
+    }
 }

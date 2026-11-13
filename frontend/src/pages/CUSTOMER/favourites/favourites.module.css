@@ -11,7 +11,7 @@
     display: flex;
     gap: 30px;
 }
-/* .sidebar {
+.sidebar {
     background: #f5f9fa;
     border-right: 1px solid #e0e9eb;
     padding: 24px 14px;
@@ -85,7 +85,7 @@
 
 .logout {
     margin-top: 90px;
-} */
+}
 
 .favouritesContent {
     flex: 1;
