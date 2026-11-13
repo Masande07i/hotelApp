@@ -1,4 +1,99 @@
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+}
 
+.page h1 {
+    margin-bottom: 28px;
+}
+.favouritesLayout {
+    display: flex;
+    gap: 30px;
+}
+.sidebar {
+    background: #f5f9fa;
+    border-right: 1px solid #e0e9eb;
+    padding: 24px 14px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    box-sizing: border-box;
+}
+
+.userInfo {
+    text-align: center;
+    padding-bottom: 24px;
+    overflow-wrap: anywhere;
+}
+
+.userInfo h2 {
+    font-size: 18px;
+    margin: 10px 0 4px;
+}
+
+.userInfo p {
+    color: rgb(108, 69, 117);
+    font-size: 13px;
+    margin: 0;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #dce9e9;
+    color: rgb(108, 69, 117);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 auto;
+}
+
+.profileNav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profileNav button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 12px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: rgb(108, 69, 117);
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profileNav button svg {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.profileNav button:hover,
+.profileNav .activeLink {
+    background: #dce9e9;
+}
+
+.logout {
+    margin-top: 90px;
+}
+
+.favouritesContent {
+    flex: 1;
+}
+
+.emptySection {
+    padding: 30px 0;
+}
 .backButton {
     display: flex;
     align-items: center;
@@ -18,4 +113,23 @@
 .backButton:hover {
     background-color: #75647F;
     transform: translateX(-3px);
+}
+
+
+.listings {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+@media (max-width: 900px) {
+    .listings {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .listings {
+        grid-template-columns: 1fr;
+    }
 }
