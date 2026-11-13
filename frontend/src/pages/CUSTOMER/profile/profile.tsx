@@ -1,3 +1,4 @@
+
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -140,71 +141,98 @@ export const Profile = () => {
                                 </p>
                             )}
 
-                        {filteredBookings.map((booking) => (
-                            <div
-                                key={booking.id}
-                                className={style.bookingCard}
-                            >
-                                <Text variant="h2">
-                                    {booking.accommodation_name}
-                                </Text>
+                        {!loading &&
+                            !bookingError &&
+                            filteredBookings.slice(0, 2).map((booking) => (
+                                <div
+                                    key={booking.id}
+                                    className={style.bookingCard}
+                                >
+                                    <Text variant="h2">
+                                        {booking.accommodation_name}
+                                    </Text>
 
-                                <Text variant="p">
-                                    {booking.accommodation_address}
-                                </Text>
+                                    <Text variant="p">
+                                        {booking.accommodation_address}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Room: {booking.room_type}
-                                </Text>
+                                    <Text variant="p">
+                                        Room: {booking.room_type}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Bed:{" "}
-                                    {booking.bed_type || "Not specified"}
-                                </Text>
+                                    <Text variant="p">
+                                        Bed:{" "}
+                                        {booking.bed_type || "Not specified"}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Check-in: {booking.check_in}
-                                </Text>
+                                    <Text variant="p">
+                                        Check-in: {booking.check_in}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Check-out: {booking.check_out}
-                                </Text>
+                                    <Text variant="p">
+                                        Check-out: {booking.check_out}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Rooms: {booking.number_of_rooms}
-                                </Text>
+                                    <Text variant="p">
+                                        Rooms: {booking.number_of_rooms}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Guests: {booking.number_of_guests}
-                                </Text>
+                                    <Text variant="p">
+                                        Guests: {booking.number_of_guests}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Total: R
-                                    {Number(
-                                        booking.total_price
-                                    ).toFixed(2)}
-                                </Text>
+                                    <Text variant="p">
+                                        Total: R
+                                        {Number(
+                                            booking.total_price
+                                        ).toFixed(2)}
+                                    </Text>
 
-                                <Text variant="p">
-                                    Status: {booking.status}
-                                </Text>
+                                    <Text variant="p">
+                                        Status: {booking.status}
+                                    </Text>
 
-                                {booking.status === "confirmed" &&
-                                    new Date(booking.check_out) <
-                                        new Date() && (
+                                    <div className={style.bookingActions}>
                                         <button
                                             type="button"
                                             onClick={() =>
                                                 navigate(
-                                                    `/write-review/${booking.accommodation_id}`
+                                                    `/accommodations/${booking.accommodation_id}`
                                                 )
                                             }
                                         >
-                                            Write a Review
+                                            View Accommodation
                                         </button>
-                                    )}
-                            </div>
-                        ))}
+
+                                        {booking.status === "confirmed" &&
+                                            new Date(booking.check_out) <
+                                                new Date() && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/write-review/${booking.accommodation_id}`
+                                                        )
+                                                    }
+                                                >
+                                                    Write a Review
+                                                </button>
+                                            )}
+                                    </div>
+                                </div>
+                            ))}
+
+                        {!loading &&
+                            !bookingError &&
+                            filteredBookings.length > 0 && (
+                                <button
+                                    type="button"
+                                    className={style.viewAllButton}
+                                    onClick={() => navigate("/MyBookings")}
+                                >
+                                    View All Bookings
+                                </button>
+                            )}
                     </div>
 
                     <Text variant="h2">Favourite Hotels</Text>
@@ -215,7 +243,7 @@ export const Profile = () => {
                                 You haven't added any favourite hotels yet.
                             </p>
                         ) : (
-                            favourites.map((accommodation) => (
+                            favourites.slice(0, 2).map((accommodation) => (
                                 <div
                                     key={accommodation.id}
                                     className={style.bookingCard}
@@ -245,6 +273,16 @@ export const Profile = () => {
                                     </button>
                                 </div>
                             ))
+                        )}
+
+                        {favourites.length > 0 && (
+                            <button
+                                type="button"
+                                className={style.viewAllButton}
+                                onClick={() => navigate("/favourites")}
+                            >
+                                View All Favourites
+                            </button>
                         )}
                     </div>
                 </main>

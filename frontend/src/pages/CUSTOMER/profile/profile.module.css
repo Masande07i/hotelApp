@@ -26,6 +26,34 @@
     box-sizing: border-box;
 }
 
+
+.bookingActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.bookingActions button,
+.viewAllButton {
+    background-color: #49345E;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.bookingActions button:hover,
+.viewAllButton:hover {
+    background-color: #75647F;
+}
+
+.viewAllButton {
+    margin-top: 15px;
+}
+
 .userInfo {
     text-align: center;
     padding-bottom: 24px;
