@@ -65,10 +65,94 @@
     box-sizing: border-box;
 }
 
+.filters {
+    background-color: white;
+    border: 1px solid #E6D9ED;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.searchBox {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.searchBox label,
+.filterGroup label {
+    color: #49345E;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.searchBox input,
+.filterGroup select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E6D9ED;
+    border-radius: 7px;
+    background-color: white;
+    color: #49345E;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.searchBox input:focus,
+.filterGroup select:focus {
+    border-color: #B99ACB;
+}
+
+.filterGroup {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    gap: 15px;
+    align-items: end;
+}
+
+.filterGroup > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.clearButton {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 7px;
+    background-color: #49345E;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+    background-color: #75647F;
+}
+
+.noResults {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    color: #75647F;
+}
+
+
+
+
+
 @media (max-width: 850px) {
    .listings {
         grid-template-columns: repeat(2, 1fr);
         padding: 0 20px;
+    }
+    .filterGroup {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .heading {
@@ -92,5 +176,8 @@
     .listings {
         grid-template-columns: 1fr;
         padding: 0 14px;
+    }
+    .filterGroup {
+        grid-template-columns: 1fr;
     }
 }
