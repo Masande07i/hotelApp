@@ -16,7 +16,7 @@ import {
     cancelEditingProfile,
     updateUserProfile
 } from "../../features/authSlice"
-import style from "./profileSidebar.module.css"
+import style from "./ProfileSidebar.module.css"
 
 export const ProfileSidebar = () => {
     const navigate = useNavigate()
