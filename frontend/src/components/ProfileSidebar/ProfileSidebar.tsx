@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 import type { RootState, AppDispatch } from "../../store/store"
 import { Text } from "../Text/text"
@@ -21,6 +21,7 @@ import style from "./ProfileSidebar.module.css"
 export const ProfileSidebar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
+    const location = useLocation()
 
     const user = useSelector((state: RootState) => state.auth.user)
     const isEditing = useSelector((state: RootState) => state.auth.isEditingProfile)
@@ -114,26 +115,35 @@ export const ProfileSidebar = () => {
                 )}
             </div>
 
-            <nav className={style.profileNav}>
+          <nav className={style.profileNav}>
                 <button
-                    className={style.activeLink}
+                    className={location.pathname === "/profile" ? style.activeLink : ""}
                     onClick={() => navigate("/profile")}
                 >
                     <CiUser />
                     My Profile
                 </button>
 
-                <button onClick={() => navigate("/MyBookings")}>
+                <button
+                    className={location.pathname === "/MyBookings" ? style.activeLink : ""}
+                    onClick={() => navigate("/MyBookings")}
+                >
                     <CiCalendar />
                     My Bookings
                 </button>
 
-                <button onClick={() => navigate("/favourites")}>
+                <button
+                    className={location.pathname === "/favourites" ? style.activeLink : ""}
+                    onClick={() => navigate("/favourites")}
+                >
                     <CiHeart />
                     Favourites
                 </button>
 
-                <button onClick={() => navigate("/notifications")}>
+                <button
+                    className={location.pathname === "/notifications" ? style.activeLink : ""}
+                    onClick={() => navigate("/notifications")}
+                >
                     <CiBellOn />
                     Notifications
                 </button>
