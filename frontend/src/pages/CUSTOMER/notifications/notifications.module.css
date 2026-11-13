@@ -1,0 +1,73 @@
+.notificationsPage {
+    min-height: 100vh;
+}
+
+.backButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 32px;
+}
+
+.notificationsLayout {
+    display: flex;
+    gap: 30px;
+}
+
+.notificationsContent {
+    flex: 1;
+}
+
+.notificationHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.markAllButton {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.notificationList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notificationItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.notificationItem.unread {
+    font-weight: 500;
+}
+
+.notificationContent {
+    flex: 1;
+}
+
+.notificationContent span {
+    font-size: 12px;
+}
+
+.deleteButton {
+    border: none;
+    cursor: pointer;
+}
+
+.emptySection {
+    padding: 30px 0;
+}
+
+.error {
+    margin: 20px 0;
+}

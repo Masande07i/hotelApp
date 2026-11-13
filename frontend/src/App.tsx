@@ -22,6 +22,7 @@ import { about  as About} from './pages/About/about'
 import { MyBookings } from './pages/CUSTOMER/myBookings/myBookings'
 import {Contact } from './pages/Contacts/contact'
 import { AccommodationShare } from "./pages/CUSTOMER/accommodationShare/accommodationShare";
+import { Notifications } from "./pages/CUSTOMER/notifications/notifications"
 
 function App() {
   return (
@@ -33,8 +34,8 @@ function App() {
         <Route path= "/about" element ={<About/>} />
         <Route path= "/contact" element ={<Contact/>} />
         <Route path="/MyBookings" element={<MyBookings />} />
+        <Route path="/notifications" element={<Notifications />} />
 
- 
         <Route path="/accomodations" element={<Accomodations />} />
         <Route path="/accommodations/:id"element={<AccommodationDetails />}/>
         <Route path="/share/accommodation/:id" element={<AccommodationShare />} />

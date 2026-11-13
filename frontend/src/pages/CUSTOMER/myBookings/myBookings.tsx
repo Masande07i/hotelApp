@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState, AppDispatch } from "../../../store/store"
 import { Text } from "../../../components/Text/text"
-import { CiUser, CiCalendar, CiHeart, CiBellOn } from "react-icons/ci"
 import { IoArrowBackCircle } from "react-icons/io5"
-import { LuLogOut } from "react-icons/lu"
-import { logout } from "../../../features/authSlice"
 import {
     fetchMyBookings,
     cancelBooking,
     setSelectedTab
 } from "../../../features/bookingSlice"
 import { Footer } from "../../../components/footer/footer"
+import { ProfileSidebar } from "../../../components/ProfileSidebar/ProfileSidebar"
 import style from "./myBookings.module.css"
 
 export const MyBookings = () => {
@@ -41,14 +39,6 @@ export const MyBookings = () => {
         return null
     }
 
-    const initials = user.name
-        .trim()
-        .split(/\s+/)
-        .map((name) => name[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-
     const today = new Date()
 
     const filteredBookings = bookings.filter((booking) => {
@@ -57,12 +47,16 @@ export const MyBookings = () => {
         }
 
         if (selectedTab === "past") {
-            return booking.status !== "cancelled" &&
+            return (
+                booking.status !== "cancelled" &&
                 new Date(booking.check_out) < today
+            )
         }
 
-        return booking.status !== "cancelled" &&
+        return (
+            booking.status !== "cancelled" &&
             new Date(booking.check_out) >= today
+        )
     })
 
     const handleCancel = (bookingId: number) => {
@@ -73,12 +67,6 @@ export const MyBookings = () => {
         if (confirmed) {
             dispatch(cancelBooking(bookingId))
         }
-    }
-
-    const handleLogout = () => {
-        dispatch(logout())
-        localStorage.removeItem("auth")
-        navigate("/")
     }
 
     return (
@@ -94,60 +82,47 @@ export const MyBookings = () => {
             <Text variant="h1">My Bookings</Text>
 
             <div className={style.bookingsLayout}>
-                <aside className={style.sidebar}>
-                    <div className={style.userInfo}>
-                        <div className={style.avatar}>{initials}</div>
-                        <Text variant="h2">{user.name}</Text>
-                        <Text variant="p">{user.email}</Text>
-                    </div>
-
-                    <nav className={style.profileNav}>
-                        <button onClick={() => navigate("/profile")}>
-                            <CiUser /> My Profile
-                        </button>
-
-                        <button className={style.activeLink}>
-                            <CiCalendar /> My Bookings
-                        </button>
-
-                        <button onClick={() => navigate("/favourites")}>
-                            <CiHeart /> Favourites
-                        </button>
-
-                        <button onClick={() => navigate("/notifications")}>
-                            <CiBellOn /> Notifications
-                        </button>
-
-                        <div className={style.logout}>
-                            <button type="button" onClick={handleLogout}>
-                                <LuLogOut />
-                                <span>Logout</span>
-                            </button>
-                        </div>
-                    </nav>
-                </aside>
+                <ProfileSidebar />
 
                 <main className={style.bookingsContent}>
                     <Text variant="h2">Your Reservations</Text>
 
                     <div className={style.bookingTabs}>
                         <button
-                            className={selectedTab === "upcoming" ? style.selectedTab : ""}
-                            onClick={() => dispatch(setSelectedTab("upcoming"))}
+                            className={
+                                selectedTab === "upcoming"
+                                    ? style.selectedTab
+                                    : ""
+                            }
+                            onClick={() =>
+                                dispatch(setSelectedTab("upcoming"))
+                            }
                         >
                             Upcoming
                         </button>
 
                         <button
-                            className={selectedTab === "past" ? style.selectedTab : ""}
-                            onClick={() => dispatch(setSelectedTab("past"))}
+                            className={
+                                selectedTab === "past"
+                                    ? style.selectedTab
+                                    : ""
+                            }
+                            onClick={() =>
+                                dispatch(setSelectedTab("past"))
+                            }
                         >
                             Past
                         </button>
 
                         <button
-                            className={selectedTab === "cancelled" ? style.selectedTab : ""}
-                            onClick={() => dispatch(setSelectedTab("cancelled"))}
+                            className={
+                                selectedTab === "cancelled"
+                                    ? style.selectedTab
+                                    : ""
+                            }
+                            onClick={() =>
+                                dispatch(setSelectedTab("cancelled"))
+                            }
                         >
                             Cancelled
                         </button>
@@ -155,87 +130,160 @@ export const MyBookings = () => {
 
                     {loading && <p>Loading your bookings...</p>}
 
-                    {error && <p className={style.error}>{error}</p>}
-
-                    {!loading && !error && filteredBookings.length === 0 && (
-                        <div className={style.emptySection}>
-                            {selectedTab === "upcoming" &&
-                                <p>You have no upcoming bookings yet.</p>}
-                            {selectedTab === "past" &&
-                                <p>You have no past bookings yet.</p>}
-                            {selectedTab === "cancelled" &&
-                                <p>You have no cancelled bookings yet.</p>}
-                        </div>
+                    {error && (
+                        <p className={style.error}>{error}</p>
                     )}
 
-                    {!loading && filteredBookings.map((booking) => (
-                        <div key={booking.id} className={style.bookingCard}>
-                            <div className={style.bookingHeader}>
-                                <div>
-                                    <Text variant="h2">
-                                        {booking.accommodation_name}
-                                    </Text>
-                                    <p>{booking.accommodation_address}</p>
-                                </div>
+                    {!loading &&
+                        !error &&
+                        filteredBookings.length === 0 && (
+                            <div className={style.emptySection}>
+                                {selectedTab === "upcoming" && (
+                                    <p>
+                                        You have no upcoming bookings yet.
+                                    </p>
+                                )}
 
-                                <span className={`${style.bookingStatus} ${style[booking.status]}`}>
-                                    {booking.status}
-                                </span>
+                                {selectedTab === "past" && (
+                                    <p>
+                                        You have no past bookings yet.
+                                    </p>
+                                )}
+
+                                {selectedTab === "cancelled" && (
+                                    <p>
+                                        You have no cancelled bookings yet.
+                                    </p>
+                                )}
                             </div>
+                        )}
 
-                            <div className={style.bookingDetails}>
-                                <p><strong>Room:</strong> {booking.room_type}</p>
-                                <p><strong>Bed:</strong> {booking.bed_type || "Not specified"}</p>
-                                <p><strong>Check-in:</strong> {new Date(booking.check_in).toLocaleDateString()}</p>
-                                <p><strong>Check-out:</strong> {new Date(booking.check_out).toLocaleDateString()}</p>
-                                <p><strong>Rooms:</strong> {booking.number_of_rooms}</p>
-                                <p><strong>Guests:</strong> {booking.number_of_guests}</p>
-                            </div>
+                    {!loading &&
+                        filteredBookings.map((booking) => (
+                            <div
+                                key={booking.id}
+                                className={style.bookingCard}
+                            >
+                                <div className={style.bookingHeader}>
+                                    <div>
+                                        <Text variant="h2">
+                                            {booking.accommodation_name}
+                                        </Text>
 
-                            <div className={style.bookingFooter}>
-                                <Text variant="p">
-                                    Total: R{Number(booking.total_price).toFixed(2)}
-                                </Text>
+                                        <p>
+                                            {booking.accommodation_address}
+                                        </p>
+                                    </div>
 
-                                <div className={style.bookingActions}>
-                                    <button
-                                        type="button"
-                                        onClick={() => navigate(
-                                            `/accommodations/${booking.accommodation_id}`
-                                        )}
+                                    <span
+                                        className={`${style.bookingStatus} ${style[booking.status]}`}
                                     >
-                                        View Accommodation
-                                    </button>
+                                        {booking.status}
+                                    </span>
+                                </div>
 
-                                    {booking.status !== "cancelled" &&
-                                        new Date(booking.check_out) >= today && (
-                                            <button
-                                                type="button"
-                                                className={style.cancelButton}
-                                                disabled={cancellingBookingId === booking.id}
-                                                onClick={() => handleCancel(booking.id)}
-                                            >
-                                                {cancellingBookingId === booking.id
-                                                    ? "Cancelling..."
-                                                    : "Cancel Booking"}
-                                            </button>
-                                        )}
+                                <div className={style.bookingDetails}>
+                                    <p>
+                                        <strong>Room:</strong>{" "}
+                                        {booking.room_type}
+                                    </p>
 
-                                    {booking.status === "confirmed" &&
-                                        new Date(booking.check_out) < today && (
-                                            <button
-                                                type="button"
-                                                onClick={() => navigate(
-                                                    `/write-review/${booking.accommodation_id}`
-                                                )}
-                                            >
-                                                Write a Review
-                                            </button>
-                                        )}
+                                    <p>
+                                        <strong>Bed:</strong>{" "}
+                                        {booking.bed_type ||
+                                            "Not specified"}
+                                    </p>
+
+                                    <p>
+                                        <strong>Check-in:</strong>{" "}
+                                        {new Date(
+                                            booking.check_in
+                                        ).toLocaleDateString()}
+                                    </p>
+
+                                    <p>
+                                        <strong>Check-out:</strong>{" "}
+                                        {new Date(
+                                            booking.check_out
+                                        ).toLocaleDateString()}
+                                    </p>
+
+                                    <p>
+                                        <strong>Rooms:</strong>{" "}
+                                        {booking.number_of_rooms}
+                                    </p>
+
+                                    <p>
+                                        <strong>Guests:</strong>{" "}
+                                        {booking.number_of_guests}
+                                    </p>
+                                </div>
+
+                                <div className={style.bookingFooter}>
+                                    <Text variant="p">
+                                        Total: R
+                                        {Number(
+                                            booking.total_price
+                                        ).toFixed(2)}
+                                    </Text>
+
+                                    <div className={style.bookingActions}>
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                navigate(
+                                                    `/accommodations/${booking.accommodation_id}`
+                                                )
+                                            }
+                                        >
+                                            View Accommodation
+                                        </button>
+
+                                        {booking.status !== "cancelled" &&
+                                            new Date(
+                                                booking.check_out
+                                            ) >= today && (
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        style.cancelButton
+                                                    }
+                                                    disabled={
+                                                        cancellingBookingId ===
+                                                        booking.id
+                                                    }
+                                                    onClick={() =>
+                                                        handleCancel(
+                                                            booking.id
+                                                        )
+                                                    }
+                                                >
+                                                    {cancellingBookingId ===
+                                                    booking.id
+                                                        ? "Cancelling..."
+                                                        : "Cancel Booking"}
+                                                </button>
+                                            )}
+
+                                        {booking.status === "confirmed" &&
+                                            new Date(
+                                                booking.check_out
+                                            ) < today && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/write-review/${booking.accommodation_id}`
+                                                        )
+                                                    }
+                                                >
+                                                    Write a Review
+                                                </button>
+                                            )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
                 </main>
             </div>
 
