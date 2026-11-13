@@ -1,3 +1,4 @@
+
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -7,6 +8,7 @@ import { Text } from "../../../components/Text/text"
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard"
 import { Footer } from "../../../components/footer/footer"
 import { ProfileSidebar } from "../../../components/ProfileSidebar/ProfileSidebar"
+import { IoArrowBackCircle } from "react-icons/io5"
 import style from "./favourites.module.css"
 
 export const Favourites = () => {
@@ -34,6 +36,15 @@ export const Favourites = () => {
 
     return (
         <div className={style.page}>
+            <button
+                type="button"
+                className={style.backButton}
+                onClick={() => navigate("/")}
+                aria-label="Go back home"
+            >
+                <IoArrowBackCircle />
+            </button>
+
             <Text variant="h1">My Favourites</Text>
 
             <div className={style.favouritesLayout}>

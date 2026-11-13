@@ -1,24 +1,12 @@
+
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 36px;
+    padding: 16px 40px;
     width: 100%;
     box-sizing: border-box;
     background-color: #E6D9ED;
-}
-.viewAllButton {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-top: 1px solid #eee;
-    background: transparent;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.viewAllButton:hover {
-    background: #f6f1f8;
 }
 
 .logo {
@@ -36,22 +24,78 @@
 .links {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 28px;
+    margin-left: auto;
+    margin-right: 50px;
 }
 
 .links a {
     text-decoration: none;
     color: #49345E;
     font-size: 14px;
+    font-weight: 500;
+    padding: 8px 0;
     transition: color 0.2s ease;
+    position: relative;
+}
+
+.links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #B69ACB;
+    transition: width 0.2s ease;
 }
 
 .links a:hover {
-    color: #B69ACB;
+    color: #8B6BA3;
+}
+
+.links a:hover::after {
+    width: 100%;
 }
 
 .actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 18px;
+}
+
+.notificationButton,
+.profileButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: #49345E;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.notificationButton:hover,
+.profileButton:hover {
+    color: #8B6BA3;
+    transform: translateY(-2px);
+}
+
+.notificationBadge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #49345E;
+    color: white;
+    font-size: 10px;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
 }
