@@ -13,7 +13,7 @@ import {
     fetchReviewsByAccommodation,
 } from "../../../features/reviewSlice";
 import { AccommodationMap } from "../../../components/map/map";
-import { navbar as Navbar } from "../../../components/navbar/navbar";
+import { Navbar } from "../../../components/navbar/navbar";
 import { Button } from "../../../components/button/button";
 import { Footer } from "../../../components/footer/footer";
 import {

@@ -9,7 +9,7 @@ import { Text } from "../../../components/Text/text";
 import { CustomerAccommodationCard } from "../../../components/customerAccommodationCard/customerAccommodationCard";
 import styles from "./accomodations.module.css";
 import { fetchFavourites } from "../../../features/favouriteSlice";
-import { navbar as Navbar } from "../../../components/navbar/navbar";
+import {  Navbar } from "../../../components/navbar/navbar";
 import { Footer } from "../../../components/footer/footer";
 
 export const accomodations = () => {
