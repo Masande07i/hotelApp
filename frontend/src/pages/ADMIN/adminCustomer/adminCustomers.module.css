@@ -106,13 +106,123 @@
     gap: 12px;
 }
 
-@media (max-width: 600px) {
+
+@media (max-width: 900px) {
     .customersPage {
+        padding: 22px;
+    }
+
+    .mainArea {
+        padding: 20px;
+    }
+
+    .tableContainer {
+        padding: 15px;
+    }
+
+    .customersTable th,
+    .customersTable td {
+        padding: 13px;
+        font-size: 13px;
+    }
+
+    .formContainer {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    .adminLayout {
+        flex-direction: column;
+    }
+
+    .customersPage {
+        padding: 15px;
+    }
+
+    .mainArea {
         padding: 15px;
     }
 
     .pageHeader {
         align-items: flex-start;
         flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .pageHeader h1 {
+        font-size: 22px;
+    }
+
+    .tableContainer {
+        padding: 12px;
+        overflow-x: auto;
+    }
+
+    .customersTable {
+        min-width: 600px;
+    }
+
+    .customersTable th,
+    .customersTable td {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .formContainer {
+        padding: 16px;
+    }
+
+    .formActions {
+        flex-direction: column;
+    }
+
+    .formActions button {
+        width: 100%;
+    }
+
+    .formContainer input,
+    .formContainer select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .customersPage {
+        padding: 10px;
+    }
+
+    .mainArea {
+        padding: 10px;
+    }
+
+    .pageHeader h1 {
+        font-size: 20px;
+    }
+
+    .tableContainer {
+        padding: 8px;
+    }
+
+    .customersTable {
+        min-width: 550px;
+    }
+
+    .customersTable th,
+    .customersTable td {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .formContainer {
+        padding: 13px;
+    }
+
+    .role {
+        padding: 5px 9px;
+        font-size: 11px;
     }
 }

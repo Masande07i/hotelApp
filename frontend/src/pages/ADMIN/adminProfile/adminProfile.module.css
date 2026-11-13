@@ -85,3 +85,101 @@
     margin-top: 25px;
    
 }
+
+
+@media (max-width: 900px) {
+    .mainArea {
+        padding: 20px;
+    }
+
+    .profileCard {
+        gap: 22px;
+        padding: 25px;
+        max-width: 650px;
+    }
+}
+
+@media (max-width: 650px) {
+    .adminLayout {
+        flex-direction: column;
+    }
+
+    .mainArea {
+        padding: 15px;
+    }
+
+    .profileCard {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+        padding: 22px;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 85px;
+        height: 85px;
+        min-width: 85px;
+        font-size: 26px;
+    }
+
+    .userInfo {
+        width: 100%;
+        align-items: center;
+    }
+
+    .editForm {
+        text-align: left;
+    }
+
+    .editForm input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logout {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .mainArea {
+        padding: 10px;
+    }
+
+    .profileCard {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .avatar {
+        width: 75px;
+        height: 75px;
+        min-width: 75px;
+        font-size: 23px;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .profileCard button,
+    .logout {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+    }
+
+    .editForm input {
+        font-size: 14px;
+    }
+}

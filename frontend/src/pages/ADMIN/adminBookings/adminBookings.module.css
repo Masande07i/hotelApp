@@ -97,18 +97,94 @@
 }
 
 
-@media (max-width: 600px) {
-    .bookingInfo {
-        grid-template-columns: 1fr;
+@media (max-width: 900px) {
+    .bookingsPage {
+        padding: 22px;
+    }
+
+    .mainArea {
+        padding: 20px;
     }
 
     .bookingCard {
-        padding: 18px;
+        padding: 20px;
+    }
+
+    .bookingInfo {
+        gap: 12px 16px;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .adminLayout {
+        flex-direction: column;
+    }
+
+    .bookingsPage {
+        padding: 15px;
+    }
+
+    .mainArea {
+        padding: 15px;
+    }
+
+    .pageHeader {
+        margin-bottom: 20px;
+    }
+
+    .pageHeader h1 {
+        font-size: 22px;
+    }
+
+    .bookingCard {
+        padding: 16px;
+    }
+
+    .bookingInfo {
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 
     .bookingStatus {
         align-items: flex-start;
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .bookingStatus select {
+        width: 100%;
+        box-sizing: border-box;
     }
 }
+
+
+@media (max-width: 400px) {
+    .bookingsPage {
+        padding: 10px;
+    }
+
+    .mainArea {
+        padding: 10px;
+    }
+
+    .pageHeader h1 {
+        font-size: 20px;
+    }
+
+    .bookingCard {
+        padding: 13px;
+        border-radius: 9px;
+    }
+
+    .bookingTitle {
+        margin-bottom: 14px;
+    }
+
+    .statusBadge {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+}
+
 

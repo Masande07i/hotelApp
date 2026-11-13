@@ -80,3 +80,92 @@
 .table tbody tr:hover {
     background-color: #f8fbfa;
 }
+
+
+
+@media (max-width: 900px) {
+    .container {
+        padding: 20px;
+    }
+
+    .mainArea {
+        padding: 20px;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .adminLayout {
+        flex-direction: column;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .mainArea {
+        padding: 15px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .addButton {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .tableContainer {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 650px;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 12px;
+    }
+
+    .mainArea {
+        padding: 12px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .table {
+        min-width: 600px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+        font-size: 11px;
+    }
+}
+

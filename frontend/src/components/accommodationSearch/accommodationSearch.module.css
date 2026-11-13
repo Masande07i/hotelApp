@@ -34,3 +34,58 @@
     font-size: 13px;
     font-weight: 500;
 }
+
+
+
+@media (max-width: 900px) {
+    .search {
+        gap: 12px;
+        padding: 16px;
+        height: auto;
+    }
+
+    .field select,
+    .field input {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .search {
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .field {
+        flex: 1 1 calc(50% - 15px);
+        min-width: 0;
+    }
+
+    .field select,
+    .field input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    .search {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .field {
+        width: 100%;
+        flex: none;
+    }
+
+    .field select,
+    .field input {
+        padding: 11px;
+        font-size: 14px;
+    }
+}
